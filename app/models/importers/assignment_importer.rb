@@ -126,7 +126,14 @@ module Importers
       if new_record || item.deleted? || master_migration
         restore_lti_models(item) if item.deleted?
         item.workflow_state = if item.can_unpublish?
-                                hash[:workflow_state] || "published"
+                                if quiz.nil? && migration&.migration_type == "course_copy_importer"
+                                  # copied assignments always arrive unpublished so teachers
+                                  # review them before students can see them (classic quiz
+                                  # shells keep following their quiz's state)
+                                  "unpublished"
+                                else
+                                  hash[:workflow_state] || "published"
+                                end
                               else
                                 "published"
                               end

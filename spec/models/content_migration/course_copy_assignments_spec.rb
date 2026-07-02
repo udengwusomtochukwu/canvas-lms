@@ -83,6 +83,18 @@ describe ContentMigration do
       end
     end
 
+    it "copies assignments as unpublished regardless of source state" do
+      published = @copy_from.assignments.create!(title: "published assignment")
+      published.publish! unless published.published?
+      unpublished = @copy_from.assignments.create!(title: "unpublished assignment")
+      unpublished.unpublish! if unpublished.published?
+
+      run_course_copy
+
+      expect(@copy_to.assignments.where(migration_id: mig_id(published)).first!).to be_unpublished
+      expect(@copy_to.assignments.where(migration_id: mig_id(unpublished)).first!).to be_unpublished
+    end
+
     it "links assignments to account rubrics and outcomes" do
       account = @copy_from.account
       lo = create_outcome(account)
