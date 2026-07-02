@@ -19,7 +19,7 @@
 <%
   css_bundle :login
   js_bundle :login
-  provide :page_title, t("Canvas Login | Instructure")
+  provide :page_title, (@domain_root_account.try(:name) || t("Log In"))
   provide :login_metadata, "Official Login page for Canvas student login, School Search Canvas, Canvas Network, Canvas Community, and Canvas Free For Teacher accounts."
 
 %>

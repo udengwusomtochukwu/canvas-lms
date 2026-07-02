@@ -30,7 +30,7 @@
 
   <div class="mobileLogin-Header">
     <span class="screenreader-only">
-      <%= t 'Canvas by Instructure' %>
+      <%= @domain_root_account.try(:name) || t('Log In') %>
       <script type="text/javascript">
         window.onload = function() {
           var msg

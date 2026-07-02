@@ -70,17 +70,6 @@ const FooterLinks = () => {
           </Link>
         </InlineList.Item>
 
-        <InlineList.Item>
-          <Link
-            data-testid="cookie-notice-link"
-            forceButtonRole={false}
-            href="https://www.instructure.com/policies/canvas-lms-cookie-notice"
-            onClick={handleClick}
-          >
-            {I18n.t('Cookie Notice')}
-          </Link>
-        </InlineList.Item>
-
         {requireAup && (
           <InlineList.Item>
             <Link

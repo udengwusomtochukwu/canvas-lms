@@ -21,7 +21,7 @@ import {View} from '@instructure/ui-view'
 import React, {lazy, Suspense} from 'react'
 import {Outlet, ScrollRestoration} from 'react-router-dom'
 import {useNewLoginData} from '../context'
-import {FooterLinks, GlobalStyle, InstructureLogo, LoginLogo} from '../shared'
+import {FooterLinks, GlobalStyle, LoginLogo} from '../shared'
 import ContentLayout from './ContentLayout'
 
 const AppNavBar = lazy(() => import('../shared/AppNavBar'))
@@ -58,10 +58,6 @@ const LoginLayout = () => {
                 <View as="footer">
                   <Flex direction="column" gap="medium">
                     <FooterLinks />
-
-                    <Flex.Item align="center" overflowX="visible" overflowY="visible">
-                      <InstructureLogo />
-                    </Flex.Item>
                   </Flex>
                 </View>
               </Flex>

@@ -16,7 +16,7 @@
   # with this program. If not, see <http://www.gnu.org/licenses/>.
 %>
 
-<% provide :page_title, t("Log in to Canvas") %>
+<% provide :page_title, (@domain_root_account.try(:name) || t("Log In")) %>
 
 <%#
   renders a container <div> with data attributes used by the new login UI

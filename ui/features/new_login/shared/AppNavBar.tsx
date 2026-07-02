@@ -18,19 +18,14 @@
 
 import {useScope as createI18nScope} from '@canvas/i18n'
 import {Img} from '@instructure/ui-img'
-import {Responsive} from '@instructure/ui-responsive'
-import {canvas} from '@instructure/ui-themes'
 import {TopNavBar} from '@instructure/ui-top-nav-bar'
 import React from 'react'
 import {useNewLoginData} from '../context'
 
-import CanvasLmsLogoIcon from '../assets/images/canvas-small.svg'
-import CanvasLmsLogo from '../assets/images/canvas.svg'
-
 const I18n = createI18nScope('new_login')
 
 const AppNavBar = () => {
-  const {enableCourseCatalog} = useNewLoginData()
+  const {enableCourseCatalog, loginLogoUrl, loginLogoText} = useNewLoginData()
 
   return (
     <TopNavBar breakpoint={10} inverseColor={true}>
@@ -42,41 +37,22 @@ const AppNavBar = () => {
               dropdownMenuToggleButtonLabel: I18n.t('Menu'),
             }}
             renderBrand={
-              <TopNavBar.Brand
-                screenReaderLabel={I18n.t('Canvas LMS')}
-                renderIcon={
-                  <Responsive
-                    match="media"
-                    query={{
-                      tablet: {minWidth: canvas.breakpoints.tablet},
-                    }}
-                  >
-                    {(_props, matches) => {
-                      if (matches?.includes('tablet')) {
-                        return (
-                          <Img
-                            constrain="contain"
-                            display="block"
-                            height="2.375rem"
-                            src={CanvasLmsLogo}
-                            width="8rem"
-                          />
-                        )
-                      } else {
-                        return (
-                          <Img
-                            constrain="contain"
-                            display="block"
-                            height="2.375rem"
-                            src={CanvasLmsLogoIcon}
-                            width="2.375rem"
-                          />
-                        )
-                      }
-                    }}
-                  </Responsive>
-                }
-              />
+              // brand logo comes from the account theme (Theme Editor); no
+              // hardcoded fallback mark
+              loginLogoUrl ? (
+                <TopNavBar.Brand
+                  screenReaderLabel={loginLogoText || I18n.t('Home')}
+                  renderIcon={
+                    <Img
+                      constrain="contain"
+                      display="block"
+                      height="2.375rem"
+                      src={loginLogoUrl}
+                      width="2.375rem"
+                    />
+                  }
+                />
+              ) : undefined
             }
             renderActionItems={
               enableCourseCatalog ? (
