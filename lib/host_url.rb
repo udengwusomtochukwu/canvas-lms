@@ -94,11 +94,7 @@ class HostUrl
     end
 
     def cdn_host
-      # by default only set it for development. useful so that gravatar can
-      # proxy our fallback urls
-      host = ENV["CANVAS_CDN_HOST"]
-      host ||= "canvas.instructure.com" if Rails.env.development?
-      host
+      ENV["CANVAS_CDN_HOST"]
     end
 
     def outgoing_email_address(preferred_user = "notifications")
@@ -106,7 +102,7 @@ class HostUrl
     end
 
     def outgoing_email_default_name
-      @outgoing_email_default_name.presence || I18n.t("#email.default_from_name", "Instructure Canvas")
+      @outgoing_email_default_name.presence || I18n.t("#email.default_from_name", "Notifications")
     end
 
     def file_host=(val)

@@ -294,7 +294,7 @@ class Message < ActiveRecord::Base
 
   def author_avatar_url
     if context.is_a?(DiscussionEntry) && context.discussion_topic.anonymous?
-      return "https://canvas.instructure.com/images/messages/avatar-50.png"
+      return User.avatar_fallback_url(User.default_avatar_fallback)
     end
 
     url = author.try(:avatar_url)
