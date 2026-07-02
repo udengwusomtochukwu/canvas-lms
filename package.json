@@ -343,7 +343,7 @@
     "waait": "^1",
     "wrap-ansi": "^7.0.0",
     "wsrun": "^5",
-    "xsslint": "instructure/xsslint#babel7"
+    "xsslint": "0.1.6"
   },
   "optionalDependencies": {},
   "browserslist": [

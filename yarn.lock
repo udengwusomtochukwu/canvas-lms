@@ -24731,9 +24731,10 @@ xmlchars@^2.2.0:
   resolved "https://registry.yarnpkg.com/xmlchars/-/xmlchars-2.2.0.tgz#060fe1bcb7f9c76fe2a17db86a9bc3ab894210cb"
   integrity sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==
 
-xsslint@instructure/xsslint#babel7:
-  version "0.1.5"
-  resolved "https://codeload.github.com/instructure/xsslint/tar.gz/2ef5f95c4eec8494b213d6c25f92615edd26ca50"
+xsslint@0.1.6:
+  version "0.1.6"
+  resolved "https://registry.npmjs.org/xsslint/-/xsslint-0.1.6.tgz#cdb9e9b46fc77673c76379487ec39b1d776190cc"
+  integrity sha512-KVNAfLyGERVDqbRGEO0EcmoSucIAjFEUX06MwMra5QU6d+mQUyh0nrYnKNMPC55lFYqMcGhUiBYN6Pm0ByHq7Q==
   dependencies:
     "@babel/parser" "^7"
     "@babel/traverse" "^7"
