@@ -317,7 +317,8 @@ module ApplicationHelper
     possibly_customized_login_logo = brand_variable("ic-brand-Login-logo")
     default_login_logo = BrandableCSS.brand_variable_value("ic-brand-Login-logo")
     if possibly_customized_login_logo == default_login_logo
-      I18n.t("Canvas by Instructure")
+      # default logo asset is neutral/blank -- no brand to announce
+      ""
     else
       @domain_root_account.short_name
     end
