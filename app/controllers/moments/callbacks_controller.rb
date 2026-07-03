@@ -34,6 +34,8 @@ module Moments
     def receive
       case params[:event]
       when "segmented" then handle_segmented
+      when "captions" then handle_captions
+      when "compiled" then handle_compiled
       when "progress" then head :ok
       when "error" then handle_error
       else
@@ -79,12 +81,40 @@ module Moments
             end_ms: clip["end_ms"],
             highlight_score: clip["highlight_score"],
             keyframe_refs: Array(clip["keyframe_refs"]),
+            clip_ref: clip["clip_ref"],
+            thumbnail_ref: clip["thumbnail_ref"],
             caption_status: "none"
           )
         end
         @session.update!(workflow_state: "segmented", retention_expires_at: payload["retention_expires_at"])
       end
       render json: { ok: true, clip_count: @session.clips.count }
+    end
+
+    # Caption drafts (G4): blank drafts (no API key on the backend) still go
+    # to needs_review so a human writes them — never auto-approved.
+    def handle_captions
+      Array(payload["captions"]).each do |draft|
+        clip = @session.clips.find_by(id: draft["clip_id"])
+        next unless clip
+
+        clip.update!(caption: draft["caption"].to_s, caption_status: "needs_review")
+      end
+      @session.update!(workflow_state: "captioning") if @session.tagging? || @session.segmented?
+      render json: { ok: true }
+    end
+
+    # Compiled reels: pull each mp4 out of the backend into a native
+    # Attachment asynchronously; the reel flips to "ready" when fetched.
+    def handle_compiled
+      Array(payload["reels"]).each do |entry|
+        reel = @session.reels.find_by(id: entry["reel_ref"])
+        next unless reel
+
+        reel.delay(n_strand: ["moments_reel_fetch", reel.root_account_id])
+            .fetch_media_from_backend!(entry["media_ref"].to_s)
+      end
+      render json: { ok: true }
     end
 
     def handle_error

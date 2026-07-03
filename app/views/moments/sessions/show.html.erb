@@ -89,7 +89,57 @@
         </select>
         <button type="submit" class="btn"><%= t("Tag") %></button>
       </form>
+      <% if clip.clip_tags.any? %>
+        <%= form_tag course_moments_clip_caption_path(@context, clip.id), method: :put do %>
+          <label>
+            <%= t("Caption (%{status})", status: clip.caption_status) %>
+            <textarea name="caption" rows="2" style="width: 100%; max-width: 640px;"><%= clip.caption %></textarea>
+          </label>
+          <label><input type="checkbox" name="approve" value="1" <%= "checked" if clip.caption_status == "approved" %>> <%= t("Approve for parents") %></label>
+          <button type="submit" class="btn"><%= t("Save caption") %></button>
+        <% end %>
+      <% end %>
     </div>
+  <% end %>
+
+  <div class="moments-actions" style="margin: 16px 0; display: flex; gap: 8px;">
+    <%= form_tag course_moments_session_captions_path(@context, @session), method: :post do %>
+      <button type="submit" class="btn"><%= t("Draft captions") %></button>
+    <% end %>
+    <%= form_tag course_moments_session_compile_path(@context, @session), method: :post do %>
+      <button type="submit" class="btn btn-primary"><%= t("Compile reels") %></button>
+    <% end %>
+    <%= form_tag course_moments_session_deliver_path(@context, @session), method: :post do %>
+      <button type="submit" class="btn"><%= t("Deliver to parents") %></button>
+    <% end %>
+  </div>
+
+  <% reels = @session.reels.preload(:user, :attachment).order(:id) %>
+  <% if reels.any? %>
+    <h2 class="Heading"><%= t("Reels") %></h2>
+    <table class="ic-Table">
+      <thead>
+        <tr>
+          <th scope="col"><%= t("Student") %></th>
+          <th scope="col"><%= t("Status") %></th>
+          <th scope="col"><%= t("Reel") %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% reels.each do |reel| %>
+          <tr>
+            <th scope="row"><%= reel.user.sortable_name %></th>
+            <td><%= reel.workflow_state %><%= " · #{datetime_string(reel.delivered_at)}" if reel.delivered_at %></td>
+            <td>
+              <% if reel.attachment %>
+                <video controls preload="metadata" style="max-width: 320px;"
+                       src="<%= file_download_path(reel.attachment_id, inline: 1) %>"></video>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   <% end %>
 <% elsif @session.workflow_state == "segmented" || @session.workflow_state == "tagging" %>
   <p><%= t("No clips were found in this recording.") %></p>

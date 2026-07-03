@@ -88,6 +88,43 @@ module MomentsBackend
       get("/v2/progress/#{session.sidecar_ref}")
     end
 
+    # Draft observable-actions-only captions for the given clips (G4).
+    # clips: [{ clip_id:, keyframe_refs: [] }] — opaque ids only.
+    def captions!(session:, clips:, callback_url:)
+      post("/v2/jobs/captions", { session_ref: session.sidecar_ref, clips:, callback_url: })
+    end
+
+    # Compile per-child reels. reels: [{ reel_ref:, clip_refs: [] }] —
+    # reel_ref is opaque to the backend (identity-blind, G1/G2).
+    def compile!(session:, reels:, callback_url:)
+      post("/v2/jobs/compile", { session_ref: session.sidecar_ref, reels:, callback_url: })
+    end
+
+    # Stream one backend object (reel mp4, thumbnail) into a local tempfile.
+    def fetch_media(ref)
+      uri = URI.parse("#{base_url}/v2/media?ref=#{CGI.escape(ref)}")
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = uri.scheme == "https"
+      http.open_timeout = 10
+      http.read_timeout = 120
+
+      req = Net::HTTP::Get.new(uri.request_uri)
+      req[SIGNATURE_HEADER] = sign("")
+
+      file = Tempfile.new(["moments-media", File.extname(ref)])
+      file.binmode
+      http.request(req) do |response|
+        raise Error, "moments backend returned #{response.code} for media" unless response.code.to_i == 200
+
+        response.read_body { |chunk| file.write(chunk) }
+      end
+      file.flush
+      file.rewind
+      file
+    rescue Timeout::Error, SystemCallError, SocketError => e
+      raise Error, "moments backend unreachable: #{e.message}"
+    end
+
     # The backend URL is admin-configured (Admin > Plugins), not user input,
     # so we use Net::HTTP directly rather than CanvasHttp — whose SSRF
     # protections (rightly) refuse private addresses, which is exactly where

@@ -58,4 +58,23 @@ describe Moments::Reel do
     expect(@reel.grants_right?(@teacher, :read)).to be true
     expect(@reel.grants_right?(@teacher, :manage)).to be true
   end
+
+  describe "the reel file" do
+    it "is downloadable by the student and linked observer, and by nobody else in the course" do
+      file = Tempfile.new(["reel", ".mp4"])
+      file.write("mp4")
+      file.rewind
+      allow(MomentsBackend).to receive(:fetch_media).and_return(file)
+      @reel.fetch_media_from_backend!("canvas/x/reels/#{@reel.id}.mp4")
+      @reel.update!(workflow_state: "delivered", delivered_at: Time.zone.now)
+
+      attachment = @reel.reload.attachment
+      expect(attachment.grants_right?(@student, :download)).to be true
+      expect(attachment.grants_right?(@observer, :download)).to be true
+
+      peer = user_factory(active_all: true)
+      @course.enroll_student(peer, enrollment_state: "active")
+      expect(attachment.grants_right?(peer, :download)).to be false
+    end
+  end
 end

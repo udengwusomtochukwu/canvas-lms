@@ -31,6 +31,10 @@ module Moments
     belongs_to :user
     belongs_to :attachment, optional: true
     belongs_to :root_account, class_name: "Account"
+    # The reel mp4 is attached with THIS record as its context, so file
+    # access falls through to this model's read policy (G6) — course-context
+    # files would be listable by every course member in Files.
+    has_many :attachments, as: :context, inverse_of: :context, dependent: :destroy
 
     validates :user_id, uniqueness: { scope: :moments_session_id }
 
@@ -58,6 +62,34 @@ module Moments
                  .exists?
       end
       can :read
+    end
+
+    # Pull the compiled mp4 from the media backend into a native Attachment.
+    # Runs as a delayed job from the "compiled" callback.
+    def fetch_media_from_backend!(media_ref)
+      file = MomentsBackend.fetch_media(media_ref)
+      attachment = nil
+      begin
+        attachment = FileInContext.attach(
+          self,
+          file.path,
+          display_name: "#{session.title} — moment reel.mp4"
+        )
+      ensure
+        file.close!
+      end
+      update!(attachment:, workflow_state: "ready")
+    end
+
+    # Delivery gate: re-checks consent at the moment of delivery (G3 defence
+    # in depth) — a child whose consent was revoked after tagging is skipped.
+    # Returns whether the reel was delivered.
+    def deliver! # rubocop:disable Naming/PredicateMethod
+      return false unless ready?
+      return false unless Moments::Consent.opted_in?(user_id)
+
+      update!(workflow_state: "delivered", delivered_at: Time.zone.now)
+      true
     end
 
     private

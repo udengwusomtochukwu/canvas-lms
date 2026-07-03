@@ -255,8 +255,12 @@ CanvasRails::Application.routes.draw do
     get "moments/sessions/:id" => "moments/sessions#show", :as => :moments_session
     post "moments/sessions/:session_id/ingest" => "moments/sessions#ingest", :as => :moments_session_ingest
     get "moments/sessions/:session_id/progress" => "moments/sessions#progress", :as => :moments_session_progress
+    post "moments/sessions/:session_id/captions" => "moments/sessions#draft_captions", :as => :moments_session_captions
+    post "moments/sessions/:session_id/compile" => "moments/sessions#compile", :as => :moments_session_compile
+    post "moments/sessions/:session_id/deliver" => "moments/sessions#deliver", :as => :moments_session_deliver
     post "moments/clips/:clip_id/tags" => "moments/clip_tags#create", :as => :moments_clip_tags
     delete "moments/clips/:clip_id/tags/:user_id" => "moments/clip_tags#destroy", :as => :moments_clip_tag
+    put "moments/clips/:clip_id/caption" => "moments/clips#update_caption", :as => :moments_clip_caption
     get "moments/consents" => "moments/consents#index", :as => :moments_consents
     put "moments/consents/:user_id" => "moments/consents#update", :as => :moments_consent
 

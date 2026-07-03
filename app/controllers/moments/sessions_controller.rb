@@ -78,6 +78,59 @@ module Moments
       render json: { error: e.message }, status: :bad_gateway
     end
 
+    # Draft captions for tagged clips that aren't approved yet (G4: drafts
+    # always land in needs_review; a human approves before anything ships).
+    def draft_captions
+      clips = @session.clips.joins(:clip_tags).where.not(caption_status: "approved").distinct
+      if clips.none?
+        return redirect_back_with(t("Tag students on at least one clip first."))
+      end
+
+      MomentsBackend.captions!(
+        session: @session,
+        clips: clips.map { |c| { clip_id: c.id, keyframe_refs: c.keyframe_refs } },
+        callback_url: callback_url_for("captions")
+      )
+      redirect_back_with(t("Drafting captions — refresh in a moment."))
+    rescue MomentsBackend::Error => e
+      redirect_back_with(e.message, error: true)
+    end
+
+    # Compile per-child reels from approved, tagged clips. Consent is
+    # re-checked here (G3): revoked children are silently dropped.
+    def compile
+      clips = @session.clips.where(caption_status: "approved").where.not(clip_ref: nil)
+                      .preload(:clip_tags).order(:start_ms)
+      by_student = Hash.new { |h, k| h[k] = [] }
+      clips.each do |clip|
+        clip.clip_tags.each do |tag|
+          by_student[tag.user_id] << clip.clip_ref if Moments::Consent.opted_in?(tag.user_id)
+        end
+      end
+      if by_student.empty?
+        return redirect_back_with(t("Nothing to compile — approve captions on tagged clips first."))
+      end
+
+      reels = by_student.map do |student_id, clip_refs|
+        reel = @session.reels.find_or_create_by!(user_id: student_id)
+        reel.update!(workflow_state: "compiling", attachment_id: nil) unless reel.compiling?
+        { reel_ref: reel.id, clip_refs: }
+      end
+      MomentsBackend.compile!(session: @session, reels:, callback_url: callback_url_for("compiled"))
+      @session.update!(workflow_state: "compiling")
+      redirect_back_with(t("Compiling %{count} reels — refresh in a moment.", count: reels.length))
+    rescue MomentsBackend::Error => e
+      redirect_back_with(e.message, error: true)
+    end
+
+    # Deliver ready reels to students/parents (visibility flips here and
+    # only here; Reel#deliver! re-checks consent per child).
+    def deliver
+      delivered = @session.reels.where(workflow_state: "ready").count(&:deliver!)
+      @session.update!(workflow_state: "delivered") if delivered.positive?
+      redirect_back_with(t("Delivered %{count} reels.", count: delivered))
+    end
+
     private
 
     def check_authorized
@@ -98,6 +151,11 @@ module Moments
       else
         moments_callback_url(event:, host: request.host_with_port, protocol: request.scheme)
       end
+    end
+
+    def redirect_back_with(message, error: false)
+      flash[error ? :error : :notice] = message
+      redirect_to course_moments_session_path(@context, @session)
     end
   end
 end

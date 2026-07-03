@@ -90,5 +90,49 @@ describe Moments::SessionsController do
       expect(assigns[:students]).to include @student
       expect(assigns[:consented_ids]).to include @student.id
     end
+
+    describe "compile and deliver" do
+      before :once do
+        consent!(@student)
+        @clip.update!(caption: "Observable action.", caption_status: "approved", clip_ref: "canvas/x/clips/000.mp4")
+        @clip.clip_tags.create!(user: @student, tagged_by: @teacher)
+      end
+
+      before { user_session(@teacher) }
+
+      it "compiles reels only for consented students with approved tagged clips" do
+        expect(MomentsBackend).to receive(:compile!) do |session:, reels:, callback_url:|
+          expect(session).to eq @session
+          expect(reels.length).to eq 1
+          expect(reels.first[:clip_refs]).to eq ["canvas/x/clips/000.mp4"]
+          expect(callback_url).to include "/moments/callbacks/compiled"
+          {}
+        end
+        post :compile, params: { course_id: @course.id, session_id: @session.id }
+        reel = @session.reels.find_by(user: @student)
+        expect(reel).not_to be_nil
+        expect(reel.workflow_state).to eq "compiling"
+      end
+
+      it "drops a student whose consent was revoked after tagging (G3 defence in depth)" do
+        consent!(@student, opt_in: false)
+        post :compile, params: { course_id: @course.id, session_id: @session.id }
+        expect(@session.reels.count).to eq 0
+      end
+
+      it "delivers ready reels, re-checking consent per child" do
+        ready = @session.reels.create!(user: @student, workflow_state: "ready")
+        post :deliver, params: { course_id: @course.id, session_id: @session.id }
+        expect(ready.reload.workflow_state).to eq "delivered"
+        expect(ready.delivered_at).not_to be_nil
+      end
+
+      it "does not deliver a reel for a since-revoked child" do
+        ready = @session.reels.create!(user: @student, workflow_state: "ready")
+        consent!(@student, opt_in: false)
+        post :deliver, params: { course_id: @course.id, session_id: @session.id }
+        expect(ready.reload.workflow_state).to eq "ready"
+      end
+    end
   end
 end

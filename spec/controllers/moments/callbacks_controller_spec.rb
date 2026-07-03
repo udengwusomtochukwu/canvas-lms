@@ -77,6 +77,40 @@ describe Moments::CallbacksController do
     expect(@session.reload.workflow_state).to eq "failed"
   end
 
+  it "stores caption drafts as needs_review — never auto-approved (G4)" do
+    post_callback("captions", { session_ref: @session.sidecar_ref,
+                                captions: [{ clip_id: @clip.id, caption: "A student stacks blocks." }] })
+    expect(response).to be_successful
+    expect(@clip.reload.caption).to eq "A student stacks blocks."
+    expect(@clip.caption_status).to eq "needs_review"
+  end
+
+  it "routes blank caption drafts (no AI key) to needs_review for manual writing" do
+    post_callback("captions", { session_ref: @session.sidecar_ref,
+                                captions: [{ clip_id: @clip.id, caption: "" }] })
+    expect(@clip.reload.caption_status).to eq "needs_review"
+  end
+
+  it "fetches compiled reels into attachments and readies them" do
+    reel = @session.reels.create!(user: @student)
+    file = Tempfile.new(["reel", ".mp4"])
+    file.write("fake mp4 bytes")
+    file.rewind
+    expect(MomentsBackend).to receive(:fetch_media).with("canvas/sessions/x/reels/#{reel.id}.mp4").and_return(file)
+
+    post_callback("compiled", { session_ref: @session.sidecar_ref,
+                                reels: [{ reel_ref: reel.id, media_ref: "canvas/sessions/x/reels/#{reel.id}.mp4" }] })
+    expect(response).to be_successful
+    run_jobs
+
+    reel.reload
+    expect(reel.workflow_state).to eq "ready"
+    expect(reel.attachment).not_to be_nil
+    # the reel itself is the file's context, so file access follows the
+    # reel policy (G6) instead of course-files visibility
+    expect(reel.attachment.context).to eq reel
+  end
+
   it "404s when the flag is off (callbacks are feature-gated too)" do
     @course.root_account.disable_feature!(:moments_native)
     post_callback("segmented", segmented_payload)
