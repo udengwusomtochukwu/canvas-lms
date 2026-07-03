@@ -233,6 +233,14 @@ CanvasRails::Application.routes.draw do
     post :enroll_users
     post :link_enrollment
     post :update_nav
+
+    # Page Schools fork: Manual Exam Workflow (gated on the
+    # manual_exam_workflow account feature flag; 404s when off)
+    get "assignments/:assignment_id/manual_exam" => "manual_exam_scripts#show", :as => :assignment_manual_exam
+    get "assignments/:assignment_id/manual_exam/labels" => "manual_exam_scripts#labels", :as => :assignment_manual_exam_labels
+    put "assignments/:assignment_id/manual_exam/scripts/:user_id" => "manual_exam_scripts#upsert", :as => :assignment_manual_exam_script
+    post "assignments/:assignment_id/manual_exam/scripts" => "manual_exam_scripts#bulk_upsert", :as => :assignment_manual_exam_scripts
+
     resource :gradebook do
       get "submissions_upload/:assignment_id" => "gradebooks#show_submissions_upload", :as => :show_submissions_upload
       post "submissions_upload/:assignment_id" => "gradebooks#submissions_zip_upload", :as => :submissions_upload

@@ -1099,6 +1099,10 @@
     "summary": "Adjusts how course information is passed to external tool integrations when launched from a student group inside a course. Technical plumbing for tool developers; no direct effect for staff.",
     "relevance": "internal"
   },
+  "manual_exam_workflow": {
+    "summary": "Page Schools feature: lets teachers upload scanned, hand-graded exam scripts against an on-paper assignment, enter the score, and (optionally) fill the aligned rubric so strand mastery reflects the exam. Scripts and scores appear in the normal places - gradebook, SpeedGrader, the student's submission page and the parent (observer) view.",
+    "relevance": "useful"
+  },
   "mastery_path_invalidate_assignment_visibility_cache": {
     "summary": "A caching fix so students immediately see the right assignments when 'mastery paths' (score-based content unlocking) change what they should see. Behind-the-scenes plumbing.",
     "relevance": "internal"

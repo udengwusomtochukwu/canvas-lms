@@ -1,0 +1,12 @@
+manual_exam_workflow:
+  state: allowed
+  applies_to: Account
+  display_name: Manual Exam Workflow
+  description: |-
+    Adds a teacher flow for on-paper exams: upload each student's scanned,
+    hand-graded script, record the score, and optionally fill the aligned
+    rubric so outcome mastery reflects the exam. Uploads attach to the
+    student's submission and grades write through the normal grading path,
+    so the gradebook, SpeedGrader, student view and observer view all work
+    unchanged. When off, nothing new renders and grading behaves exactly
+    as before.

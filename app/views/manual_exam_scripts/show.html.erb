@@ -1,0 +1,184 @@
+<%
+# Copyright (C) 2026 - present Instructure, Inc.
+#
+# This file is part of Canvas.
+#
+# Canvas is free software: you can redistribute it and/or modify it under
+# the terms of the GNU Affero General Public License as published by the Free
+# Software Foundation, version 3 of the License.
+#
+# Canvas is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+# details.
+#
+# You should have received a copy of the GNU Affero General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
+# Page Schools fork (Manual Exam Workflow): teacher upload page for scanned,
+# hand-graded exam scripts. Feature-flag gated by the controller.
+%>
+
+<% provide :page_title do %><%= t("%{assignment}: Manual Exam Scripts", assignment: @assignment.title) %><% end %>
+
+<div class="TopLinks">
+  <a href="<%= context_url(@context, :context_assignment_url, @assignment.id) %>" class="btn">
+    <i class="icon-arrow-left"></i>
+    <%= t("Back to Assignment") %>
+  </a>
+  <a href="<%= context_url(@context, :context_gradebook_url) %>" class="btn">
+    <%= t("Gradebook") %>
+  </a>
+  <a href="<%= course_assignment_manual_exam_labels_path(@context, @assignment) %>" class="btn" target="_blank">
+    <i class="icon-printer"></i>
+    <%= t("Print QR Labels") %>
+  </a>
+</div>
+
+<h2 class="Heading"><%= t("Manual Exam: %{assignment}", assignment: @assignment.title) %></h2>
+
+<p>
+  <%= t(<<~TEXT)
+    Upload each student's scanned, hand-graded script and enter the exam score.
+    Scripts attach to the student's submission and scores go through the normal
+    gradebook, so students and their linked parents see them in the usual places.
+    Re-uploading for a student replaces their previous script. To fill the exam
+    rubric (for strand mastery), use SpeedGrader as usual.
+    TEXT
+  %>
+</p>
+
+<h3 class="Heading"><%= t("Bulk upload scanned scripts") %></h3>
+
+<p>
+  <%= t(<<~TEXT)
+    Select many scans at once. Scans are matched to students by the QR label
+    (image files, decoded in your browser where supported), or by naming files
+    with the student's ID, e.g. "1234_midterm.pdf". Check the student picked
+    for each file before uploading; unmatched files are reported, never guessed.
+    TEXT
+  %>
+</p>
+
+<%= form_tag course_assignment_manual_exam_scripts_path(@context, @assignment), method: :post, multipart: true, id: "bulk-scripts-form" do %>
+  <input type="file" name="scripts[]" id="bulk-scripts-input" multiple accept="application/pdf,image/*">
+  <div id="bulk-scripts-rows"></div>
+  <button type="submit" class="btn btn-primary"><%= t("Upload scripts") %></button>
+<% end %>
+
+<h3 class="Heading"><%= t("Per-student upload") %></h3>
+
+<table class="ic-Table" id="manual-exam-students">
+  <thead>
+    <tr>
+      <th scope="col"><%= t("Student") %></th>
+      <th scope="col"><%= t("Current script") %></th>
+      <th scope="col"><%= t("Score (out of %{points}) and upload", points: @assignment.points_possible || "-") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @students.each do |student| %>
+      <% script = @scripts_by_user_id[student.id] %>
+      <tr>
+        <th scope="row" data-student-id="<%= student.id %>" data-student-name="<%= student.sortable_name %>">
+          <a href="<%= context_url(@context, :context_assignment_submission_url, @assignment.id, student.id) %>">
+            <%= student.sortable_name %>
+          </a>
+        </th>
+        <td>
+          <% if script %>
+            <a href="<%= context_url(@context, :context_assignment_submission_url, @assignment.id, student.id) %>">
+              <%= script.attachment.display_name %>
+            </a>
+          <% else %>
+            <%= t("None") %>
+          <% end %>
+        </td>
+        <td>
+          <%= form_tag course_assignment_manual_exam_script_path(@context, @assignment, student.id), method: :put, multipart: true do %>
+            <input type="number" name="score" step="any" min="0"
+                   value="<%= script&.submission&.score %>"
+                   aria-label="<%= t("Score for %{student}", student: student.sortable_name) %>">
+            <input type="file" name="script" accept="application/pdf,image/*"
+                   aria-label="<%= t("Script file for %{student}", student: student.sortable_name) %>">
+            <button type="submit" class="btn"><%= t("Save") %></button>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<script>
+(function () {
+  "use strict";
+  var input = document.getElementById("bulk-scripts-input");
+  var rows = document.getElementById("bulk-scripts-rows");
+  if (!input || !rows) return;
+
+  var students = Array.prototype.map.call(
+    document.querySelectorAll("#manual-exam-students th[data-student-id]"),
+    function (th) { return { id: th.getAttribute("data-student-id"), name: th.getAttribute("data-student-name") }; }
+  );
+  var qrPrefix = "PSEXAM:1:" + <%= @assignment.id %> + ":";
+
+  function studentSelect(selectedId) {
+    var select = document.createElement("select");
+    select.name = "script_user_ids[]";
+    var blank = document.createElement("option");
+    blank.value = "";
+    blank.textContent = <%= t("Choose student...").to_json.html_safe %>;
+    select.appendChild(blank);
+    students.forEach(function (s) {
+      var option = document.createElement("option");
+      option.value = s.id;
+      option.textContent = s.name;
+      if (s.id === selectedId) option.selected = true;
+      select.appendChild(option);
+    });
+    return select;
+  }
+
+  function idFromFilename(name) {
+    var match = /^(\d+)[_\-.]/.exec(name);
+    if (!match) return null;
+    var id = match[1];
+    return students.some(function (s) { return s.id === id; }) ? id : null;
+  }
+
+  function decodeQr(file) {
+    if (typeof BarcodeDetector === "undefined" || !/^image\//.test(file.type)) {
+      return Promise.resolve(null);
+    }
+    return createImageBitmap(file)
+      .then(function (bitmap) { return new BarcodeDetector({ formats: ["qr_code"] }).detect(bitmap); })
+      .then(function (codes) {
+        for (var i = 0; i < codes.length; i += 1) {
+          if (codes[i].rawValue && codes[i].rawValue.indexOf(qrPrefix) === 0) {
+            var id = codes[i].rawValue.slice(qrPrefix.length);
+            if (students.some(function (s) { return s.id === id; })) return id;
+          }
+        }
+        return null;
+      })
+      .catch(function () { return null; });
+  }
+
+  input.addEventListener("change", function () {
+    rows.innerHTML = "";
+    Array.prototype.forEach.call(input.files, function (file) {
+      var row = document.createElement("div");
+      row.style.margin = "6px 0";
+      var label = document.createElement("span");
+      label.textContent = file.name + " → ";
+      row.appendChild(label);
+      var select = studentSelect(idFromFilename(file.name));
+      row.appendChild(select);
+      rows.appendChild(row);
+      decodeQr(file).then(function (id) {
+        if (id && !select.value) select.value = id;
+      });
+    });
+  });
+}());
+</script>

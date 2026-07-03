@@ -1,0 +1,64 @@
+<%
+# Copyright (C) 2026 - present Instructure, Inc.
+#
+# This file is part of Canvas.
+#
+# Canvas is free software: you can redistribute it and/or modify it under
+# the terms of the GNU Affero General Public License as published by the Free
+# Software Foundation, version 3 of the License.
+#
+# Canvas is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+# details.
+#
+# You should have received a copy of the GNU Affero General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
+# Page Schools fork (Manual Exam Workflow): printable QR labels, one per
+# student, to affix to exam scripts before scanning. Rendered without the
+# app layout so it prints cleanly.
+%>
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+<head>
+  <meta charset="utf-8">
+  <title><%= t("QR Labels: %{assignment}", assignment: @assignment.title) %></title>
+  <style>
+    body { font-family: sans-serif; margin: 1rem; }
+    .labels { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .label {
+      border: 1px dashed #999;
+      padding: 0.5rem;
+      width: 220px;
+      text-align: center;
+      page-break-inside: avoid;
+    }
+    .label svg { width: 90px; height: 90px; }
+    .label .name { font-size: 0.9rem; font-weight: bold; }
+    .label .meta { font-size: 0.75rem; color: #333; }
+    @media print { .no-print { display: none; } }
+  </style>
+</head>
+<body>
+  <p class="no-print">
+    <button onclick="window.print()"><%= t("Print") %></button>
+    <%= t(<<~TEXT)
+      Affix one label per student to their exam script before scanning. The QR
+      code (or the student ID written as a filename prefix, e.g. "1234_scan.pdf")
+      lets the bulk upload route each scan to the right student.
+      TEXT
+    %>
+  </p>
+  <h1><%= t("%{assignment} — %{course}", assignment: @assignment.title, course: @context.name) %></h1>
+  <div class="labels">
+    <% @students.each do |student| %>
+      <div class="label">
+        <%= raw @qr_codes[student.id] %>
+        <div class="name"><%= student.sortable_name %></div>
+        <div class="meta"><%= t("Student ID: %{id}", id: student.id) %></div>
+      </div>
+    <% end %>
+  </div>
+</body>
+</html>
