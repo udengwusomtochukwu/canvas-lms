@@ -93,6 +93,46 @@ the worker v2 endpoints (LM repo, `services/moments-worker`) are Phase 2.
 
 ---
 
+# FORK_CHANGES — Manual Exam phase 2: Paper Exam Generation
+
+Turns an **unpublished classic quiz** into a printable exam paper + companion
+`on_paper` assignment. The model (deliberate, Path A): the quiz is a
+PERMANENTLY UNPUBLISHED authoring artifact — chosen to reuse Canvas's quiz
+editor and question banks (the same banks that feed online CAs and carry
+outcome alignments) instead of rebuilding question authoring. It never gains
+a gradebook column (classic quizzes only create their shadow assignment on
+publish, and `prepare` refuses published quizzes); the companion assignment
+holds all graded reality via the existing manual exam workflow.
+
+**New files (zero upstream merge risk):** migration `20260703110003/4`
+(`paper_exams`: unique quiz↔assignment pointer + `printed_fingerprint`/
+`printed_at` — the content-version marker behind the truthful "questions
+changed since printing" drift warning), `app/models/paper_exam.rb`,
+`app/services/paper_exams/document.rb` (source-agnostic renderer input:
+ordered sections of questions+points — a future assignment-owned question
+source reuses the print view and the whole return path),
+`app/services/paper_exams/preparer.rb` (idempotent: same title, summed
+points, due date inside the current grading period, and a companion rubric
+whose criteria carry the questions' **bank-level outcome alignments** with
+`use_for_grading: false` — score entered directly, rubric carries strand
+mastery for rollups/report cards), `app/controllers/paper_exams_controller.rb`,
+`app/views/paper_exams/*` (print CSS: Nigerian exam format — header/motto,
+name/adm-no lines, lettered sections with mark totals, MCQ tick boxes,
+ruled answer space by question type, `page-break-inside: avoid`, per-student
+QR headers routing scans into the existing bulk upload), specs.
+
+**Modified upstream files:** `config/routes.rb` (3 routes appended to the
+existing marked manual-exam block — low risk). Also two of OUR phase-1 files
+(`manual_exam_scripts_controller.rb` + its show view) gained the drift
+banner — fork-owned, no upstream risk.
+
+**Known limits:** bank-linked question groups print a deterministic
+`pick_count` selection (ordered by id) — no per-student variants;
+`text_only_question` renders as instructions; the school letterhead block is
+a marked placeholder pending the pilot school's real paper format.
+
+---
+
 # FORK_CHANGES — Manual Exam Workflow
 
 Every core change this feature makes to the fork, with the reason, why the

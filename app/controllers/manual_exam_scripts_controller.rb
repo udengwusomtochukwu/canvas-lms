@@ -41,6 +41,9 @@ class ManualExamScriptsController < ApplicationController
     @scripts_by_user_id = ManualExamScript.where(submission: @assignment.all_submissions)
                                           .preload(:attachment, :submission)
                                           .index_by { |script| script.submission.user_id }
+    # paper-exam drift check: warn before scans are uploaded against papers
+    # printed from since-edited questions
+    @paper_exam = PaperExam.find_by(assignment: @assignment)
   end
 
   # GET /courses/:course_id/assignments/:assignment_id/manual_exam/labels

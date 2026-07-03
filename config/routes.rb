@@ -240,6 +240,9 @@ CanvasRails::Application.routes.draw do
     get "assignments/:assignment_id/manual_exam/labels" => "manual_exam_scripts#labels", :as => :assignment_manual_exam_labels
     put "assignments/:assignment_id/manual_exam/scripts/:user_id" => "manual_exam_scripts#upsert", :as => :assignment_manual_exam_script
     post "assignments/:assignment_id/manual_exam/scripts" => "manual_exam_scripts#bulk_upsert", :as => :assignment_manual_exam_scripts
+    get "quizzes/:quiz_id/paper_exam" => "paper_exams#show", :as => :quiz_paper_exam
+    post "quizzes/:quiz_id/paper_exam/prepare" => "paper_exams#prepare", :as => :quiz_paper_exam_prepare
+    get "quizzes/:quiz_id/paper_exam/print" => "paper_exams#printable", :as => :quiz_paper_exam_print
 
     # Page Schools fork: Automatic K-12 Result — teacher/admin course results
     # page (gated on the automatic_k12_result account feature flag; 404s when off)

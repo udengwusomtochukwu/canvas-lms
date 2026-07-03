@@ -1,0 +1,79 @@
+<%
+# Copyright (C) 2026 - present Instructure, Inc.
+#
+# This file is part of Canvas.
+#
+# Canvas is free software: you can redistribute it and/or modify it under
+# the terms of the GNU Affero General Public License as published by the Free
+# Software Foundation, version 3 of the License.
+#
+# Canvas is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+# details.
+#
+# You should have received a copy of the GNU Affero General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
+# Page Schools fork (Manual Exam Workflow, phase 2): paper exam management.
+%>
+
+<% provide :page_title do %><%= t("Paper Exam: %{title}", title: @quiz.title) %><% end %>
+
+<div class="TopLinks">
+  <a href="<%= course_quiz_url(@context, @quiz) %>" class="btn"><i class="icon-arrow-left"></i> <%= t("Back to Quiz") %></a>
+</div>
+
+<h1 class="Heading"><%= t("Paper Exam — %{title}", title: @quiz.title) %></h1>
+
+<% if @quiz.published? %>
+  <div class="Alert ic-flash-warning">
+    <p><%= t("This quiz is published. Paper exams use an UNPUBLISHED quiz as their question source — unpublish it (or copy it) first, so students never see it online and no duplicate gradebook column exists.") %></p>
+  </div>
+<% end %>
+
+<p>
+  <%= t(<<~TEXT)
+    The quiz stays unpublished — it is only the question source. Preparing
+    creates (or updates) a companion on-paper assignment that carries the
+    scores, scanned scripts, rubric and strand mastery through the normal
+    manual exam workflow.
+    TEXT
+  %>
+</p>
+
+<ul>
+  <li><%= t("Questions: %{count} — total %{points} marks", count: @document.question_count, points: @document.total_points) %></li>
+  <% if @paper_exam %>
+    <li>
+      <%= t("Companion assignment:") %>
+      <a href="<%= context_url(@context, :context_assignment_url, @paper_exam.assignment_id) %>"><%= @paper_exam.assignment.title %></a>
+      (<a href="<%= course_assignment_manual_exam_path(@context, @paper_exam.assignment_id) %>"><%= t("upload scripts") %></a>)
+    </li>
+    <li>
+      <% if @paper_exam.printed? %>
+        <%= t("Last printed: %{date}", date: datetime_string(@paper_exam.printed_at)) %>
+      <% else %>
+        <%= t("Not printed yet.") %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+
+<% if @paper_exam&.drifted? %>
+  <div class="Alert ic-flash-error">
+    <p><%= t("Questions changed since papers were printed on %{date} — reprint before scanning.", date: datetime_string(@paper_exam.printed_at)) %></p>
+  </div>
+<% end %>
+
+<div style="display: flex; gap: 8px;">
+  <%= form_tag course_quiz_paper_exam_prepare_path(@context, @quiz), method: :post do %>
+    <button type="submit" class="btn btn-primary">
+      <%= @paper_exam ? t("Re-prepare (update companion)") : t("Prepare paper exam") %>
+    </button>
+  <% end %>
+  <% if @paper_exam %>
+    <a class="btn" target="_blank" href="<%= course_quiz_paper_exam_print_path(@context, @quiz) %>"><%= t("Print (single copy)") %></a>
+    <a class="btn" target="_blank" href="<%= course_quiz_paper_exam_print_path(@context, @quiz, personalized: 1) %>"><%= t("Print per-student (QR headers)") %></a>
+  <% end %>
+</div>
