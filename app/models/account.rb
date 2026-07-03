@@ -413,6 +413,10 @@ class Account < ActiveRecord::Base
   # (term labels, position mode, display toggles). See K12Results::Config.
   add_setting :k12_result, root_only: true
 
+  # Page Schools fork (Manual Exam Workflow): custom exam-paper letterhead —
+  # sanitized HTML with {{variables}}. See PaperExams::Letterhead.
+  add_setting :paper_exam_letterhead, root_only: true
+
   # Allow accounts with strict data residency requirements to turn off mobile
   # push notifications which may be routed through US datacenters by Google/Apple
   add_setting :enable_push_notifications, boolean: true, root_only: true, default: true
