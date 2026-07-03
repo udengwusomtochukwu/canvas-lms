@@ -195,3 +195,45 @@ With the flag disabled (default): gradebook, SpeedGrader, `/grades`, observer
 views behave exactly as before (`spec/services/k12_results_spec.rb` "flag OFF"
 group proves no rows are written); `/courses/:id/k12_results`,
 `/users/:id/k12_report_card` and `/accounts/1/k12_result_settings` all 404.
+
+---
+
+# TESTING — Paper Exam Generation (Manual Exam phase 2)
+
+Flag: same `manual_exam_workflow` account flag. Model: an UNPUBLISHED classic
+quiz is the question source (authoring artifact — no gradebook column, never
+seen by students); the companion on_paper assignment is the graded exam.
+
+## Specs
+
+    bin/rspec spec/controllers/paper_exams_controller_spec.rb
+
+Covers: flag off == vanilla (all routes 404); prepare creates the on_paper
+companion (same title, summed points), quiz stays unpublished with NO second
+gradebook column; idempotent re-prepare (points update, no duplicates);
+published quizzes refused; companion due date lands inside the current
+grading period; question-bank outcome alignments become companion rubric
+criteria (use_for_grading false — the rubric carries mastery, the score is
+entered directly); print view renders sections/marks/tick boxes/ruled
+space + per-student QR copies; drift warning fires truthfully after a
+question edit and clears on reprint.
+
+## Manual click-through
+
+1. Enable `manual_exam_workflow` (Account > Feature Options).
+2. Author an UNPUBLISHED classic quiz (use question banks aligned to
+   outcomes for the mastery-carrying questions).
+3. Visit `/courses/:id/quizzes/:quiz_id/paper_exam` → **Prepare paper exam**.
+   Verify: companion on_paper assignment exists, correct marks, dated in the
+   current term; quiz still unpublished; gradebook shows ONE new column.
+4. **Print per-student (QR headers)** → verify header/name/adm-no lines,
+   Section A/B heads with mark totals, MCQ tick boxes, ruled essay space,
+   no question split across pages (print preview).
+5. Edit a question → both the paper-exam page and the assignment's manual
+   exam upload page show "Questions changed since papers were printed…".
+   Reprint → warning clears.
+6. Return path (existing workflow): scan → bulk upload (QR routes each
+   script) → enter scores → fill the companion rubric in SpeedGrader →
+   outcome rollups show strand mastery → K-12 report card picks up score +
+   mastery → linked observer sees the graded script; a non-linked observer
+   does not.
