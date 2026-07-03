@@ -128,8 +128,18 @@ banner — fork-owned, no upstream risk.
 
 **Known limits:** bank-linked question groups print a deterministic
 `pick_count` selection (ordered by id) — no per-student variants;
-`text_only_question` renders as instructions; the school letterhead block is
-a marked placeholder pending the pilot school's real paper format.
+`text_only_question` renders as instructions.
+
+**Letterhead (admin-designed):** the print layout follows real Nigerian past
+papers (centred crest + institution block, underlined Instruction/Time
+Allowed, bold right-aligned marks; theory prints without answer space —
+`answer_space=1` restores ruled lines). Admins can replace the header
+entirely at `/accounts/:id/paper_exam_letterhead`: HTML with `{{variables}}`
+(`PaperExams::Letterhead`), live preview, sanitized through
+`CanvasSanitize::SANITIZE` at save AND render with substituted values
+HTML-escaped. Stored via one `add_setting :paper_exam_letterhead,
+root_only: true` line in `app/models/account.rb` (trivial merge risk, K-12
+precedent). Blank template = built-in header.
 
 ---
 
