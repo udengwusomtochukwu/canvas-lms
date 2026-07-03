@@ -22,9 +22,13 @@ import {ToggleDetails} from '@instructure/ui-toggle-details'
 import {Heading} from '@instructure/ui-heading'
 import {Table} from '@instructure/ui-table'
 import {Alert} from '@instructure/ui-alerts'
+import {Pill} from '@instructure/ui-pill'
+import {Text} from '@instructure/ui-text'
+import {View} from '@instructure/ui-view'
 import StatusPill from './StatusPill'
 import FeatureFlagButton from './FeatureFlagButton'
-import {isEnabled, isLocked, doesAllowDefaults} from './util'
+import {isEnabled, isLocked, doesAllowDefaults, humanizeFlagState} from './util'
+import psFlagNotes from './psFlagNotes.json'
 import {ScreenReaderContent} from '@instructure/ui-a11y-content'
 import EarlyAccessModal from './EarlyAccessModal'
 
@@ -271,12 +275,59 @@ function FeatureFlagTable({title, rows, disableDefaults}) {
   )
 }
 
+const PS_RELEVANCE = {
+  useful: {color: 'success', label: () => I18n.t('Worth a look')},
+  'cloud-only': {color: 'info', label: () => I18n.t('Needs Instructure cloud')},
+  internal: {color: 'alert', label: () => I18n.t('Vendor-internal')},
+  ignore: {color: 'warning', label: () => I18n.t('Not for us')},
+}
+
+function PsFlagNote({feature, updatedState}) {
+  const note = psFlagNotes[feature.feature]
+  const stateText = humanizeFlagState(feature, updatedState)
+  const relevance = note?.relevance && PS_RELEVANCE[note.relevance]
+  if (!note && !stateText) return null
+  return (
+    <View
+      as="div"
+      background="secondary"
+      borderRadius="medium"
+      padding="x-small small"
+      margin="0 0 x-small 0"
+      data-testid="ps-flag-note"
+    >
+      {note?.summary && (
+        <Text as="div" size="small">
+          <Text weight="bold" size="small">
+            {I18n.t('In plain terms:')}{' '}
+          </Text>
+          {note.summary}
+        </Text>
+      )}
+      {stateText && (
+        <Text as="div" size="small">
+          <Text weight="bold" size="small">
+            {I18n.t('Current setting:')}{' '}
+          </Text>
+          {stateText}
+        </Text>
+      )}
+      {relevance && (
+        <Pill color={relevance.color} margin="xx-small 0 0 0" themeOverride={{maxWidth: 'none'}}>
+          {relevance.label()}
+        </Pill>
+      )}
+    </View>
+  )
+}
+
 const FeatureFlagRow = React.memo(
   ({feature, updatedState, onStateChange, disableDefaults, checkEarlyAccessProgram}) => {
     return (
       <Row key={feature.feature} data-testid="ff-table-row">
         <Cell>
           <ToggleDetails summary={feature.display_name} defaultExpanded={feature.autoexpand}>
+            <PsFlagNote feature={feature} updatedState={updatedState} />
             <div dangerouslySetInnerHTML={{__html: feature.description}} />
           </ToggleDetails>
         </Cell>

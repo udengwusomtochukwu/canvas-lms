@@ -162,3 +162,40 @@ export function isEnabled(flag) {
 export function isLocked(flag) {
   return flag.state !== 'allowed' && flag.state !== 'allowed_on'
 }
+
+// Page Schools: plain-English explanation of what the flag's current state
+// means in practice, derived from state + scope. Complements the terse
+// Hidden/Shadow pills and lock icons with a sentence a non-Canvas-expert
+// admin can act on.
+export function humanizeFlagState(feature, updatedState) {
+  const state = updatedState || feature.feature_flag.state
+  const scope = {
+    Course: I18n.t('each course can change this in its own settings'),
+    User: I18n.t('each user can change this in their own settings'),
+    Account: I18n.t('each sub-account can change this'),
+    RootAccount: I18n.t('this is a single school-wide switch'),
+  }
+  const perContext = scope[feature.applies_to] || scope.Account
+
+  if (feature.shadow) {
+    return I18n.t(
+      'Instructure-internal flag. Regular admins never see it, even when enabled — it exists for the vendor’s own operations, not for schools.',
+    )
+  }
+  switch (state) {
+    case 'hidden':
+      return I18n.t(
+        'Off, and invisible to account admins. Only site admins can see it here and choose to make it available.',
+      )
+    case 'allowed':
+      return I18n.t('Off by default, but available — %{perContext}.', {perContext})
+    case 'allowed_on':
+      return I18n.t('On by default, but optional — %{perContext}.', {perContext})
+    case 'on':
+      return I18n.t('On for everyone below this level; it cannot be switched off further down.')
+    case 'off':
+      return I18n.t('Off for everyone below this level; it cannot be switched on further down.')
+    default:
+      return null
+  }
+}

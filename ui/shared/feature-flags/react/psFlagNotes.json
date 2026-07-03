@@ -1,0 +1,1782 @@
+{
+  "a11y_checker": {
+    "summary": "Early-access enabler for a course-level accessibility report that scans course content for problems (missing image descriptions, poor colour contrast, etc.) and offers a guided fix-up wizard. Note the scanning may lean on Instructure-hosted services depending on version; the general-release flag 'a11y_checker_ga1' is the one to watch.",
+    "relevance": "internal"
+  },
+  "a11y_checker_account_statistics": {
+    "summary": "Turns on school-wide statistics gathering for the new accessibility checker; hidden vendor plumbing tied to a feature still being rolled out.",
+    "relevance": "internal"
+  },
+  "a11y_checker_additional_resources": {
+    "summary": "Extends the course accessibility checker to also scan announcements, discussions, and the syllabus for accessibility problems (such as missing image descriptions). Still hidden vendor work-in-progress, but the underlying goal benefits any school.",
+    "relevance": "internal"
+  },
+  "a11y_checker_ai_alt_text_generation": {
+    "summary": "Adds AI-generated image descriptions inside the accessibility checker wizard, using Instructure's hosted AI. Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "a11y_checker_ai_features": {
+    "summary": "Enables the AI-powered helpers in the accessibility checker, which run on Instructure's hosted AI services; does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "a11y_checker_ai_table_caption_generation": {
+    "summary": "Uses Instructure's hosted AI to auto-write missing captions for tables flagged by the accessibility checker; does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "a11y_checker_close_issues": {
+    "summary": "An add-on to the new Accessibility Checker that lets staff dismiss flagged accessibility issues on individual items so they stop counting in statistics. Only meaningful if the Accessibility Checker itself is enabled and working.",
+    "relevance": "internal"
+  },
+  "a11y_checker_course_scan_conditional_resource_scan": {
+    "summary": "A performance tweak so the accessibility checker only rescans content that changed since the last scan. Behind-the-scenes optimization, no visible feature.",
+    "relevance": "internal"
+  },
+  "a11y_checker_eap": {
+    "summary": "Early-access preview of a new course-wide accessibility checker that scans content for problems like poor colour contrast or missing image descriptions. Worth watching for a school that cares about accessible materials, but it is a preview, so expect changes.",
+    "relevance": "useful"
+  },
+  "a11y_checker_ga1": {
+    "summary": "Turns on the new course Accessibility Checker, which scans course content for accessibility problems (e.g. missing image descriptions for pupils using screen readers) and helps teachers fix them. Genuinely valuable for inclusive teaching if it works fully on a self-hosted instance — worth testing.",
+    "relevance": "useful"
+  },
+  "a11y_checker_ga2_features": {
+    "summary": "Enables the next wave of features in Canvas's built-in accessibility checker, which flags content problems like poor contrast or missing headings. Vendor rollout switch; the underlying checker itself is the useful part.",
+    "relevance": "internal"
+  },
+  "a11y_checker_ignite_ai": {
+    "summary": "Lets the accessibility checker auto-fix certain issues using IgniteAI, Instructure's hosted AI service. Because the AI backend is Instructure-hosted, it does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "accessibility_automatic_scanning": {
+    "summary": "Would make the accessibility checker scan course content automatically instead of only when a teacher asks. Still hidden vendor work-in-progress rather than a finished feature.",
+    "relevance": "internal"
+  },
+  "account_level_blackout_dates": {
+    "summary": "Lets admins set school-wide 'blackout dates' (like holidays) for the Course Pacing feature instead of per course. Only matters if the school uses self-paced courses, which it likely does not.",
+    "relevance": "ignore"
+  },
+  "account_level_mastery_scales": {
+    "summary": "Lets the school define one consistent mastery scale (e.g. Exceeds / Meets / Approaching) and calculation method for learning outcomes across the whole account or per course, instead of configuring each outcome separately. Useful if the school adopts outcomes-based assessment and wants consistency school-wide.",
+    "relevance": "useful"
+  },
+  "account_outcome_rollup_orchestrator": {
+    "summary": "A performance mechanism that recalculates outcome mastery summaries in batches when school-wide outcomes change. Pure backend plumbing with no visible feature.",
+    "relevance": "internal"
+  },
+  "ada_chatbot": {
+    "summary": "Adds Instructure's 'Panda Bot' AI help-desk assistant to the help menu. It is a service hosted by Instructure, so it does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "additional_speedgrader_links": {
+    "summary": "Adds quick links to the marking screen (SpeedGrader) directly from the Assignments and Quizzes lists, and tidies some menus. A small time-saver for teachers.",
+    "relevance": "useful"
+  },
+  "admin_analytics": {
+    "summary": "Adds dashboards for administrators showing how Canvas is being used, how courses are going, and how engaged students are. However, these dashboards are powered by Instructure's hosted analytics services, so they will not work on a self-hosted instance.",
+    "relevance": "cloud-only"
+  },
+  "admin_analytics_view_permission": {
+    "summary": "Exposes a permission for Instructure's hosted Admin Analytics dashboards. Admin Analytics is a cloud product that is not present on a self-hosted instance, so the permission would control nothing.",
+    "relevance": "cloud-only"
+  },
+  "admin_manage_access_tokens": {
+    "summary": "Restricts the creation and management of personal API access tokens (keys that let scripts act as a user) to administrators only. Good security hygiene for a school — students and teachers rarely need to mint their own API keys.",
+    "relevance": "useful"
+  },
+  "advanced_analytics_ask_questions": {
+    "summary": "Enables 'Ask Your Data', an AI chat feature in Instructure's hosted Intelligent Insights product that answers questions about school data. Requires Instructure's cloud analytics and AI backend, so it does nothing on a self-hosted instance.",
+    "relevance": "cloud-only"
+  },
+  "ags_improved_course_concluded_check": {
+    "summary": "A fix to the grade passback API used by external tools, allowing them to still send grades for students whose section is active even after the course officially ended. Only matters if external tools push grades into Canvas, and it is internal plumbing either way.",
+    "relevance": "internal"
+  },
+  "ags_improved_course_concluded_response_codes": {
+    "summary": "When an external tool tries to send grades back through the grade passback API into a course that has already ended, Canvas returns a clearer error message instead of a generic 'not found'. Only affects developers of external tool integrations; invisible to school staff.",
+    "relevance": "internal"
+  },
+  "ags_score_trigger_needs_grading_after_submitted": {
+    "summary": "A bug-fix flag for the grade passback API used by external tool integrations: it stops the 'needs grading' icon appearing in the gradebook before a student has actually submitted. Harmless plumbing; only visible if you use external tools that send grades into Canvas.",
+    "relevance": "internal"
+  },
+  "ai_experiences": {
+    "summary": "An early-stage Instructure AI feature that adds a new AI-driven activity type to courses. It depends on Instructure's hosted AI services, so it does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "ai_experiences_context_file_upload": {
+    "summary": "Lets teachers upload context files for Canvas's 'AI Experiences' feature, which runs on Instructure's hosted AI backend. Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "ai_experiences_evaluation": {
+    "summary": "Part of Instructure's hosted AI conversation product; it evaluates AI chat sessions using Instructure's cloud AI backends. Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "ai_rubrics": {
+    "summary": "Offers to auto-generate rubric criteria from an assignment description using Instructure's IgniteAI service. That AI backend is Instructure-hosted, so on a self-hosted instance the button has nothing to talk to and the feature does not work.",
+    "relevance": "cloud-only"
+  },
+  "ai_text_tools": {
+    "summary": "Adds AI writing helpers (rewrite, summarize, etc.) inside the rich text editor teachers use to write pages and assignments. The AI runs on Instructure's hosted AI backend, so it does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "allow_attachment_association_creation": {
+    "summary": "Internal plumbing governing how uploaded files get linked to the Canvas items that use them; shadow vendor infrastructure, not a school-facing feature.",
+    "relevance": "internal"
+  },
+  "allow_limited_access_for_students": {
+    "summary": "Unlocks an account setting that lets you switch off certain Canvas features for all students in the account — a lockdown lever aimed at younger learners. Attractive in principle for a K-12 school, though it is still a hidden in-development flag, so test carefully before relying on it.",
+    "relevance": "useful"
+  },
+  "allow_opt_out_of_inbox": {
+    "summary": "Lets individual users switch off Canvas's built-in messaging inbox, so any message sent to them is immediately forwarded to their email address instead. Useful if staff or parents prefer plain email over logging in to check messages, but it hides the in-Canvas inbox for those users entirely.",
+    "relevance": "useful"
+  },
+  "allow_unconfirmed_users_in_user_list": {
+    "summary": "Lets people be added to courses by email address before they have confirmed that the email is theirs. Canvas itself labels this a security vulnerability kept only for legacy workflows, so a school should leave it off.",
+    "relevance": "internal"
+  },
+  "ams_add_question_bank_to_quiz_question": {
+    "summary": "Vendor plumbing that adds an extra internal ID field to a quiz-questions programming interface for Instructure's own systems; invisible to teachers and students.",
+    "relevance": "internal"
+  },
+  "ams_advanced_content_organization": {
+    "summary": "Experimental plumbing for Instructure's hosted Assessment Management Service; explicitly not intended for general use and does nothing self-hosted.",
+    "relevance": "cloud-only"
+  },
+  "ams_course_integration": {
+    "summary": "Vendor plumbing that connects Canvas to Instructure's hosted Assessment Management Service; does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "ams_root_account_integration": {
+    "summary": "Hooks Canvas up to Instructure's hosted Assessment Management Service. That service does not exist on a self-hosted instance, so this does nothing for Page Schools.",
+    "relevance": "cloud-only"
+  },
+  "analytics_2": {
+    "summary": "Turns on 'New Analytics' dashboards showing course activity and grade trends per student. This feature is powered by an Instructure-hosted data service, so on a self-hosted instance the pages would not populate.",
+    "relevance": "cloud-only"
+  },
+  "analytics_hub": {
+    "summary": "Turns on Instructure's new hosted analytics platform experience; does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "anonymous_grading_with_new_quizzes": {
+    "summary": "Allows anonymous grading for 'New Quizzes', Instructure's hosted quiz engine, which is not available on a self-hosted instance. No effect for Page Schools.",
+    "relevance": "cloud-only"
+  },
+  "anonymous_instructor_annotations": {
+    "summary": "Hides teachers' names on comments and markup they leave on student documents in the built-in document previewer, so students see feedback without knowing which teacher wrote it. Rarely needed in a primary/secondary school where students know their teacher.",
+    "relevance": "ignore"
+  },
+  "anonymous_marking": {
+    "summary": "Lets teachers grade assignments without seeing student names, reducing bias in marking. Names are revealed after grades are posted. Can be worthwhile for exams or moderated assessments.",
+    "relevance": "useful"
+  },
+  "api_rate_limits": {
+    "summary": "Gives administrators controls to limit how fast external tools and scripts can call the Canvas programming interface, so a misbehaving integration cannot slow the site down for everyone. Only worth touching if the school runs several third-party integrations.",
+    "relevance": "useful"
+  },
+  "apollo_caching": {
+    "summary": "Lets the browser cache some Canvas data locally so pages feel faster on repeat visits. Behind-the-scenes performance plumbing with no feature change.",
+    "relevance": "internal"
+  },
+  "apply_score_to_ungraded": {
+    "summary": "Lets teachers fill in a score (for example, zero) for every submission they have not yet graded in one action from the gradebook, instead of clicking through each student. A real time-saver at end of term when ungraded blanks need to become zeros.",
+    "relevance": "useful"
+  },
+  "archive_outcomes": {
+    "summary": "Lets staff archive learning outcomes and outcome groups that are no longer used, decluttering the list without deleting historical data. Simple housekeeping for schools that use outcomes.",
+    "relevance": "useful"
+  },
+  "archived_grading_schemes": {
+    "summary": "Lets admins retire old grading scales (the letter-grade/percentage tables) so teachers can no longer attach them to new courses, while courses already using them keep working. Useful housekeeping if the school revises its grading scale between sessions.",
+    "relevance": "useful"
+  },
+  "assignment_comment_library": {
+    "summary": "Lets teachers save frequently used feedback phrases in a personal library and reuse them while grading in SpeedGrader. A real time-saver for teachers who write the same comments repeatedly.",
+    "relevance": "useful"
+  },
+  "assignment_edit_enhancements_teacher_view": {
+    "summary": "An in-development redesign of the screen teachers use to create and edit assignments. Vendor work-in-progress; enabling it early risks a half-finished editing screen.",
+    "relevance": "internal"
+  },
+  "assignment_edit_placement_not_on_announcements": {
+    "summary": "A bug-fix switch that stops a certain kind of external tool integration from wrongly appearing on the Announcements editing page. Internal behavior correction, no real decision for the school to make.",
+    "relevance": "internal"
+  },
+  "assignment_enhancements_teacher_view": {
+    "summary": "An in-progress redesign of the teacher's assignment page that Instructure is still building behind the scenes. Not a finished feature; nothing to decide on.",
+    "relevance": "internal"
+  },
+  "assignment_missing_shortcut": {
+    "summary": "Lets graders type 'MI' in a gradebook cell to mark a submission as missing instead of clicking through menus. A tiny keyboard shortcut convenience for teachers.",
+    "relevance": "useful"
+  },
+  "assignments_2_student": {
+    "summary": "Switches students to the redesigned assignment page ('Assignment Enhancements'), a cleaner step-by-step submission and feedback experience. It is a real classroom-facing improvement, though marked beta, so trial it in one course before turning it on school-wide.",
+    "relevance": "useful"
+  },
+  "assignments_2_teacher": {
+    "summary": "Switches teachers to a rebuilt, still-unfinished version of the assignment page. Instructure's long-running rewrite; enabling half-finished replacements on a production school instance is not advisable.",
+    "relevance": "internal"
+  },
+  "authenticated_iframe_content": {
+    "summary": "Changes how embedded content created in the rich text editor is served, routing it through Canvas with authentication instead of direct links. A security/infrastructure change that needs supporting file-serving configuration; treat as vendor plumbing unless you have a specific file-security problem.",
+    "relevance": "internal"
+  },
+  "auto_show_cc": {
+    "summary": "Automatically turns on subtitles (in the user's language, where available) whenever a video plays in Canvas. A per-user accessibility preference that helps hearing-impaired pupils and anyone in a noisy environment.",
+    "relevance": "useful"
+  },
+  "autodetect_field_separators_for_gradebook_exports": {
+    "summary": "When a teacher downloads their gradebook as a spreadsheet, Canvas picks the right column separator (comma or semicolon) based on the language's number format, so the file opens cleanly in Excel. Mostly matters for languages that write decimals with a comma; harmless and occasionally helpful.",
+    "relevance": "useful"
+  },
+  "block_content_editor": {
+    "summary": "A new drag-and-drop, block-based page builder for creating course pages, as an alternative to the classic rich text editor. Could eventually make page design easier for teachers, but it is hidden and in development — not ready to rely on.",
+    "relevance": "useful"
+  },
+  "block_content_editor_ai_alt_text": {
+    "summary": "Adds an AI button in the block editor that writes image descriptions (alt text) automatically, using Instructure's hosted AI. No AI backend exists on a self-hosted instance, so the button does nothing.",
+    "relevance": "cloud-only"
+  },
+  "block_content_editor_eap": {
+    "summary": "Early-access preview of a new drag-and-drop 'block' page builder for creating course pages, as an alternative to the rich text editor. Being an early-access preview, expect rough edges; interesting for teachers who build visual lesson pages.",
+    "relevance": "useful"
+  },
+  "block_content_editor_toolbar_reorder": {
+    "summary": "Adds a drag-to-reorder control in the block-based page editor's toolbar; hidden vendor rollout plumbing for an editor still in development.",
+    "relevance": "internal"
+  },
+  "block_editor": {
+    "summary": "An alternative drag-and-drop, block-based page builder teachers can use instead of the standard rich text editor when designing course pages. Can produce nicer-looking pages, but it is still marked beta, so expect rough edges.",
+    "relevance": "useful"
+  },
+  "block_template_editor": {
+    "summary": "Adds a permission that lets chosen staff create and edit reusable page-design templates for the block-based page editor. Could help standardize attractive course pages, but the feature is disabled/beta and the block editor itself is still maturing.",
+    "relevance": "useful"
+  },
+  "blueprint_item_notifications": {
+    "summary": "If the school uses 'blueprint' template courses that push content out to many class sections, this adds an option to notify teachers and students when new items arrive from the template. Only relevant if blueprint courses are in use.",
+    "relevance": "useful"
+  },
+  "blueprint_line_item_support": {
+    "summary": "A technical fix helping 'blueprint' template courses keep assignment identifiers in sync when content changes. Behind-the-scenes plumbing with no visible feature.",
+    "relevance": "internal"
+  },
+  "blueprint_support_sync_for_folder_movement_to_root_folder": {
+    "summary": "Bug-fix switch so that moving a file folder to the top level in a 'blueprint' template course syncs correctly to linked courses. Internal correction, only relevant if blueprints are used.",
+    "relevance": "internal"
+  },
+  "buttons_and_icons_root_account": {
+    "summary": "Gives teachers a small design tool inside the rich text editor for creating and reusing custom icons and buttons (for example colorful navigation buttons on a course homepage). Works self-hosted and is a nice way to make primary-school course pages more visual.",
+    "relevance": "useful"
+  },
+  "calendar_events_api_pagination_enhancements": {
+    "summary": "Improves how the calendar's data feed splits long lists of assignment events into pages. Behind-the-scenes performance plumbing.",
+    "relevance": "internal"
+  },
+  "canvas_apps_sub_account_access": {
+    "summary": "Lets admins of sub-accounts (e.g. Primary vs Secondary sections) see a read-only usage view of external tool integrations in their section. In-development vendor work; only faintly relevant if you delegate admin by section.",
+    "relevance": "internal"
+  },
+  "canvas_k6_theme": {
+    "summary": "Switches a course to a friendlier look designed for young children: simpler navigation, bigger friendlier font, less clutter. Directly relevant for the primary-school classes at Page Schools.",
+    "relevance": "useful"
+  },
+  "classic_quizzes_client_ip": {
+    "summary": "A workaround for Instructure's cloud hosting, where their CDN (CloudFront) hides the student's real network address during quizzes. Page Schools does not sit behind CloudFront, so this vendor plumbing is irrelevant.",
+    "relevance": "internal"
+  },
+  "comment_bank_per_assignment": {
+    "summary": "In the modernised grading tool, filters a teacher's saved bank of reusable feedback comments to show only ones relevant to the assignment being marked. Minor convenience, and it depends on the new grading interface that may not be fully available on this version.",
+    "relevance": "useful"
+  },
+  "common_cartridge_page_conversion": {
+    "summary": "When importing course packages in the standard 'Common Cartridge' format, any plain HTML files in the package become editable Canvas pages instead of static file attachments. Handy if you import courses from other systems and want teachers to be able to edit the content afterwards.",
+    "relevance": "useful"
+  },
+  "common_cartridge_qti_new_quizzes_import": {
+    "summary": "When importing standard course packages containing quizzes, lets the importer offer converting them to the New Quizzes format. Since New Quizzes depends on an Instructure-hosted service, this option is not usable on a self-hosted instance; classic quiz import continues to work regardless.",
+    "relevance": "cloud-only"
+  },
+  "commons_new_quizzes": {
+    "summary": "Lets teachers share 'New Quizzes' to Canvas Commons, Instructure's hosted content-sharing marketplace. Both New Quizzes and Commons are Instructure-hosted services, so this does nothing self-hosted.",
+    "relevance": "cloud-only"
+  },
+  "conference_selection_lti_placement": {
+    "summary": "Allows external tool integrations (e.g. video-meeting providers) to plug into Canvas's Conferences area as a selectable provider. Only matters if you install a third-party conferencing tool that specifically uses this hook.",
+    "relevance": "ignore"
+  },
+  "confetti_branding": {
+    "summary": "Makes the celebratory confetti animation use the school's brand colors instead of the defaults. A cosmetic nicety that pairs with the confetti-for-on-time-submissions feature.",
+    "relevance": "useful"
+  },
+  "confetti_for_assignments": {
+    "summary": "Shows a celebratory confetti animation when a student submits an assignment before the due date. A fun motivator that suits a primary/secondary school well.",
+    "relevance": "useful"
+  },
+  "confetti_for_valid_links": {
+    "summary": "Shows a celebratory confetti animation when a teacher runs the course link checker and no broken links are found. Purely fun, zero risk, and teachers tend to enjoy it.",
+    "relevance": "useful"
+  },
+  "consolidated_media_player": {
+    "summary": "Switches embedded audio and video in course content to Instructure's newer unified media player. Mostly an internal player swap; appearance and controls change slightly but the school does not need to do anything.",
+    "relevance": "useful"
+  },
+  "course_admin_role_masquerade_permission_check": {
+    "summary": "A safety check when an admin uses 'act as' to impersonate a teacher or other course staff: the admin must hold at least the same permissions as the person they are impersonating. Prevents lower-privileged admins from gaining abilities by impersonation.",
+    "relevance": "useful"
+  },
+  "course_archival": {
+    "summary": "Lets admins archive old courses, tucking them away out of everyday lists while keeping their content. Useful housekeeping for a school accumulating courses term after term.",
+    "relevance": "useful"
+  },
+  "course_copy_alignments": {
+    "summary": "When a course is copied, also copies over the links between New Quizzes questions and learning outcomes. A behind-the-scenes fidelity fix for course copies involving New Quizzes outcome alignments.",
+    "relevance": "internal"
+  },
+  "course_pace_allow_bulk_pace_assign": {
+    "summary": "Lets teachers apply a pacing schedule to many students at once in the Course Pacing feature. As above, Course Pacing targets self-paced online programmes rather than a term-based day school.",
+    "relevance": "ignore"
+  },
+  "course_pace_download_document": {
+    "summary": "Adds a download button for a document summarising a 'course pacing' schedule. Course Pacing is designed for rolling-enrolment/self-paced online programmes, not a fixed-term day school, so it is unlikely to matter here.",
+    "relevance": "ignore"
+  },
+  "course_pace_draft_state": {
+    "summary": "For the Course Pacing feature (auto-spacing due dates over a schedule), this lets teachers save a pace as an unpublished draft and tweak it repeatedly before it takes effect. Only relevant if the school uses Course Pacing, which is aimed at self-paced/rolling-enrolment courses rather than a fixed-term school timetable.",
+    "relevance": "ignore"
+  },
+  "course_pace_enable_from_account_setting": {
+    "summary": "Moves the on/off switch for the Course Pacing feature into account settings so admins control it centrally. Only matters if the school uses self-paced courses, which is uncommon in K-12.",
+    "relevance": "ignore"
+  },
+  "course_pace_pacing_status_labels": {
+    "summary": "In courses using Course Pacing (auto-scheduled due dates for self-paced learning), shows 'On Pace' or 'Off Pace' labels next to students and tasks. Only matters if the school runs self-paced courses, which is uncommon for K-12 classrooms.",
+    "relevance": "ignore"
+  },
+  "course_pace_pacing_with_mastery_paths": {
+    "summary": "Makes the 'course pacing' scheduling feature work together with 'mastery paths' (content that unlocks based on quiz results). Both are designed for self-paced online programs rather than a timetabled K-12 school, but it works self-hosted if those features are ever used.",
+    "relevance": "useful"
+  },
+  "course_pace_remove_overrides_on_disable": {
+    "summary": "Housekeeping switch: when a teacher turns off Course Pacing, all the automatic due-date adjustments it created are cleaned up. Only relevant if the school uses the self-paced Course Pacing feature.",
+    "relevance": "ignore"
+  },
+  "course_pace_time_selection": {
+    "summary": "Adds date-and-time precision to Course Pacing, a Canvas feature that auto-spreads assignment due dates for self-paced courses. A K-12 school running normal term-based classes is unlikely to use course pacing at all.",
+    "relevance": "ignore"
+  },
+  "course_pace_weighted_assignments": {
+    "summary": "Lets teachers give assignments different weights when Course Pacing spreads work over a schedule. As with other pacing features, it targets self-paced online programmes, not a timetabled K-12 school.",
+    "relevance": "ignore"
+  },
+  "course_paces_skip_selected_days": {
+    "summary": "In the 'course pacing' feature (which auto-spreads due dates across a schedule), lets teachers skip specific days of the week rather than just weekends. Only relevant if the school ever uses course pacing, which is aimed at self-paced online programs.",
+    "relevance": "useful"
+  },
+  "course_settings_navigation_react": {
+    "summary": "Rebuilds the Course Settings navigation tab with new interface technology, as groundwork for a future custom-links feature. In-development vendor plumbing with no visible benefit yet.",
+    "relevance": "internal"
+  },
+  "courses_popout_sisid": {
+    "summary": "Shows each course's student-records-system identifier in an admin course pop-up. Page Schools has no student records system feeding Canvas, so there is no identifier to show.",
+    "relevance": "ignore"
+  },
+  "create_conversation_graphql_rate_limit": {
+    "summary": "Puts a speed limit on how fast anyone can send Canvas inbox messages through one technical channel, to prevent spam or abuse. Invisible protective plumbing; sensible to leave as the vendor sets it.",
+    "relevance": "internal"
+  },
+  "create_course_subaccount_picker": {
+    "summary": "When staff manually create a course, they can choose which sub-account (e.g. Primary, Secondary, a department) it lands in, instead of everything going into a catch-all 'Manually Created Courses' bucket. Genuinely useful for keeping a school's course organisation tidy.",
+    "relevance": "useful"
+  },
+  "create_external_apps_side_tray_overrides": {
+    "summary": "Adds an 'External Apps' option to the Modules page menu that opens a side panel for adding external tool integrations to a module. Minor convenience, still in vendor development.",
+    "relevance": "internal"
+  },
+  "csrf_oauth2_fix": {
+    "summary": "Swaps in an alternative security-token check on one login-related page so that external tool integrations launched inside frames work more reliably. Behind-the-scenes security plumbing; no visible change for users.",
+    "relevance": "internal"
+  },
+  "custom_gradebook_statuses": {
+    "summary": "Lets administrators create their own status labels (beyond the built-in 'late' or 'missing') that teachers can attach to submissions in the gradebook — for example 'Absent - excused' or 'Resit pending'. The custom labels are informational only and do not change scores.",
+    "relevance": "useful"
+  },
+  "custom_report_experimental": {
+    "summary": "Unlocks experimental, not-yet-finished features in the custom reports system. Experimental toggles are for Instructure's own testing; a school should wait for features to be released properly.",
+    "relevance": "internal"
+  },
+  "custom_variables_booleans_as_strings": {
+    "summary": "A standards-compliance tweak to how true/false values are formatted when sent to external tool integrations. Vendor plumbing with no visible effect for teachers or students.",
+    "relevance": "internal"
+  },
+  "customizable_default_due_time": {
+    "summary": "Lets a course set its own default due time of day (down to the minute) for new assignments, instead of Canvas's standard 11:59pm. A minor convenience for teachers creating lots of assignments.",
+    "relevance": "useful"
+  },
+  "dashboard_graphql_integration": {
+    "summary": "Rewires how the dashboard loads its data to make it faster. Purely a performance change with no visible difference in what users see or do.",
+    "relevance": "internal"
+  },
+  "default_account_grading_scheme": {
+    "summary": "Lets administrators set one school-wide default grading scheme (letter-grade boundaries) that every course inherits automatically, instead of each teacher setting it up. Very relevant for a school that wants consistent A-F or WAEC-style grade boundaries across all classes.",
+    "relevance": "useful"
+  },
+  "default_copyright_on_attachments": {
+    "summary": "In courses that require a copyright/usage-rights label before files are published, this auto-fills a default copyright setting on newly uploaded files so teachers are not blocked. Only matters if you turn on the 'require usage rights' course option.",
+    "relevance": "useful"
+  },
+  "default_recaptcha_registration_enable": {
+    "summary": "Makes the 'prove you are not a robot' check (reCAPTCHA) required by default when people create their own Canvas accounts. Only matters if self-registration is open, and reCAPTCHA needs Google API keys configured; most schools create accounts for pupils centrally, so this rarely applies.",
+    "relevance": "ignore"
+  },
+  "default_source_csp_logging": {
+    "summary": "A developer/security diagnostic that logs browser content-security-policy violations without blocking anything. It is monitoring plumbing for Instructure engineers, not a school-facing feature.",
+    "relevance": "internal"
+  },
+  "default_to_learning_mastery_gradebook": {
+    "summary": "When students open their Grades page, they land on the learning-objectives progress tab first instead of the ordinary marks tab. Only sensible if the school teaches and reports primarily by learning objectives.",
+    "relevance": "useful"
+  },
+  "deprecate_context_groups_old_view": {
+    "summary": "Removes leftover dead code from an old version of the groups page; pure vendor cleanup with no visible change.",
+    "relevance": "internal"
+  },
+  "deprecate_uuid_in_files_api": {
+    "summary": "Removes an internal-only identifier from file API responses to shave network traffic. Pure vendor plumbing; no one at the school will notice.",
+    "relevance": "internal"
+  },
+  "deprioritize_section_overrides_for_nonactive_enrollments": {
+    "summary": "A behind-the-scenes fix to how Canvas picks which due date applies when a student has left or been deactivated in a class section. It corrects edge-case due-date behavior; there is no visible feature to manage.",
+    "relevance": "internal"
+  },
+  "developer_key_user_agent_alert": {
+    "summary": "Shows a warning notice to admins on the Developer Keys page about an Instructure API-blocking policy. It is an informational banner about Instructure's hosted infrastructure, meaningless self-hosted.",
+    "relevance": "internal"
+  },
+  "differentiated_files": {
+    "summary": "Lets teachers assign files to specific students or groups, the same way assignments can be targeted, so different pupils can see different materials. Useful for differentiated teaching and special-needs support.",
+    "relevance": "useful"
+  },
+  "disable_adding_uuid_verifier_in_api": {
+    "summary": "Security hardening: file links handed out by the programming interface stop carrying a built-in access code, so files can only be fetched by properly signed-in users. Safer, but can break older integrations or scripts that relied on those self-authorizing links.",
+    "relevance": "useful"
+  },
+  "disable_alert_timeouts": {
+    "summary": "Normally pop-up notification banners disappear after a few seconds. With this on, they stay on screen until the person closes them, which helps slower readers and screen-reader users not miss messages. It is a per-user accessibility preference.",
+    "relevance": "useful"
+  },
+  "disable_celebrations": {
+    "summary": "Lets a user turn off the confetti-style animations Canvas shows for things like on-time assignment submissions. Purely cosmetic personal preference; nothing else changes.",
+    "relevance": "useful"
+  },
+  "disable_file_verifier_access": {
+    "summary": "A security hardening switch that blocks a legacy way of accessing files via special links that bypass login. Tightens file security, but it is vendor security plumbing being rolled out carefully rather than a feature to adopt.",
+    "relevance": "internal"
+  },
+  "disable_file_verifiers_in_public_syllabus": {
+    "summary": "Removes special access tokens from file links on publicly visible syllabus pages, a security tightening so those links cannot be used to bypass file permissions. Behind-the-scenes hardening; only matters if syllabus pages are made public.",
+    "relevance": "internal"
+  },
+  "disable_graphql_authentication": {
+    "summary": "Removes the login requirement from one of Canvas's data-access interfaces, letting anyone query it without signing in. This is a developer/testing switch and a serious security risk; a school should never enable it.",
+    "relevance": "internal"
+  },
+  "disable_iframe_sandbox_file_show": {
+    "summary": "Loosens a browser security restriction (iframe sandboxing) when displaying uploaded files. It is a compatibility escape hatch that reduces security; leave it alone.",
+    "relevance": "internal"
+  },
+  "disable_keyboard_shortcuts": {
+    "summary": "Lets an individual user switch off Canvas's built-in keyboard shortcuts. Helpful for students or staff who use screen readers or navigate by keyboard, since the shortcuts can interfere with assistive technology.",
+    "relevance": "useful"
+  },
+  "disable_lti_post_only": {
+    "summary": "A technical tweak to how Canvas launches external tool integrations (whether web-address parameters get copied into the launch request). Only matters if a specific third-party tool misbehaves; no visible change for teachers or students.",
+    "relevance": "internal"
+  },
+  "disable_oembed_retrieve": {
+    "summary": "Switches off an old, deprecated web endpoint ahead of its permanent removal. Vendor cleanup with no effect on normal school use.",
+    "relevance": "internal"
+  },
+  "disable_post_to_sis_when_grading_period_closed": {
+    "summary": "Stops grades from being sent to an external student records system once a grading period has closed. Page Schools has no student records system connected to Canvas, so this has no effect.",
+    "relevance": "ignore"
+  },
+  "disable_verified_content_export_links": {
+    "summary": "Changes the download links on the course export page to not use a particular signed-link security format. Vendor infrastructure toggle related to how files are served; no visible feature for staff.",
+    "relevance": "internal"
+  },
+  "disallow_null_custom_variables": {
+    "summary": "Changes a technical detail of how placeholder variables are sent to external tool integrations when they have no value. Plumbing for tool developers; no visible effect for school staff.",
+    "relevance": "internal"
+  },
+  "disallow_threaded_replies_fix_alert": {
+    "summary": "Controls a temporary banner that helps teachers repair discussions affected by a change in how threaded replies are handled. A migration-era notice, not a lasting feature.",
+    "relevance": "internal"
+  },
+  "disallow_threaded_replies_manage": {
+    "summary": "Extends the same threaded-replies migration banner so teachers can manage the reply setting per discussion topic. Also a temporary migration aid rather than a real feature.",
+    "relevance": "internal"
+  },
+  "discussion_ai_survey_link": {
+    "summary": "Shows a feedback-survey link for Instructure's AI discussion features (translation and insights). Pure vendor feedback-collection; pointless on a self-hosted instance without those AI services.",
+    "relevance": "internal"
+  },
+  "discussion_checkpoints": {
+    "summary": "For graded class discussions, teachers can set two separate deadlines — one for a student's initial post and one for their replies — and grade each part separately, combining them into one final mark. A genuinely useful classroom tool for structured discussions.",
+    "relevance": "useful"
+  },
+  "discussion_create": {
+    "summary": "Uses the redesigned page for creating and editing class discussions. It is already switched on for everyone, so this is just the current normal experience; nothing to decide.",
+    "relevance": "internal"
+  },
+  "discussion_entry_version_history": {
+    "summary": "Lets people view the edit history of discussion replies, so teachers can see what a student's post said before it was edited. Useful for moderation and accountability in class discussions.",
+    "relevance": "useful"
+  },
+  "discussion_grading_view": {
+    "summary": "Lets teachers grade a graded class discussion directly on the discussion page itself, instead of switching over to SpeedGrader. A nice workflow saving for teachers who grade participation in discussions, though still in beta.",
+    "relevance": "useful"
+  },
+  "discussion_insights": {
+    "summary": "Adds AI-generated summaries and analysis of class discussions, powered by IgniteAI, Instructure's hosted AI service. Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "discussion_insights_with_cedar": {
+    "summary": "Routes the AI-generated discussion summaries feature through 'Cedar', an Instructure-hosted AI gateway. The whole feature depends on Instructure cloud AI — does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "discussion_permalink": {
+    "summary": "Adds a 'Copy Link' option on discussion posts so teachers and students can share a direct link to a specific reply. A small but handy classroom convenience.",
+    "relevance": "useful"
+  },
+  "discussion_pin_post": {
+    "summary": "Lets teachers pin important posts to the top of a discussion so students see them first. Useful for keeping instructions or key answers visible in busy class discussions.",
+    "relevance": "useful"
+  },
+  "discussion_summary": {
+    "summary": "Adds an AI-generated summary button to class discussion boards, powered by Instructure's IgniteAI cloud service. On a self-hosted instance there is no AI backend to call, so it does nothing.",
+    "relevance": "cloud-only"
+  },
+  "discussion_summary_with_cedar": {
+    "summary": "Reroutes AI-generated discussion summaries through Cedar, an Instructure-hosted AI gateway; does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "discussions_reporting": {
+    "summary": "Lets students and teachers report inappropriate discussion posts to the teacher, within the redesigned discussions experience. A genuinely useful safeguarding/moderation tool for a K-12 school.",
+    "relevance": "useful"
+  },
+  "docviewer_enable_iwork_files": {
+    "summary": "Lets the document previewer accept Apple iWork files (Pages, Numbers, Keynote). The previewer (DocViewer) is an Instructure-hosted service, so this does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "embedded_release_notes": {
+    "summary": "Shows Instructure's product update announcements inside the Help menu. On a self-hosted fork these notes describe the cloud product and may not match what your instance actually has, so they are more likely to confuse staff than help.",
+    "relevance": "ignore"
+  },
+  "enable_file_access_with_api_tokens": {
+    "summary": "Lets scripts and apps download Canvas files using their API token alone, without an extra per-file verification code. Only matters to developers integrating with Canvas; slightly loosens file-access rules, so leave off unless a specific integration needs it.",
+    "relevance": "internal"
+  },
+  "encrypted_sourcedids": {
+    "summary": "Encrypts internal identifier tokens that Canvas hands to older external tool integrations when they send grades back. A behind-the-scenes security hardening with no visible change for teachers or students; only matters if you use older grade-passback tools.",
+    "relevance": "internal"
+  },
+  "enforce_service_token_tenant_matching": {
+    "summary": "A security check ensuring internal service credentials only work for the Canvas instance they were issued for. This is plumbing for Instructure's multi-school cloud hosting; on a single self-hosted instance there is only one tenant anyway.",
+    "relevance": "internal"
+  },
+  "enhanced_course_creation_account_fetching": {
+    "summary": "Uses a faster internal method to work out where a user is allowed to create courses. No visible change for anyone; pure performance plumbing.",
+    "relevance": "internal"
+  },
+  "enhanced_docviewer_url_security": {
+    "summary": "A security hardening for DocViewer, Instructure's hosted document-preview service used to annotate submitted work. Self-hosted instances without the hosted DocViewer service are unaffected.",
+    "relevance": "cloud-only"
+  },
+  "enhanced_grade_statistics": {
+    "summary": "Improves the grade statistics students see for each assignment: adds quartiles (the spread of marks) and draws a proper box-and-whiskers chart. Minor but harmless improvement to how score distributions are shown.",
+    "relevance": "useful"
+  },
+  "enhanced_gradebook_filters": {
+    "summary": "Gives teachers better filtering in the gradebook, for example showing only one section, one assignment group, or only ungraded work, and lets them save filters for reuse. A practical quality-of-life improvement for teachers who grade large classes.",
+    "relevance": "useful"
+  },
+  "enhanced_rubrics": {
+    "summary": "A redesigned, easier-to-use interface for creating and filling in rubrics (marking guides) across Canvas. Worth trialling if teachers use rubrics; it is a UI overhaul, so expect some retraining.",
+    "relevance": "useful"
+  },
+  "enhanced_rubrics_assignments": {
+    "summary": "Lets teachers create and search marking guides (rubrics) using the redesigned rubrics interface directly from the Assignments page. A beta convenience improvement for teachers who mark with rubrics.",
+    "relevance": "useful"
+  },
+  "eportfolio_deprecation_notice": {
+    "summary": "Just shows a banner warning users that the ePortfolio feature is being retired by Instructure. It adds no functionality; only relevant if the school actively uses ePortfolios and wants to warn users.",
+    "relevance": "internal"
+  },
+  "epub_export": {
+    "summary": "Lets students download a course's content as an ePub e-book file they can read offline on a phone, tablet, or e-reader. Handy where students have unreliable internet at home, though downloaded copies do not update when the course changes.",
+    "relevance": "useful"
+  },
+  "exclude_deleted_lti2_tools_on_assignment_export": {
+    "summary": "Cleans up course exports so references to deleted plagiarism-check tool integrations (like Turnitin) are not carried along. Page Schools does not use these tools, so this is irrelevant housekeeping.",
+    "relevance": "ignore"
+  },
+  "explicit_latex_typesetting": {
+    "summary": "Restricts automatic rendering of LaTeX (typed mathematical notation) to only the places where it is explicitly enabled, instead of everywhere text appears. Mostly a performance/edge-case control; leaving it off keeps maths notation rendering everywhere, which is what maths teachers usually want.",
+    "relevance": "internal"
+  },
+  "extended_submission_state": {
+    "summary": "Adds interface support for an 'extended' status on student submissions, marking that a student has been given extra time. Only meaningful alongside the tools that set that status; a minor labeling feature.",
+    "relevance": "useful"
+  },
+  "external_tool_drawer": {
+    "summary": "An experimental layout that opens external tool integrations in a slide-out side panel instead of a full page. Only matters if the school embeds third-party tools, and it is explicitly experimental.",
+    "relevance": "internal"
+  },
+  "external_tools_for_a2": {
+    "summary": "Allows assignments that are delivered through an external tool integration to use the newer, cleaner student assignment view. Only matters if the school installs third-party tools that create assignments.",
+    "relevance": "ignore"
+  },
+  "feature_flag_test": {
+    "summary": "A dummy flag Instructure uses to test the feature-flag system itself. It does nothing at all.",
+    "relevance": "internal"
+  },
+  "feature_flag_ui_sorting": {
+    "summary": "Adds column sorting to the admin page that lists feature flags; minor vendor interface plumbing.",
+    "relevance": "internal"
+  },
+  "federated_pseudonym_attributes": {
+    "summary": "Changes which copy of a user's username/ID Canvas reports to downstream systems when logins come from an external identity provider. Plumbing for institutions with federated single sign-on and event streaming; irrelevant to a school using local Canvas logins.",
+    "relevance": "internal"
+  },
+  "file_association_access": {
+    "summary": "Changes how Canvas decides whether someone may open a file based on its association with a course. Shadow vendor plumbing around file permissions; leave it to the default.",
+    "relevance": "internal"
+  },
+  "file_verifiers_for_quiz_links": {
+    "summary": "Authentication plumbing for file links created in the hosted 'New Quizzes' engine, which Page Schools does not have. Shadow vendor plumbing; ignore.",
+    "relevance": "internal"
+  },
+  "files_a11y_rewrite": {
+    "summary": "Switches the course and user Files area to a rebuilt version designed to work better with screen readers and keyboards. When mature this is a genuine accessibility win, though it is currently mid-rollout by the vendor.",
+    "relevance": "useful"
+  },
+  "files_a11y_rewrite_toggle": {
+    "summary": "Gives users a switch back to the old Files page while the accessibility-focused rewrite of that page is rolled out. Transitional vendor plumbing rather than a feature in itself.",
+    "relevance": "internal"
+  },
+  "fill_missing_dates_from_source_course": {
+    "summary": "When copying a course into a new term and shifting its dates, this fills in any missing dates using the original course. A minor internal fix to the course-copy process.",
+    "relevance": "internal"
+  },
+  "filter_speed_grader_by_student_group": {
+    "summary": "Lets a teacher open the marking screen (SpeedGrader) showing only the students in one selected group instead of the whole class. Handy for large classes or when teachers mark group by group.",
+    "relevance": "useful"
+  },
+  "final_grades_override": {
+    "summary": "Lets a teacher manually set a student's final course grade to something different from what the assignment scores calculate to, without touching individual assignment marks. Handy when the school's final grade needs an adjustment (e.g. rounding up a borderline result or applying a head-teacher decision).",
+    "relevance": "useful"
+  },
+  "fix_bp_folder_unsynced_issue": {
+    "summary": "A bug fix for false 'unsynced changes' warnings when syncing folders in Blueprint courses (Canvas's template-course system). Internal fix, only relevant at all if Blueprints are used.",
+    "relevance": "internal"
+  },
+  "fix_missing_policy_applicator_gradebook_history": {
+    "summary": "A bug fix that makes sure the gradebook's change-history log records it when Canvas automatically marks work as missing. Internal correctness fix, not a feature to decide on.",
+    "relevance": "internal"
+  },
+  "force_login_after_logout": {
+    "summary": "When someone logs out of Canvas, their external sign-in provider (e.g. a school Google/Microsoft login) is told to ask for their password again next time, preventing confusing instant re-login loops. Only matters if Canvas login is delegated to an outside identity provider.",
+    "relevance": "useful"
+  },
+  "full_width_everywhere": {
+    "summary": "Lets Canvas pages stretch across the full width of the browser window instead of being limited to a narrower centered column. Purely cosmetic; some teachers prefer the extra space on wide monitors.",
+    "relevance": "useful"
+  },
+  "google_docs_domain_restriction": {
+    "summary": "If the school uses the Google Docs integration, this limits submissions and shared-document collaborations to Google accounts from one approved domain (e.g. the school's own Google Workspace). Students using personal Gmail accounts would be blocked. Only relevant if you set up the Google Docs integration.",
+    "relevance": "useful"
+  },
+  "grade_calc_ignore_unposted_anonymous": {
+    "summary": "When teachers grade an assignment anonymously and have not yet released the marks, this stops those hidden marks from being counted into students' running totals. Prevents students inferring their score from a changed total before marks are officially released.",
+    "relevance": "useful"
+  },
+  "gradebook_show_first_last_names": {
+    "summary": "Adds an admin setting that splits student names into separate first-name and last-name columns in the gradebook and its spreadsheet exports. Useful when preparing report cards or lists sorted by surname.",
+    "relevance": "useful"
+  },
+  "gradebook_use_sis_pseudonym_order_for_sorting": {
+    "summary": "A bug fix for gradebook sorting when students have multiple login accounts, making sure the right login ID is used for ordering. Behind-the-scenes plumbing with no visible feature.",
+    "relevance": "internal"
+  },
+  "grading_assistance_file_uploads": {
+    "summary": "Lets teachers upload files into Instructure's AI-assisted grading tool. That AI grading backend is an Instructure-hosted service, so this does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "grading_periods_filter_dates": {
+    "summary": "Shows the start, end, and close dates next to each grading period (e.g. term) in the Gradebook filter dropdown, so teachers can tell terms apart at a glance. Small but genuinely handy for a school running term-based grading.",
+    "relevance": "useful"
+  },
+  "grading_scheme_updates": {
+    "summary": "Makes it easier for teachers and admins to create and manage letter-grade scales (e.g. A/B/C boundaries) for the school, courses, and individual assignments. Relevant since Nigerian schools often use custom grade boundaries.",
+    "relevance": "useful"
+  },
+  "graphql_honor_anonymous_grading": {
+    "summary": "Closes a gap where a newer data-access channel (the GraphQL API) could reveal student names on assignments set to anonymous grading. Only matters if the school uses anonymous grading; if so it is a privacy fix worth having.",
+    "relevance": "useful"
+  },
+  "graphql_persisted_queries": {
+    "summary": "A developer-facing optimisation letting the newer Canvas programming interface be called by pre-registered query names. Nothing changes for teachers, students, or admins.",
+    "relevance": "internal"
+  },
+  "hide_zero_point_quizzes_option": {
+    "summary": "Adds a checkbox to hide zero-point New Quizzes (e.g. practice checks) from the gradebook. Depends on the New Quizzes hosted service, which is not available on this self-hosted setup.",
+    "relevance": "cloud-only"
+  },
+  "high_contrast": {
+    "summary": "An accessibility option each user can turn on to make text and buttons display with stronger color contrast, which helps people with low vision. When a user enables it, the school's custom colors and branding are replaced with plain high-contrast styling for that user only.",
+    "relevance": "useful"
+  },
+  "horizon_auto_content_ingestion": {
+    "summary": "Automatically feeds course files into Pine, an Instructure-hosted AI content service, for Canvas Career courses. Both products are Instructure-hosted; does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "horizon_block_content_editor": {
+    "summary": "Vendor plumbing for the Canvas Career product's content editor; does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "horizon_bulk_api_permission": {
+    "summary": "Vendor plumbing for bulk administration inside the Canvas Career product; does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "horizon_chart_view": {
+    "summary": "Vendor plumbing for a chart view inside the Canvas Career product; does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "horizon_course_academic_switcher": {
+    "summary": "A toggle for switching courses between regular Canvas and the Canvas Career product. Page Schools does not use Canvas Career, so this does nothing.",
+    "relevance": "cloud-only"
+  },
+  "horizon_course_setting": {
+    "summary": "Enables the settings tab for Canvas Career, a separate Instructure product for career/professional learning; does nothing useful on a self-hosted K-12 school instance.",
+    "relevance": "cloud-only"
+  },
+  "horizon_dashboard_ai_widgets": {
+    "summary": "AI widgets for the dashboard of Canvas Career, Instructure's separate workforce-training product with hosted AI backends. Does nothing on a self-hosted K-12 school instance.",
+    "relevance": "cloud-only"
+  },
+  "horizon_help_navigation": {
+    "summary": "A help menu for Canvas Career, a separate Instructure product not present on this instance.",
+    "relevance": "cloud-only"
+  },
+  "horizon_hris_integrations": {
+    "summary": "Part of 'Canvas Career', Instructure's separate corporate-training product. Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "horizon_learning_library": {
+    "summary": "The content library of Canvas Career, Instructure's separate hosted workforce-training product. Does nothing on a self-hosted K-12 school instance.",
+    "relevance": "cloud-only"
+  },
+  "horizon_learning_library_ms2": {
+    "summary": "Part of 'Canvas Career', Instructure's separate corporate-training product. Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "horizon_learning_library_ms3": {
+    "summary": "Recommendation features for Canvas Career's Learning Library, a separate Instructure product not present on this instance.",
+    "relevance": "cloud-only"
+  },
+  "horizon_learning_object_ingestion_on_change": {
+    "summary": "Automatically feeds course files and pages into 'Pine', an Instructure-hosted AI indexing service, for Canvas Career courses. Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "horizon_manual_dashboard_builder": {
+    "summary": "A dashboard-building tool inside Canvas Career, a separate Instructure workforce-training product. Does nothing on a self-hosted K-12 school instance.",
+    "relevance": "cloud-only"
+  },
+  "horizon_native_permissions_page": {
+    "summary": "An interface change inside Canvas Career, a separate Instructure workforce-training product. Does nothing on a self-hosted K-12 school instance.",
+    "relevance": "cloud-only"
+  },
+  "horizon_role_dashboards": {
+    "summary": "Part of Canvas Career, a separate Instructure product for workforce training. Does nothing on a self-hosted K-12 school instance.",
+    "relevance": "cloud-only"
+  },
+  "horizon_syncable_objects_redesign": {
+    "summary": "Interface redesign inside 'Canvas Career', Instructure's separate corporate-training product. Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "horizon_user_profile_page": {
+    "summary": "Part of Canvas Career, a separate Instructure product for workforce/professional training that Page Schools does not have. Irrelevant here.",
+    "relevance": "cloud-only"
+  },
+  "ignite_agent_enabled": {
+    "summary": "Switch for IgniteAI, Instructure's hosted AI assistant for teachers and admins; the flag itself is deprecated and the service does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "ignite_agent_enabled_for_user": {
+    "summary": "A deprecated per-user switch for IgniteAI, Instructure's hosted AI assistant. The AI backend is Instructure-hosted and the flag is being removed anyway; does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "immersive_reader_wiki_pages": {
+    "summary": "Adds a Microsoft 'Immersive Reader' button to course pages that reads text aloud, enlarges it, and breaks words into syllables — a strong literacy aid for younger pupils and struggling readers. It relies on Microsoft's free reading service, not Instructure's cloud, so it can work self-hosted if the school configures the Microsoft integration.",
+    "relevance": "useful"
+  },
+  "impact_integration": {
+    "summary": "Connects Impact, Instructure's separate user-guidance product, to New Quizzes. Both are Instructure-hosted products the school does not have; does nothing here.",
+    "relevance": "cloud-only"
+  },
+  "import_numeric_lti_custom_params_as_string": {
+    "summary": "A data-format fix so that settings passed to external tool integrations are not accidentally mangled during course copies. Behind-the-scenes plumbing.",
+    "relevance": "internal"
+  },
+  "improved_lmgb": {
+    "summary": "A redesigned version of the Learning Mastery Gradebook (objectives-progress view); beta vendor rollout plumbing for an interface refresh.",
+    "relevance": "internal"
+  },
+  "improved_outcome_report_generation": {
+    "summary": "A behind-the-scenes change to how learning-outcome reports are computed, to reduce database load. No visible change for users.",
+    "relevance": "internal"
+  },
+  "improved_outcomes_management": {
+    "summary": "A better interface for importing, organising, and editing learning outcomes (the skill/standard statements teachers can grade against). Useful if the school tracks curriculum standards or skills mastery in Canvas; irrelevant if outcomes are not used.",
+    "relevance": "useful"
+  },
+  "inbox_settings": {
+    "summary": "Adds options to the Canvas messaging inbox: a default signature appended to outgoing messages and an out-of-office auto-reply. A nice quality-of-life addition for staff communication with parents and students.",
+    "relevance": "useful"
+  },
+  "include_byte_order_mark_in_gradebook_exports": {
+    "summary": "Adds a small invisible marker to downloaded gradebook spreadsheets so that Excel opens them with the correct characters in some languages/regions. Only matters if staff see garbled text when opening grade exports in Excel.",
+    "relevance": "useful"
+  },
+  "instui_for_course_copy_page": {
+    "summary": "Rebuilds the course-copy screen using Instructure's newer interface component library. Same functionality, new internal implementation; nothing meaningful changes for users.",
+    "relevance": "internal"
+  },
+  "instui_for_import_page": {
+    "summary": "Rebuilds the course import page with new interface components — same functionality, different look. Vendor UI migration work with no benefit to staff.",
+    "relevance": "internal"
+  },
+  "instui_header": {
+    "summary": "Switches pages to a redesigned page-header style from Instructure's design system. Purely cosmetic vendor rollout plumbing. Note: this school's fork has had hydration problems with these interface components, so treat with caution.",
+    "relevance": "internal"
+  },
+  "instui_nav": {
+    "summary": "An in-development rewrite of Canvas's main navigation bar using new interface technology. Unfinished vendor work — turning it on risks a broken or half-styled menu.",
+    "relevance": "internal"
+  },
+  "intelligent_insights_accessibility_insights": {
+    "summary": "Accessibility reporting inside Instructure's hosted 'Intelligent Insights' analytics product. Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "intelligent_insights_contextual_messaging": {
+    "summary": "Adds in-context messages within the Instructure-hosted 'Intelligent Insights' analytics product. Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "intelligent_insights_modernisation": {
+    "summary": "Internal switch for a redesign of Instructure's hosted 'Intelligent Insights' analytics product. Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "intelligent_insights_rsi_ignore_course": {
+    "summary": "Internal switch for Instructure's hosted 'Intelligent Insights' product; does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "intelligent_insights_rsi_report": {
+    "summary": "Enables an Intelligent Insights report about 'regular and substantive interaction', a US higher-education compliance concept. It depends on Instructure's hosted analytics and is aimed at universities, so it is doubly irrelevant here.",
+    "relevance": "cloud-only"
+  },
+  "intelligent_insights_student_level_contextual_messaging": {
+    "summary": "Per-student messaging prompts inside Instructure's hosted 'Intelligent Insights' analytics product. Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "international_sms": {
+    "summary": "Allows Canvas to send text-message notifications to phone numbers outside the US. However, sending SMS requires Instructure's hosted messaging service, so it does nothing on a self-hosted school instance; email notifications are the practical alternative.",
+    "relevance": "cloud-only"
+  },
+  "javascript_csp": {
+    "summary": "Adds a Security tab in account settings where admins can control which outside websites are allowed to run scripts inside Canvas pages (a browser protection called Content Security Policy). Enabling and configuring it reduces the risk of malicious embedded content, but overly strict settings can break embedded videos or external tools.",
+    "relevance": "useful"
+  },
+  "jobs_v2": {
+    "summary": "A newer control panel for monitoring the background processing queue (imports, exports, notifications) on the server. Only the person maintaining the Canvas server would ever look at it, but for a self-hosted school it is a genuinely handy admin tool.",
+    "relevance": "useful"
+  },
+  "k12": {
+    "summary": "Swaps some icons in the left-hand navigation menu for ones that make more sense in a primary/secondary school setting. Purely cosmetic, but it is literally aimed at schools like this one.",
+    "relevance": "useful"
+  },
+  "k20_course_readiness": {
+    "summary": "Part of Instructure's paid 'Intelligent Insights' analytics product, which checks whether courses are ready before term starts. It runs on Instructure-hosted services, so it does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "k20_course_readiness_broken_links_criteria": {
+    "summary": "Part of Instructure's hosted Intelligent Insights analytics product (a broken-link check for course readiness). Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "k20_course_readiness_course_nav_criteria": {
+    "summary": "Internal switch for part of Instructure's hosted 'Intelligent Insights' analytics product; does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "k20_course_readiness_criteria_set_results_preview": {
+    "summary": "Another piece of the Instructure-hosted 'Intelligent Insights' analytics add-on. Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "k20_course_readiness_due_date_criteria": {
+    "summary": "Part of Instructure's paid 'Intelligent Insights' analytics add-on, which runs on their cloud data platform. Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "k20_course_readiness_gradebook_criteria": {
+    "summary": "Part of Instructure's hosted 'Intelligent Insights' analytics product. Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "k20_course_readiness_homepage_criteria": {
+    "summary": "A sub-feature of the Instructure-hosted 'Intelligent Insights' course-readiness checks (adds a homepage check). Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "k20_course_readiness_lti_apps_criteria": {
+    "summary": "Internal switch for part of Instructure's hosted 'Intelligent Insights' analytics product; does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "k20_course_readiness_rubric_criteria": {
+    "summary": "A sub-feature of the Instructure-hosted 'Intelligent Insights' course-readiness checks (adds a marking-guide check). Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "k20_course_readiness_top_level_dashboard": {
+    "summary": "Another piece of Instructure's hosted 'Intelligent Insights' analytics product. Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "k20_criteria_set_preview": {
+    "summary": "Another piece of Instructure's hosted Intelligent Insights analytics product. Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "k20_improved_criteria_builder": {
+    "summary": "An interface improvement inside the Instructure-hosted 'Intelligent Insights' analytics product. Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "k20_students_in_need_of_attention": {
+    "summary": "An 'Intelligent Insights' dashboard that flags struggling students — it depends on Instructure's hosted analytics platform, so it does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "limit_section_visibility_in_lmgb": {
+    "summary": "In the Learning Mastery Gradebook (the objectives-progress view), teachers who are limited to one class section only see their own section's students. Sensible privacy tightening if the school uses learning objectives and section-restricted teachers.",
+    "relevance": "useful"
+  },
+  "lmgb_student_reporting": {
+    "summary": "Adds student-facing reports to the Learning Mastery Gradebook, which tracks pupils against defined learning outcomes rather than points. Potentially interesting if the school adopts outcome-based tracking, but it is still hidden, unfinished vendor work.",
+    "relevance": "internal"
+  },
+  "login_registration_ui_identity": {
+    "summary": "Replaces the Canvas login page with a new design built for Instructure's cloud 'Identity Services' sign-in system. On a self-hosted instance with a white-labeled login page this is risky and pointless, since the identity service it is designed around is Instructure-hosted.",
+    "relevance": "cloud-only"
+  },
+  "lti2_rereg": {
+    "summary": "Enables re-registration for an old, long-deprecated version (version 2) of the external tool integration standard. Page Schools has no such legacy tools, so this is obsolete plumbing.",
+    "relevance": "internal"
+  },
+  "lti_apps_page_ai_translation": {
+    "summary": "Auto-translates Instructure's app marketplace pages using a cloud AI service. Both the marketplace and the translation service are Instructure-hosted, so this does nothing here.",
+    "relevance": "cloud-only"
+  },
+  "lti_apps_page_instructors": {
+    "summary": "Shows teachers a page in their course listing the external tool integrations available to them. Mildly informative, but Page Schools uses few external tools, and this is still hidden vendor plumbing.",
+    "relevance": "internal"
+  },
+  "lti_asset_processor": {
+    "summary": "Enables a newer industry standard that lets external tool integrations automatically process student submissions — the typical use is plagiarism checkers like Turnitin. Page Schools uses no such services, so there is nothing for this to connect to.",
+    "relevance": "ignore"
+  },
+  "lti_asset_processor_course": {
+    "summary": "Enables a 'Document Processor' hook that lets external tool integrations (like plagiarism checkers) automatically process files students submit. Page Schools has no such tools connected, so there is nothing for it to do.",
+    "relevance": "ignore"
+  },
+  "lti_asset_processor_discussions": {
+    "summary": "Lets external document-processing tool integrations (for example plagiarism checkers) analyse posts in graded discussions. Page Schools runs no such integrations, so there is nothing for this to drive.",
+    "relevance": "ignore"
+  },
+  "lti_asset_processor_eap": {
+    "summary": "Auto-reinstalls a Turnitin test tool in a customer's Instructure-hosted beta instance after each beta refresh. Page Schools has neither Turnitin nor a beta instance — does nothing here.",
+    "relevance": "cloud-only"
+  },
+  "lti_asset_processor_tii_migration": {
+    "summary": "Migration plumbing for moving old Turnitin plagiarism-checker installations to a newer integration standard. Page Schools does not use Turnitin, so this is irrelevant.",
+    "relevance": "ignore"
+  },
+  "lti_before_assignment_results": {
+    "summary": "Changes where an external tool integration's panel appears on an assignment page after a student submits (above the description instead of below). Only matters if the school installs a tool that uses that placement.",
+    "relevance": "ignore"
+  },
+  "lti_cache_tool_public_jwks_url": {
+    "summary": "A performance tweak that briefly caches security keys of external tool integrations instead of re-fetching them on every request. Invisible vendor plumbing.",
+    "relevance": "internal"
+  },
+  "lti_context_copy_notice": {
+    "summary": "Sends a behind-the-scenes notification to subscribed external tool integrations when a course is copied, so those tools can copy their own linked content. Vendor plumbing that only matters if you use tools built on this mechanism.",
+    "relevance": "internal"
+  },
+  "lti_deactivate_registrations": {
+    "summary": "Lets admins temporarily switch an external tool integration off and back on from the Apps page instead of deleting and reinstalling it. Mildly convenient if you manage several external tools, but it is still hidden in-development vendor work.",
+    "relevance": "internal"
+  },
+  "lti_deployment_id_in_login_request": {
+    "summary": "Changes which technical identifier field is sent to external tools during sign-in handshakes. Pure protocol plumbing for external tool integrations; no user-visible effect.",
+    "relevance": "internal"
+  },
+  "lti_dr_registrations_update": {
+    "summary": "Lets admins update external tool integrations that were installed via automatic 'dynamic registration'. Vendor plumbing for the tool-management pages; only matters if the school installs such tools.",
+    "relevance": "internal"
+  },
+  "lti_find_external_tool_prefer_original_client_id": {
+    "summary": "A bug fix so that when two external tool integrations share the same web domain, Canvas launches the right one. Behind-the-scenes plumbing; only relevant with multiple overlapping tool installations.",
+    "relevance": "internal"
+  },
+  "lti_link_to_apps_from_developer_keys": {
+    "summary": "A small admin-page cleanup: on the Developer Keys page, external-tool keys link straight to the app's configuration page instead of a useless 'Show Key' button. Minor admin convenience, still vendor work-in-progress.",
+    "relevance": "internal"
+  },
+  "lti_oidc_missing_cookie_retry": {
+    "summary": "A workaround that automatically retries external tool launches when Safari's privacy settings block the cookies the launch needs. If the school ever adds external tool integrations and iPad/Safari users hit launch errors, this fix could genuinely help; otherwise it is dormant plumbing.",
+    "relevance": "internal"
+  },
+  "lti_registrations_discover_page": {
+    "summary": "Adds a 'Discover' storefront of third-party apps inside the admin Apps page, backed by Instructure's hosted app catalog. Without that cloud catalog it has nothing to show.",
+    "relevance": "cloud-only"
+  },
+  "lti_registrations_history": {
+    "summary": "Adds a fuller change-history view to the admin page for managing external tool integrations. Vendor plumbing; only of interest if the school actively manages many external tools.",
+    "relevance": "internal"
+  },
+  "lti_registrations_next": {
+    "summary": "Switches on whatever unfinished features Instructure is currently building for the external-tools Apps page. A moving target meant for internal testing — leave off.",
+    "relevance": "internal"
+  },
+  "lti_registrations_templates": {
+    "summary": "Changes how external tool integrations inherited from Instructure's central catalog can be edited on the admin Apps page. That inheritance model is for Instructure's cloud hosting; not meaningful on a self-hosted instance where the school installs its own tools.",
+    "relevance": "internal"
+  },
+  "lti_registrations_usage_data": {
+    "summary": "Adds a 'Monitor' tab showing usage statistics for installed external tool integrations. The usage data behind it comes from Instructure's hosted analytics pipeline, so on a self-hosted instance the tab would have nothing to show.",
+    "relevance": "cloud-only"
+  },
+  "lti_registrations_usage_data_dev": {
+    "summary": "Shows in-development usage-monitoring features for external tool integrations, backed by Instructure's cloud data services. Vendor development plumbing; nothing for a self-hosted school.",
+    "relevance": "cloud-only"
+  },
+  "lti_registrations_usage_data_low_usage": {
+    "summary": "Adds alerts flagging external tool integrations that are barely used, based on Instructure's hosted usage-monitoring service; does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "lti_registrations_usage_tab": {
+    "summary": "Adds a 'Usage' tab showing how often each external tool integration is being launched. The usage numbers come from Instructure's hosted analytics pipeline, so the tab would have no data on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "lti_resource_link_id_speedgrader_launches_reference_assignment": {
+    "summary": "Changes a technical identifier sent to older external tool integrations when launched from the grading screen, so it refers to the assignment rather than the tool. Only matters to developers of legacy external tools.",
+    "relevance": "internal"
+  },
+  "lti_target_link_uri_for_assignment_edit_view": {
+    "summary": "A technical fix to which web address an external tool integration opens from certain assignment screens. Vendor plumbing; no meaningful change for a school unless a specific tool vendor asks for it.",
+    "relevance": "internal"
+  },
+  "lti_toggle_placements": {
+    "summary": "Lets administrators switch individual menu placements of an installed external tool integration on or off (e.g. hide a tool from the course menu but keep it in the editor). Only useful if the school installs external tools; then it is a nice admin control.",
+    "relevance": "useful"
+  },
+  "lti_tools_from_federated_parents": {
+    "summary": "Makes external tool integrations installed in a 'federated parent' account visible to child accounts, a structure used by large multi-institution consortia. A single self-hosted school has no federated accounts, so this is irrelevant.",
+    "relevance": "ignore"
+  },
+  "lti_usage_premium": {
+    "summary": "Unlocks paid premium tool-usage analytics for schools with an Instructure contract; does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "lti_v2_turnitin_usage_log": {
+    "summary": "Sends usage statistics about Turnitin (a plagiarism-checking service) launches to Pandata, Instructure's internal analytics system. The school uses neither; does nothing here.",
+    "relevance": "cloud-only"
+  },
+  "lti_variable_expansions_use_group_course_as_course": {
+    "summary": "Adjusts how course information is passed to external tool integrations when launched from a student group inside a course. Technical plumbing for tool developers; no direct effect for staff.",
+    "relevance": "internal"
+  },
+  "mastery_path_invalidate_assignment_visibility_cache": {
+    "summary": "A caching fix so students immediately see the right assignments when 'mastery paths' (score-based content unlocking) change what they should see. Behind-the-scenes plumbing.",
+    "relevance": "internal"
+  },
+  "mastery_path_submission_trigger_reloaded_evaluation": {
+    "summary": "A behind-the-scenes correctness fix for Mastery Paths (content that unlocks based on scores), reloading fresh submission data before deciding whether to unlock. Vendor plumbing; no visible feature.",
+    "relevance": "internal"
+  },
+  "mastery_path_unreleased_items_block_progression": {
+    "summary": "A behavior tweak for Mastery Paths (personalized lesson routes): students cannot move past a module while items that might still be released to them are pending. Only matters if the school uses Mastery Paths.",
+    "relevance": "ignore"
+  },
+  "mcc_specific_error_message": {
+    "summary": "Shows a clearer error message when someone tries to create or copy a course in a part of the account where they are not allowed to. Tiny politeness fix for Instructure's account structure conventions.",
+    "relevance": "internal"
+  },
+  "media_links_use_attachment_id": {
+    "summary": "Changes how links to uploaded audio/video are written so they always point to the correct copy of the file, for example after a course is copied. A sensible reliability fix for media in course content.",
+    "relevance": "useful"
+  },
+  "membership_service_for_lti_tools": {
+    "summary": "Lets older external tool integrations use an outdated sign-in method (OAuth 1.0a) to fetch class rosters. Only relevant if the school installs a legacy third-party tool that requires it; otherwise leave off.",
+    "relevance": "ignore"
+  },
+  "menu_option_for_outcome_details_page": {
+    "summary": "Adds a menu shortcut to see which assignments each learning outcome is aligned to, within the improved outcomes management screens. Small navigation convenience, only relevant if you use learning outcomes.",
+    "relevance": "useful"
+  },
+  "message_observers_of_students_who": {
+    "summary": "Upgrades the teacher's 'Message Students Who...' tool (e.g. message everyone who hasn't submitted) so it can also message parents/guardians linked to those students. Genuinely handy for a K-12 school where parents have observer accounts.",
+    "relevance": "useful"
+  },
+  "microsoft_group_enrollments_syncing": {
+    "summary": "Keeps Microsoft 365 Groups (used by Microsoft Teams) in sync with Canvas course enrolments, so each class automatically gets a matching Team. Only relevant if the school uses Microsoft 365 for staff and pupils and configures the integration.",
+    "relevance": "useful"
+  },
+  "migrate_assignment_group_categories": {
+    "summary": "When a teacher copies a group assignment or group discussion into another course, Canvas will automatically create a matching student group set in the destination course instead of silently dropping the group setup. Saves teachers rework when reusing group activities across classes.",
+    "relevance": "useful"
+  },
+  "migrate_to_new_quizzes_by_default": {
+    "summary": "Makes 'convert classic quizzes to New Quizzes' the pre-ticked default whenever a course is copied or imported. Useful only if the school has decided to standardize on New Quizzes; otherwise it silently converts quizzes teachers meant to keep classic.",
+    "relevance": "useful"
+  },
+  "missing_policy_applicator_emits_live_events": {
+    "summary": "A technical switch that makes Canvas broadcast internal event messages when its auto-grader marks late work as missing. Only matters if an external system is listening to Canvas's live event stream, which Page Schools does not run.",
+    "relevance": "internal"
+  },
+  "mobile_offline_mode": {
+    "summary": "Lets students download course content in the Canvas mobile apps and read it without an internet connection. Very relevant where home connectivity is patchy — pupils can sync at school and study offline at home.",
+    "relevance": "useful"
+  },
+  "moderated_grading": {
+    "summary": "Lets multiple graders mark the same assignment independently, with a designated moderator reviewing the marks and choosing the final grade. Designed for large exam-marking teams; probably more process than a primary/secondary school needs, but it works self-hosted.",
+    "relevance": "useful"
+  },
+  "moderated_grading_modernized_speedgrader": {
+    "summary": "A performance upgrade for the grading screen when using the multi-grader 'moderated grading' workflow, aimed at very large courses. It ties into Instructure's newer grading platform and matters little for a school of this size.",
+    "relevance": "internal"
+  },
+  "modify_site_admin_developer_keys_permission": {
+    "summary": "Tightens which site-admin users can edit global API developer keys. On a self-hosted instance where one trusted person runs the server, this permission split changes little, but it is harmless security hardening plumbing.",
+    "relevance": "internal"
+  },
+  "module_external_url_seamless_redirect": {
+    "summary": "When a course module links to an outside website set to open in a new tab, students go straight to that website instead of pausing on a Canvas in-between page (progress is still tracked). A small polish that removes a confusing extra click for pupils.",
+    "relevance": "useful"
+  },
+  "modules_page_hide_blueprint_lock_icon_for_children": {
+    "summary": "A performance workaround that hides the lock icons on the Modules page for courses linked to a 'blueprint' template, intended only for institutions with enormous courses (2000+ items). Not needed at a school's scale.",
+    "relevance": "internal"
+  },
+  "modules_page_rewrite": {
+    "summary": "Switches the teacher view of the course Modules page to a completely rewritten version. In-development vendor work; enabling early risks bugs on one of the most-used pages, so wait until it ships as default.",
+    "relevance": "internal"
+  },
+  "modules_page_rewrite_student_view": {
+    "summary": "Swaps the student view of the course Modules page for a rebuilt version. A vendor interface migration; no new capability, and rebuilt pages can carry early bugs.",
+    "relevance": "internal"
+  },
+  "modules_perf": {
+    "summary": "Speeds up loading of the Modules page in courses that have very many modules or items, by loading them in chunks. Invisible except for faster pages; safe and worthwhile if large courses feel slow.",
+    "relevance": "useful"
+  },
+  "modules_requirements_allow_percentage": {
+    "summary": "Lets teachers set module completion requirements as a percentage score (e.g. 'score at least 70%') instead of only a fixed points value. A genuine option for teachers who gate lesson progress on quiz performance.",
+    "relevance": "useful"
+  },
+  "modules_student_module_selection": {
+    "summary": "Lets a teacher choose to show students only one selected module on the course Modules page, hiding the rest. Useful for keeping young students focused on the current week's or term's work.",
+    "relevance": "useful"
+  },
+  "modules_teacher_module_selection": {
+    "summary": "Lets a teacher choose to display just one module (unit of work) at a time on their own view of the modules page, instead of the whole list. A small navigation convenience for content-heavy courses.",
+    "relevance": "useful"
+  },
+  "multiselect_gradebook_filters": {
+    "summary": "Lets teachers apply several filters at once in the gradebook (for example two class sections and one assignment group together) instead of one at a time. A quality-of-life improvement for teachers managing marks.",
+    "relevance": "useful"
+  },
+  "mutation_audit_log": {
+    "summary": "Gives admins a log of recent data-changing operations made through Canvas's newer programming interface (GraphQL), useful for investigating 'who changed this?' questions. Note it requires extra database infrastructure (Cassandra/DynamoDB-style audit storage) that a small self-hosted setup may not have configured.",
+    "relevance": "internal"
+  },
+  "n_plus_one_index_wiki_page_api": {
+    "summary": "A database-query optimisation that makes listing course pages faster behind the scenes. No visible change for anyone.",
+    "relevance": "internal"
+  },
+  "nav_menu_links": {
+    "summary": "Lets admins add custom links to the school-wide, personal, and course navigation menus (e.g. a link to the school website or a timetable). Still marked as hidden vendor plumbing in this build, but the capability itself would be handy for a school.",
+    "relevance": "useful"
+  },
+  "new_account_reports_ui": {
+    "summary": "Replaces the old admin Reports page with a cleaner one that shows report progress and past report history. Purely an admin quality-of-life improvement for running enrolment, grade, and usage reports.",
+    "relevance": "useful"
+  },
+  "new_collaborations": {
+    "summary": "Switches the Collaborations page (shared group documents) to a newer version that works through external tool integrations like Google Docs or Microsoft Office 365. Only useful if the school sets up one of those integrations; without one, the page stays empty.",
+    "relevance": "useful"
+  },
+  "new_gradebook_plagiarism_indicator": {
+    "summary": "Shows plagiarism scores and reports in the Gradebook's grading panel. This only matters if a plagiarism-checking service like Turnitin is connected — Page Schools has none, so there would be nothing to display.",
+    "relevance": "ignore"
+  },
+  "new_login_ui_custom_labels": {
+    "summary": "Lets the school customise the text labels on the redesigned login and registration screens. Minor branding polish that pairs with the new login page; could be handy for a white-labelled instance like Page Schools.",
+    "relevance": "useful"
+  },
+  "new_login_ui_identity_discovery_page": {
+    "summary": "A companion piece to the new Instructure Identity login system that adds an account-discovery page during sign-in. Tied to Instructure's hosted identity service, so it does nothing useful self-hosted.",
+    "relevance": "cloud-only"
+  },
+  "new_quiz_deleted_workflow_restore_pending_review_state": {
+    "summary": "A behind-the-scenes fix for how the Instructure-hosted 'New Quizzes' service marks quiz status when a student is re-enrolled. Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "new_quiz_public_api": {
+    "summary": "Opens up a programming interface for the New Quizzes tool so external software can create and manage quizzes automatically. Only relevant if the school builds custom software against it; note New Quizzes itself depends on a separate Instructure-hosted service and may not run on a self-hosted fork.",
+    "relevance": "cloud-only"
+  },
+  "new_quizzes_account_course_level_item_banks": {
+    "summary": "Question-bank management inside 'New Quizzes', Instructure's hosted quiz engine, which is not available on a self-hosted instance. No effect for Page Schools.",
+    "relevance": "cloud-only"
+  },
+  "new_quizzes_ai_quiz_generation": {
+    "summary": "AI-assisted quiz question writing via 'IgniteAI', which runs on Instructure-hosted AI backends and requires New Quizzes. Neither is available on this self-hosted setup — does nothing here.",
+    "relevance": "cloud-only"
+  },
+  "new_quizzes_allow_service_jwt_refresh": {
+    "summary": "Technical token-refresh plumbing between the New Quizzes service and the rich text editor. New Quizzes is an Instructure-hosted service; does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "new_quizzes_assignment_build_button": {
+    "summary": "Adds a 'Build' button on assignment pages for quizzes made with the 'New Quizzes' engine. New Quizzes is an Instructure-hosted service that a self-hosted instance does not have, so this does nothing here.",
+    "relevance": "cloud-only"
+  },
+  "new_quizzes_bank_migrations": {
+    "summary": "Migrates classic question banks into New Quizzes during course imports. New Quizzes requires Instructure's separately hosted quiz service, which Page Schools does not have — irrelevant.",
+    "relevance": "cloud-only"
+  },
+  "new_quizzes_by_default": {
+    "summary": "Forces every newly created quiz to use the New Quizzes engine and removes the option to create classic quizzes in that course. Enable only once the school is fully committed to New Quizzes, since teachers lose the classic option entirely.",
+    "relevance": "useful"
+  },
+  "new_quizzes_common_cartridge": {
+    "summary": "Includes 'New Quizzes' content in standard course export packages. Since New Quizzes (Instructure's hosted quiz engine) is unavailable self-hosted, there is nothing to export.",
+    "relevance": "cloud-only"
+  },
+  "new_quizzes_enable_quiz_visibility_after_course_conclusion": {
+    "summary": "Keeps New Quizzes visible to students after a course ends. Depends on the hosted New Quizzes service — does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "new_quizzes_exports": {
+    "summary": "Lets courses export quizzes built with the Instructure-hosted 'New Quizzes' engine in a standard format. Without New Quizzes on a self-hosted instance, there is nothing to export.",
+    "relevance": "cloud-only"
+  },
+  "new_quizzes_grade_by_question_in_speedgrader": {
+    "summary": "Adds question-by-question marking in the grading tool, but only for New Quizzes — which requires Instructure's separately hosted quiz service that Page Schools does not run. Irrelevant here.",
+    "relevance": "cloud-only"
+  },
+  "new_quizzes_media_type": {
+    "summary": "A technical compatibility tweak to how Canvas labels New Quizzes assignments when talking to external tools. Vendor plumbing with no visible effect for teachers or students.",
+    "relevance": "internal"
+  },
+  "new_quizzes_migrate_without_content_rewrite": {
+    "summary": "A tweak to how quiz content is handled when converting a classic quiz to New Quizzes. Depends on the hosted New Quizzes service, so it does nothing on this self-hosted setup.",
+    "relevance": "cloud-only"
+  },
+  "new_quizzes_migration": {
+    "summary": "Allows quizzes to be converted to 'New Quizzes' (Instructure's hosted quiz engine) during course copy or import. New Quizzes is unavailable self-hosted, so this should stay off — Page Schools uses classic quizzes.",
+    "relevance": "cloud-only"
+  },
+  "new_quizzes_native_experience": {
+    "summary": "Makes New Quizzes open directly inside the Canvas page rather than in an embedded frame, for a smoother feel. Still in vendor rollout; a cosmetic/integration polish with no admin decision needed yet.",
+    "relevance": "internal"
+  },
+  "new_quizzes_native_experience_respondus": {
+    "summary": "Technical rendering change for New Quizzes inside the Respondus lockdown browser to work better with third-party accessibility tools. Depends on the Instructure-hosted New Quizzes service; does nothing on a self-hosted instance.",
+    "relevance": "cloud-only"
+  },
+  "new_quizzes_navigation_updates": {
+    "summary": "Displays the New Quizzes tool with normal Canvas navigation (breadcrumbs and side menu) around it. New Quizzes is Instructure-hosted, so this does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "new_quizzes_report_failed_duplicates": {
+    "summary": "Sends error reports to Sentry (Instructure's error-tracking service) when quiz imports fail to duplicate. Vendor diagnostics, nothing for the school.",
+    "relevance": "internal"
+  },
+  "new_quizzes_scanning_youtube_links": {
+    "summary": "Scans 'New Quizzes' content for embedded YouTube videos and offers to convert them. New Quizzes is Instructure-hosted and unavailable self-hosted, so this has no effect.",
+    "relevance": "cloud-only"
+  },
+  "new_quizzes_separators": {
+    "summary": "Lets users choose decimal and thousands separators for numbers inside the Instructure-hosted 'New Quizzes' engine. Without New Quizzes on a self-hosted instance, this does nothing.",
+    "relevance": "cloud-only"
+  },
+  "new_quizzes_subaccount_sharing_permission": {
+    "summary": "Adds a permission letting question item banks in New Quizzes be shared with sub-accounts (for example sharing a question bank school-wide or per department). Useful if the school builds shared question banks across classes.",
+    "relevance": "useful"
+  },
+  "new_quizzes_unattached_bank_migrations": {
+    "summary": "Migrates all question banks into 'New Quizzes' during course import/copy. New Quizzes is an Instructure-hosted service unavailable self-hosted, so this must stay off to avoid breaking question banks.",
+    "relevance": "cloud-only"
+  },
+  "new_sis_integrations": {
+    "summary": "Shows extra settings for syncing assignment grades to an external student records system (SIS). Page Schools has no student records system connected to Canvas, so the new settings would have nothing to sync to.",
+    "relevance": "ignore"
+  },
+  "new_user_tutorial": {
+    "summary": "Shows built-in tutorial panels to teachers who are new to Canvas, explaining what each course page (assignments, grades, modules, etc.) is for. A low-effort way to help staff get comfortable during onboarding.",
+    "relevance": "useful"
+  },
+  "new_user_tutorial_on_off": {
+    "summary": "Shows step-by-step tips on each course page to help teachers who are new to Canvas set up their courses. Useful for onboarding staff who have never used the platform.",
+    "relevance": "useful"
+  },
+  "newquizzes_on_quiz_page": {
+    "summary": "Shows quizzes built with Instructure's 'New Quizzes' engine on the regular Quizzes page. New Quizzes is a separate Instructure-hosted service that a self-hosted school instance does not have, so this does nothing here; the built-in Classic Quizzes are unaffected.",
+    "relevance": "cloud-only"
+  },
+  "non_scoring_rubrics": {
+    "summary": "Lets teachers create rubrics (marking guides) that give written feedback without attaching point values. Useful for formative feedback on younger pupils' work where you want comments, not marks.",
+    "relevance": "useful"
+  },
+  "notification_service": {
+    "summary": "Routes email/notification sending through Instructure's remote dispatch queue instead of the local job system. On a self-hosted instance you send notifications yourself, so this is vendor plumbing that should stay off.",
+    "relevance": "internal"
+  },
+  "oak_for_admins": {
+    "summary": "Enables 'IgniteAI', Instructure's AI assistant for admins, which is powered by Instructure-hosted AI backends. Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "oak_for_teachers": {
+    "summary": "Enables 'IgniteAI Agent', Instructure's hosted AI assistant for teachers and admins. It depends on Instructure's AI backend, so it does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "oak_for_users": {
+    "summary": "Shows a floating IgniteAI assistant button for teachers and admins, an AI helper chatbot backed by Instructure's cloud AI. Without Instructure's hosted AI services, the button is dead weight on a self-hosted instance and should stay off.",
+    "relevance": "cloud-only"
+  },
+  "observer_appointment_groups": {
+    "summary": "Lets teachers allow parents/guardians (observer accounts) to book appointment slots in the Canvas calendar, for example for parent-teacher conference sign-ups. Genuinely handy for a K-12 school where parents have observer accounts.",
+    "relevance": "useful"
+  },
+  "open_todos_in_new_tab": {
+    "summary": "A personal preference that makes items on a teacher's to-do list open in a new browser tab instead of the same one. Harmless quality-of-life tweak, per user.",
+    "relevance": "useful"
+  },
+  "open_tools_in_new_tab": {
+    "summary": "Makes external tool integrations open in a new browser tab, full-screen without the Canvas menus, instead of embedded in the page. Could help if an installed tool displays poorly inside a frame, but it is still hidden vendor work-in-progress.",
+    "relevance": "internal"
+  },
+  "originality_reports_for_a2": {
+    "summary": "Makes plagiarism-check reports show up in the newer assignment view. Page Schools has no plagiarism-checking service (like Turnitin) connected, so there is nothing for this to display.",
+    "relevance": "ignore"
+  },
+  "outcome_alignment_non_scoring_content": {
+    "summary": "Lets teachers link learning outcomes to non-graded content such as pages, not just assignments and quizzes. Only meaningful if the school tracks curriculum mastery through Canvas's learning outcomes tools.",
+    "relevance": "useful"
+  },
+  "outcome_alignment_summary_with_new_quizzes": {
+    "summary": "Includes quizzes from the 'New Quizzes' engine in the course summary of which activities cover which learning outcomes. New Quizzes is an Instructure-hosted service, so there is nothing to include on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "outcome_alignments_course_migration": {
+    "summary": "Includes learning-outcome links handled by Instructure's hosted Outcomes Service when copying courses. Self-hosted instances use the built-in outcomes system rather than that hosted service, so this does nothing here.",
+    "relevance": "cloud-only"
+  },
+  "outcome_average_calculation": {
+    "summary": "Adds 'average of all scores' as a way to calculate a student's level on a learning objective, alongside the existing methods (like highest score or most recent). Useful if the school tracks learning objectives and prefers averaging.",
+    "relevance": "useful"
+  },
+  "outcome_extra_credit": {
+    "summary": "When grading with a rubric that is tied to learning outcomes, this lets a teacher award more than the normal maximum points on an outcome, effectively allowing extra credit. Only matters if the school uses rubrics linked to learning outcomes.",
+    "relevance": "useful"
+  },
+  "outcome_gradebook": {
+    "summary": "Gives teachers a gradebook-style view of how each student is progressing against the course's learning objectives (mastered / near mastery / needs help), separate from ordinary scores. Useful if the school tracks skills or curriculum objectives, not just marks.",
+    "relevance": "useful"
+  },
+  "outcome_service_results_to_canvas": {
+    "summary": "Pulls learning-outcome results stored in Instructure's separate hosted Outcomes Service (used by New Quizzes in the cloud) back into Canvas's mastery gradebooks and reports. It exists to bridge a cloud service, so it has nothing to bridge on a self-hosted instance.",
+    "relevance": "cloud-only"
+  },
+  "outcomes_friendly_description": {
+    "summary": "Lets staff add a parent- and pupil-friendly plain-language description to each learning outcome, shown in the student mastery view instead of formal curriculum wording. Nice touch if the school grades against outcomes and shares mastery views with families.",
+    "relevance": "useful"
+  },
+  "outcomes_new_decaying_average_calculation": {
+    "summary": "Adds an updated 'decaying average' formula for scoring learning outcomes, which weights a student's most recent attempts more heavily than older ones. Only relevant if you grade against learning outcomes and care which averaging formula is used.",
+    "relevance": "useful"
+  },
+  "outcomes_rollup_propagation": {
+    "summary": "Controls a background process that pre-computes outcome score summaries into a database table for faster reporting. Site-admin-only performance plumbing.",
+    "relevance": "internal"
+  },
+  "outcomes_rollup_read": {
+    "summary": "Makes the Learning Mastery Gradebook read pre-computed summary tables instead of recalculating on the fly — a performance optimisation with no visible change.",
+    "relevance": "internal"
+  },
+  "password_complexity": {
+    "summary": "Gives administrators finer control over password rules — minimum length, banned common passwords, and similar requirements — for accounts that log in with a Canvas password. A sensible security upgrade for a school managing its own logins.",
+    "relevance": "useful"
+  },
+  "peer_review_allocation_and_grading": {
+    "summary": "An in-progress overhaul of peer review (students marking each other's work) that adds automatic reviewer assignment and separate due dates and grades for the reviews. Could interest teachers eventually, but it is still hidden vendor work-in-progress rather than a finished feature.",
+    "relevance": "internal"
+  },
+  "pendo_extended": {
+    "summary": "Sends extra usage-analytics metadata to Pendo, a third-party product-analytics service Instructure uses to study how people use Canvas. Vendor telemetry; does nothing useful for the school and is better left off.",
+    "relevance": "internal"
+  },
+  "people_page_modernization": {
+    "summary": "A redesign of the course People page (the class roster). Vendor interface modernization still in development; no functional change for the school to act on.",
+    "relevance": "internal"
+  },
+  "performance_improvements_for_gradebook": {
+    "summary": "Behind-the-scenes speed-up for loading the gradebook; vendor plumbing with no visible feature change.",
+    "relevance": "internal"
+  },
+  "permanent_page_links": {
+    "summary": "Makes links to a course page keep working even after the page's title is changed. Prevents broken links inside courses — a quiet but genuinely useful fix for teachers who rename pages.",
+    "relevance": "useful"
+  },
+  "persist_inferred_authentication_providers": {
+    "summary": "Remembers which login method each account used and ties new accounts to the default one. Only meaningful when a school runs multiple sign-in systems (e.g. Google plus Microsoft plus passwords); with a single login method it changes nothing noticeable.",
+    "relevance": "internal"
+  },
+  "pkce": {
+    "summary": "A security hardening step (PKCE) for the login handshake that third-party apps use when connecting to Canvas with a user's permission. Invisible to teachers and students, but a sensible security improvement for any instance that allows app integrations.",
+    "relevance": "useful"
+  },
+  "platform_service_speedgrader": {
+    "summary": "Replaces the marking screen (SpeedGrader) with a rebuilt version aimed at faster loading in very large courses. Parts of the rebuilt version rely on Instructure's hosted infrastructure, and a small school's classes are unlikely to hit the performance problems it targets.",
+    "relevance": "internal"
+  },
+  "platform_ui_unified_widgets_dashboard": {
+    "summary": "Swaps the Canvas dashboard for a new widget-based one imported from Instructure's shared platform interface project. In-development vendor rework; not something to enable on a production school instance.",
+    "relevance": "internal"
+  },
+  "post_grades": {
+    "summary": "Lets teachers push grades from Canvas back into an external student records system such as PowerSchool. Page Schools has no student records system connected to Canvas, so there is nothing to send grades to.",
+    "relevance": "ignore"
+  },
+  "post_grades_enhanced_modal": {
+    "summary": "A rebuilt, more accessible version of the dialog used to sync grades out to a student records system. Since Page Schools has no external records system connected, the dialog it improves is not used.",
+    "relevance": "ignore"
+  },
+  "pre_date_shift_for_assignment_importing": {
+    "summary": "A technical change to when due dates get adjusted during course copies — dates are shifted while items are created rather than fixed up afterwards. Same end result for teachers; it is an internal reliability/performance tweak to the import process.",
+    "relevance": "internal"
+  },
+  "precise_link_replacements": {
+    "summary": "A technical refinement to how links are rewritten when course content is imported or copied, touching only specific elements instead of all text. Internal migration plumbing.",
+    "relevance": "internal"
+  },
+  "prevent_deletion_outcomes_with_os_alignments": {
+    "summary": "Developer-only safety switch preventing deletion of learning objectives that are linked inside Instructure's separate hosted outcomes/New Quizzes service. Explicitly marked as not for adjustment; does nothing meaningful on a self-hosted instance.",
+    "relevance": "internal"
+  },
+  "product_tours": {
+    "summary": "Shows built-in guided walkthroughs that point new admins, teachers, and students around the Canvas interface. The tour content is written for Instructure's standard cloud product and may reference things a customized self-hosted instance does not have, but it can help first-time users find their way.",
+    "relevance": "useful"
+  },
+  "project_lhotse": {
+    "summary": "AI-assisted grading suggestions inside the modernized SpeedGrader, powered by Instructure's IgniteAI cloud service. Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "proxy_file_uploads": {
+    "summary": "Lets a teacher upload and submit a file on a student's behalf for file-upload assignments — useful when a pupil did the work on paper or a shared computer and the teacher digitises it. Very practical in a primary school where young children may not manage uploads themselves.",
+    "relevance": "useful"
+  },
+  "quiz_log_auditing": {
+    "summary": "Records a detailed activity log while a student takes a quiz (when they answered each question, if they left the quiz page, etc.) and lets teachers review that log afterwards. Useful for investigating suspected cheating or disputed quiz sessions, at the cost of some extra database storage.",
+    "relevance": "useful"
+  },
+  "quizzes_next": {
+    "summary": "Turns on 'New Quizzes', Instructure's replacement quiz engine with more question types. It runs as a separately hosted service connected via external tool integration — it is not part of the core self-hosted Canvas code, so on Page Schools' own server it will not work unless that separate service is also deployed (it normally is not available to self-hosters). Stick with classic quizzes.",
+    "relevance": "cloud-only"
+  },
+  "quizzes_next_submission_history": {
+    "summary": "Changes how attempt history is stored for 'New Quizzes', Instructure's hosted next-generation quiz engine. New Quizzes is not available on a self-hosted instance, so this has no effect for Page Schools.",
+    "relevance": "cloud-only"
+  },
+  "rce_a11y_resize": {
+    "summary": "Makes the rich text editor (the box teachers type page content into) resizable in a way that works with keyboards and screen readers. An accessibility improvement, though currently hidden vendor rollout plumbing.",
+    "relevance": "useful"
+  },
+  "rce_asr_captioning_improvements": {
+    "summary": "Improves automatic speech-recognition captions for media embedded through the rich text editor. Automatic captioning relies on Instructure's hosted media services, so it does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "rce_find_replace": {
+    "summary": "Adds a find-and-replace tool inside the rich text editor teachers use to write pages, assignments, and announcements. Small but genuinely handy when updating dates or names across a long page.",
+    "relevance": "useful"
+  },
+  "rce_lite_enabled_speedgrader_comments": {
+    "summary": "Lets teachers use basic text formatting (bold, lists, links) when writing feedback comments in SpeedGrader, Canvas's grading screen, instead of plain text only. Small improvement to the quality of written feedback.",
+    "relevance": "useful"
+  },
+  "rce_studio_embed_improvements": {
+    "summary": "Improves how media from Canvas Studio (Instructure's separate paid video platform) is embedded via the rich text editor. Page Schools does not have Studio, so this does nothing.",
+    "relevance": "cloud-only"
+  },
+  "rce_transform_loaded_content": {
+    "summary": "A behind-the-scenes cleanup step the rich text editor performs when loading content, mainly needed for New Quizzes compatibility. No visible feature; internal plumbing.",
+    "relevance": "internal"
+  },
+  "react_discussions_post": {
+    "summary": "The redesigned Discussions and Announcements interface — a cleaner, more modern layout for class discussions, with ongoing improvements. It is already on by default in current Canvas; teachers and students get a nicer discussion experience.",
+    "relevance": "useful"
+  },
+  "react_inbox_labels": {
+    "summary": "Lets users create labels for messages in the Canvas Inbox and filter conversations by label, similar to email labels. A modest organisational nicety for staff who get lots of Canvas messages.",
+    "relevance": "useful"
+  },
+  "react_people_page": {
+    "summary": "A behind-the-scenes rebuild of the course People page on newer technology, with no intended change to what it does. Vendor plumbing still in progress.",
+    "relevance": "internal"
+  },
+  "refactor_custom_variables": {
+    "summary": "An internal code restructuring of how placeholder variables for external tool integrations are computed in background jobs. Pure vendor plumbing.",
+    "relevance": "internal"
+  },
+  "render_both_to_do_lists": {
+    "summary": "For staff who are enrolled as both teacher and student somewhere, shows both their teacher to-do list and their student to-do list on the dashboard. A niche display tweak.",
+    "relevance": "internal"
+  },
+  "require_migration_to_new_quizzes": {
+    "summary": "Forces all imported quizzes to be converted to the New Quizzes format, removing the choice to keep them as classic quizzes. New Quizzes relies on an Instructure-hosted service that a self-hosted fork typically lacks, so forcing this would break quiz imports; keep off.",
+    "relevance": "cloud-only"
+  },
+  "reset_uuid_on_course_reset": {
+    "summary": "A behind-the-scenes change to how a course's internal identity code is handled when the course is reset, mainly to make restores work better with the Instructure-hosted New Quizzes service. No visible change for users.",
+    "relevance": "internal"
+  },
+  "responsive_student_grades_page": {
+    "summary": "Makes the page where students view their own grades resize properly on phones and small screens. Worth turning on if students or parents check grades from mobile phones, which is common.",
+    "relevance": "useful"
+  },
+  "restore_discussion_entry": {
+    "summary": "Lets a teacher (or the original author) restore a deleted post in a class discussion instead of it being gone for good. Handy for undoing accidental deletions, though the flag is still hidden/in development.",
+    "relevance": "useful"
+  },
+  "restrict_quantitative_data": {
+    "summary": "Hides all numeric scores and points from students and parents, showing only letter grades or ratings. Aimed at schools with a qualitative grading philosophy; Page Schools uses numeric CA/exam scores, so probably not wanted, but it is a real pedagogical option.",
+    "relevance": "useful"
+  },
+  "restrict_student_access": {
+    "summary": "Adds account controls to limit what students can do with the messaging inbox, file management, and calendar events. Potentially attractive for a K-12 school wanting to lock down pupil-to-pupil messaging, but this is a hidden vendor-controlled flag that may be incomplete; the similar 'Allow Limited Access for Students' setting covers related ground.",
+    "relevance": "useful"
+  },
+  "rubric_assessment_imports_exports": {
+    "summary": "Lets teachers download and upload completed rubric marking as spreadsheet (CSV) files from the Gradebook, so marking can be done offline in bulk. Requires the Enhanced Rubrics feature to be on.",
+    "relevance": "useful"
+  },
+  "rubric_criterion_range": {
+    "summary": "Lets teachers define each rubric rating as a point range (for example 7-10 points) instead of a single fixed value, so they can fine-tune scores within a rating band. A small but genuinely helpful grading improvement.",
+    "relevance": "useful"
+  },
+  "rubric_self_assessment": {
+    "summary": "Lets teachers turn on self-assessment for an assignment, so students score their own work against the marking rubric before the teacher grades it. A genuinely useful teaching technique for building self-reflection skills.",
+    "relevance": "useful"
+  },
+  "safe_files_jti": {
+    "summary": "Adds a one-time-use token to file download links so an intercepted link cannot be replayed by someone else. Invisible security hardening for file downloads; already on by default.",
+    "relevance": "useful"
+  },
+  "scheduled_feedback_releases": {
+    "summary": "Lets teachers pick a future date and time when marks and comments for an assignment will be released to students automatically, rather than posting them by hand. Nice for coordinating release across classes, e.g. after all sections finish an exam.",
+    "relevance": "useful"
+  },
+  "scheduled_page_publication": {
+    "summary": "Lets teachers set a future date and time for a course page to go live automatically, instead of having to remember to publish it manually. Handy for releasing weekly lesson materials on a schedule.",
+    "relevance": "useful"
+  },
+  "selective_content_tag_export": {
+    "summary": "When a teacher shares individual items from a module with another teacher, only those items are packaged up instead of the whole module. A small correctness fix to content sharing between teachers.",
+    "relevance": "useful"
+  },
+  "self_service_user_merge": {
+    "summary": "Lets a person who accidentally ended up with two Canvas accounts combine them on their own, provided they can log in to both. Saves admins from doing merges manually, but also lets users do it without admin oversight.",
+    "relevance": "useful"
+  },
+  "self_signup_deadline": {
+    "summary": "Still in development: would let teachers set a cut-off date by which students must sign themselves up for a group (for group projects). Potentially handy for upper classes, but not finished yet, so leave it alone for now.",
+    "relevance": "useful"
+  },
+  "send_usage_metrics": {
+    "summary": "Vendor telemetry switch that sends usage statistics back to Instructure's servers; irrelevant and best left off on a self-hosted school instance.",
+    "relevance": "internal"
+  },
+  "show_recent_messages_on_new_roster_user_page": {
+    "summary": "On the redesigned student/user detail page, shows that person's recent discussion messages, provided profiles are enabled in account settings. A minor convenience for teachers and admins looking up a student.",
+    "relevance": "useful"
+  },
+  "single_new_quiz_session_in_speedgrader": {
+    "summary": "A technical tweak to how the 'New Quizzes' engine loads inside the grading screen. New Quizzes is an Instructure-hosted service that self-hosted instances do not have, so this does nothing here.",
+    "relevance": "cloud-only"
+  },
+  "skip_blueprint_module_downstream_changes": {
+    "summary": "A technical tweak to how 'blueprint' template courses sync deletions to their linked courses, avoiding spurious 'changed' markers. Only relevant if the school uses blueprint template courses, and even then it is an internal behavior fix.",
+    "relevance": "internal"
+  },
+  "skip_reactivating_deleted_attachments": {
+    "summary": "When course content is imported (for example copying a course), files the teacher had previously deleted stay deleted instead of quietly coming back. A sensible behaviour fix that prevents confusing 'ghost files' after course copies.",
+    "relevance": "useful"
+  },
+  "slack_notifications": {
+    "summary": "Would let users receive Canvas notifications in Slack, a workplace chat app. Requires a Slack integration the school does not use, and it is aimed at workplaces rather than K-12 classrooms.",
+    "relevance": "ignore"
+  },
+  "smart_alerts": {
+    "summary": "Sends students timely automatic reminders about assignments that need their attention, such as upcoming due dates. Could help students stay on top of work, assuming notification email is configured on the server.",
+    "relevance": "useful"
+  },
+  "smart_search": {
+    "summary": "AI-powered 'smart search' across course content, branded IgniteAI. It requires AI embedding services (Instructure's hosted AI backends) to index content, so on a self-hosted instance without those configured it will not return results.",
+    "relevance": "cloud-only"
+  },
+  "speedgrader_grade_by_student": {
+    "summary": "In the grading screen, lets a teacher stay on one student and move through all of that student's assignments, instead of grading one assignment across all students. A nice workflow option for teachers who mark student-by-student, though it is still in testing.",
+    "relevance": "useful"
+  },
+  "speedgrader_studio_media_capture": {
+    "summary": "Lets graders record their screen as video feedback inside the marking tool, using Canvas Studio — a separately licensed, Instructure-hosted video product. Without a Studio subscription it does nothing.",
+    "relevance": "cloud-only"
+  },
+  "student_access_token_management": {
+    "summary": "Forces student-created API access tokens (keys that let apps act as the student) to expire within 120 days and lets admins delete them. A sensible security tightening with no downside for normal classroom use.",
+    "relevance": "useful"
+  },
+  "student_grade_summary_upgrade": {
+    "summary": "A behind-the-scenes rebuild of the student 'Grades' page on newer technology. Looks and behaves essentially the same for students; it exists to make the code easier for Instructure to maintain.",
+    "relevance": "internal"
+  },
+  "student_outcome_gradebook": {
+    "summary": "Gives students a gradebook-style page showing their progress on course learning outcomes (skills/standards), marked as mastered, near mastery, or needing work. Only meaningful if teachers actually set up learning outcomes; if you use outcomes, it is a nice self-monitoring tool for older pupils.",
+    "relevance": "useful"
+  },
+  "submission_comment_emojis": {
+    "summary": "Adds an emoji picker so teachers and students can put emojis in the comments they exchange on submitted work. A small, fun classroom nicety; some schools prefer to leave it off to keep feedback formal.",
+    "relevance": "useful"
+  },
+  "submission_comment_media_auto_captioning": {
+    "summary": "Automatically generates subtitles for audio/video feedback comments teachers leave on submissions. Captioning relies on Instructure's hosted media/AI captioning services, so on a self-hosted instance without those services configured it will not produce captions.",
+    "relevance": "cloud-only"
+  },
+  "submission_stickers": {
+    "summary": "Lets teachers attach fun reward stickers to student submissions when marking — a good fit for primary-school encouragement. Requires the 'Assignment Enhancements - Student' feature to also be turned on.",
+    "relevance": "useful"
+  },
+  "syllabus_versioning": {
+    "summary": "Keeps a full history of every edit to a course's syllabus page, so teachers or admins can see what changed and restore an earlier version. Useful insurance against accidental deletions of the course outline.",
+    "relevance": "useful"
+  },
+  "temporary_enrollments": {
+    "summary": "Lets admins add someone to a course for a limited period, after which they are automatically removed — for example a substitute teacher covering a class for two weeks. Saves remembering to remove them manually.",
+    "relevance": "useful"
+  },
+  "timer_without_autosubmission": {
+    "summary": "Adds a setting on timed quizzes (the built-in classic quiz tool) so that when time runs out, the quiz is NOT automatically submitted — the student's attempt just stops accepting answers. Useful if teachers want to review timed-out attempts manually rather than have Canvas auto-submit them.",
+    "relevance": "useful"
+  },
+  "title_iv_financial_aid_report": {
+    "summary": "A compliance report for United States federal student financial aid (Title IV), part of the hosted 'Intelligent Insights' product. Irrelevant to a Nigerian K-12 school and non-functional self-hosted anyway.",
+    "relevance": "cloud-only"
+  },
+  "top_navigation_placement": {
+    "summary": "Lets external tool integrations add a button to Canvas's top navigation bar. Only relevant if the school installs third-party tools that use this placement; with none installed it does nothing.",
+    "relevance": "ignore"
+  },
+  "translate_inbox_messages": {
+    "summary": "Adds automatic translation of Canvas inbox messages into each user's preferred language, powered by IgniteAI, Instructure's hosted AI service. Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "translation": {
+    "summary": "Adds AI-powered translation of discussion posts and announcements into other languages, powered by Instructure's hosted IgniteAI service; does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "tune_lti_context_id_history_query": {
+    "summary": "A database performance workaround for very large institutions with huge course-copy histories, affecting a technical lookup used by external tools. Irrelevant to a single small school; leave alone.",
+    "relevance": "internal"
+  },
+  "underline_all_links": {
+    "summary": "A per-user accessibility preference that underlines links in Canvas menus, the dashboard, and sidebars so they are easier to spot, which helps colorblind or low-vision users. Content links inside pages are always underlined regardless.",
+    "relevance": "useful"
+  },
+  "use_body_word_count": {
+    "summary": "A behind-the-scenes change to how the word count of typed submissions is calculated (stored once instead of recalculated every time), making pages load faster. No visible change for teachers or students.",
+    "relevance": "internal"
+  },
+  "use_comment_library_v2": {
+    "summary": "Switches SpeedGrader to a redesigned version of the comment library (the tool where teachers save reusable feedback phrases). Same feature, newer interface; low risk to enable if the comment library is in use.",
+    "relevance": "useful"
+  },
+  "use_dyslexic_font": {
+    "summary": "Lets an individual user swap the entire Canvas font for OpenDyslexic, a typeface designed to be easier to read for people with dyslexia. A free, self-contained accessibility win worth leaving available to users.",
+    "relevance": "useful"
+  },
+  "use_jwt_auth_for_utid_sync": {
+    "summary": "Changes how Canvas authenticates with LearnPlatform, an Instructure-hosted tool-catalog service, when syncing tool identifiers. Does nothing on a self-hosted school instance.",
+    "relevance": "cloud-only"
+  },
+  "use_queue_for_rate_limiting_gradebook_requests": {
+    "summary": "A technical throttling mechanism for how the gradebook fetches its data, to avoid overloading the server. No visible change for users.",
+    "relevance": "internal"
+  },
+  "use_semi_colon_field_separators_in_gradebook_exports": {
+    "summary": "Makes downloaded grade spreadsheets use semicolons instead of commas between columns, which Excel expects in some countries' regional settings. Only needed if grade exports open as one jumbled column in Excel.",
+    "relevance": "useful"
+  },
+  "user_immersive_reader_wiki_pages": {
+    "summary": "Adds a button that opens Canvas pages in Microsoft's Immersive Reader, a free Microsoft web service that reads text aloud and simplifies the layout for struggling readers. It calls out to Microsoft's servers (not Instructure's), so it works from a self-hosted Canvas as long as students have internet access.",
+    "relevance": "useful"
+  },
+  "ux_list_concluded_courses_in_bp": {
+    "summary": "A tiny interface tweak that labels finished courses with a 'Concluded' tag in the blueprint-course association dialog. Shadow vendor plumbing; only visible if you use blueprint courses.",
+    "relevance": "internal"
+  },
+  "validate_call_to_action": {
+    "summary": "A small interface change: instead of greying out a submit button until a form is complete, the button stays clickable and shows an error message pointing to what is missing. Minor usability polish, no real admin decision needed.",
+    "relevance": "internal"
+  },
+  "verify_ldap_certs": {
+    "summary": "Makes Canvas verify the security certificate of an LDAP directory server (a staff/student login directory) before trusting it — a genuine security hardening. Only relevant if Page Schools ever hooks Canvas to an LDAP directory; with local Canvas logins it does nothing.",
+    "relevance": "ignore"
+  },
+  "view_ungraded_as_zero": {
+    "summary": "Adds a Gradebook view where a teacher can see what class totals would look like if every unmarked submission counted as zero. It is display-only and never changes real grades — helpful for spotting pupils whose averages will drop once missing work is marked.",
+    "relevance": "useful"
+  },
+  "visibility_performance_improvements": {
+    "summary": "Speeds up the database queries that work out which students can see which assignments when teachers assign work to specific pupils or sections. Invisible performance plumbing.",
+    "relevance": "internal"
+  },
+  "widget_dashboard": {
+    "summary": "Lets students add, remove, and rearrange widgets on their Canvas dashboard for a more personalised home page. Still hidden/in-development, but a plausible nice-to-have for pupils once stable.",
+    "relevance": "useful"
+  },
+  "widget_dashboard_customization": {
+    "summary": "Adds extra customisation options to a newer widget-based dashboard layout. Harmless cosmetic option; only meaningful if the underlying widget dashboard is in use on your version.",
+    "relevance": "useful"
+  },
+  "wiki_page_mastery_path_no_assignment_group": {
+    "summary": "An internal bug fix about how hidden placeholder assignments are created when pages are assigned through MasteryPaths (Canvas's conditional-release feature). Not a feature decision for the school.",
+    "relevance": "internal"
+  },
+  "youtube_migration": {
+    "summary": "Scans courses for embedded YouTube videos and offers to convert them into Canvas Studio, Instructure's paid hosted video platform. Page Schools has no Studio subscription and deliberately keeps YouTube embeds, so this must stay off.",
+    "relevance": "cloud-only"
+  },
+  "youtube_migration_high_priority": {
+    "summary": "Makes background jobs that convert embedded YouTube content run at higher priority so they finish sooner. Server tuning plumbing; no user-facing feature.",
+    "relevance": "internal"
+  },
+  "youtube_overlay": {
+    "summary": "Puts an overlay on YouTube videos embedded in course content (a click-to-play cover instead of loading YouTube immediately). Relevant to Page Schools since seeded courses embed YouTube videos; mainly affects how and when the YouTube player loads for pupils.",
+    "relevance": "useful"
+  }
+}
