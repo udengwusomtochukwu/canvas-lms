@@ -75,5 +75,6 @@
   <% if @paper_exam %>
     <a class="btn" target="_blank" href="<%= course_quiz_paper_exam_print_path(@context, @quiz) %>"><%= t("Print (single copy)") %></a>
     <a class="btn" target="_blank" href="<%= course_quiz_paper_exam_print_path(@context, @quiz, personalized: 1) %>"><%= t("Print per-student (QR headers)") %></a>
+    <a class="btn" target="_blank" href="<%= course_quiz_paper_exam_print_path(@context, @quiz, personalized: 1, answer_space: 1) %>"><%= t("Print per-student with answer spaces") %></a>
   <% end %>
 </div>

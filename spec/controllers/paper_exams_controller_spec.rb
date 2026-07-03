@@ -141,16 +141,21 @@ describe PaperExamsController do
         PaperExams::Preparer.call(quiz: @quiz, prepared_by: @teacher)
       end
 
-      it "renders sections, marks, tick boxes, ruled space, and records the print" do
+      it "renders the institutional format: marks right-aligned, tick boxes, instruction block" do
         get :printable, params: base_params
         expect(response).to be_successful
         body = response.body
-        expect(body).to include "Section A"
         expect(body).to include "2 + 2"
-        expect(body).to include "tickbox"       # MCQ options
-        expect(body).to include "answer-lines"  # essay ruled space
-        expect(body).to include "(5)"
+        expect(body).to include "tickbox"                    # objective options
+        expect(body).to include "(5 Marks)"                  # bold right-aligned marks
+        expect(body).to include "Instruction:"               # underlined rubric block
+        expect(body).not_to include 'class="answer-lines"'   # theory: answer booklet, no ruled space
         expect(PaperExam.find_by(quiz: @quiz).printed?).to be true
+      end
+
+      it "adds ruled answer space only when requested" do
+        get :printable, params: base_params.merge(answer_space: 1)
+        expect(response.body).to include 'class="answer-lines"'
       end
 
       it "renders one QR-headed copy per student when personalized" do

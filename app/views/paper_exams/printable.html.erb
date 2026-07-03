@@ -16,12 +16,18 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # Page Schools fork (Manual Exam Workflow, phase 2): the printable exam
-# paper. Layout-less; print CSS is the product here. The document structure
-# comes from PaperExams::Document (source-agnostic).
-#
-# NOTE: header layout follows the standard Nigerian school exam format;
-# swap in the pilot school's exact letterhead in the .exam-header block.
+# paper. Layout follows the standard Nigerian institutional format (modelled
+# on real past papers): centred crest + institution block, bold underlined
+# Instruction/Time Allowed lines, numbered questions with bold right-aligned
+# "(N Marks)". Theory questions print without answer space (answer booklet)
+# unless answer_space=1; objective questions print lettered options with
+# tick boxes. Document structure comes from PaperExams::Document
+# (source-agnostic).
 section_letters = ("A".."Z").to_a
+root_account = @context.root_account
+logo_url = root_account.try(:brand_config)&.variables&.dig("ic-brand-header-image").presence
+answer_space = Canvas::Plugin.value_to_boolean(params[:answer_space])
+multi_section = @document.sections.length > 1
 %>
 <!DOCTYPE html>
 <html lang="<%= I18n.locale %>">
@@ -29,7 +35,7 @@ section_letters = ("A".."Z").to_a
   <meta charset="utf-8">
   <title><%= @quiz.title %></title>
   <style>
-    @page { size: A4; margin: 15mm 14mm; }
+    @page { size: A4; margin: 18mm 16mm; }
     * { box-sizing: border-box; }
     body { font-family: "Times New Roman", Georgia, serif; font-size: 12pt; color: #000; margin: 0; }
     .screen-bar { padding: 10px; background: #eee; font-family: sans-serif; }
@@ -38,34 +44,35 @@ section_letters = ("A".."Z").to_a
     .exam-copy { page-break-after: always; }
     .exam-copy:last-child { page-break-after: auto; }
 
-    .exam-header { text-align: center; border-bottom: 3px double #000; padding-bottom: 6px; margin-bottom: 8px; position: relative; }
-    .exam-header .school { font-size: 16pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
-    .exam-header .motto { font-size: 10pt; font-style: italic; }
-    .exam-header .exam-title { font-size: 13pt; font-weight: bold; margin-top: 4px; text-transform: uppercase; }
-    .exam-header .meta { font-size: 11pt; margin-top: 2px; }
-    .qr { position: absolute; top: 0; right: 0; width: 62px; height: 62px; }
-    .qr svg { width: 62px; height: 62px; }
+    .exam-header { text-align: center; position: relative; margin-bottom: 6px; }
+    .exam-header .crest { height: 70px; margin: 0 auto 4px; display: flex; align-items: center; justify-content: center; }
+    .exam-header .crest img { max-height: 70px; max-width: 140px; }
+    .exam-header .crest .placeholder { width: 90px; height: 66px; border: 1px solid #999; }
+    .exam-header .line { font-weight: bold; font-size: 12.5pt; }
+    .qr { position: absolute; top: 0; right: 0; width: 60px; height: 60px; }
+    .qr svg { width: 60px; height: 60px; }
 
-    .candidate { display: flex; gap: 18px; margin: 8px 0 10px; font-size: 11pt; }
+    .rubric-block { margin: 12px 0 4px; font-size: 12pt; }
+    .rubric-block .label { font-weight: bold; text-decoration: underline; }
+
+    .candidate { display: flex; gap: 18px; margin: 10px 0 12px; font-size: 11pt; }
     .candidate .field { flex: 1; border-bottom: 1px solid #000; padding: 0 4px 2px; white-space: nowrap; }
 
-    .instructions { font-size: 10.5pt; font-style: italic; margin: 6px 0 10px; }
+    .section-head { font-weight: bold; text-transform: uppercase; text-align: center; margin: 14px 0 8px; page-break-after: avoid; }
 
-    .section-head { font-weight: bold; text-transform: uppercase; border-top: 1px solid #000; border-bottom: 1px solid #000; padding: 3px 0; margin: 14px 0 8px; page-break-after: avoid; }
-    .section-head .marks { float: right; font-weight: normal; }
-
-    .question { page-break-inside: avoid; margin: 0 0 10px; }
-    .question .qhead { display: flex; }
-    .question .qnum { min-width: 26px; font-weight: bold; }
-    .question .qbody { flex: 1; }
+    .question { page-break-inside: avoid; margin: 0 0 12px; }
+    .question .qrow { display: flex; align-items: baseline; }
+    .question .qnum { min-width: 28px; font-weight: bold; }
+    .question .qbody { flex: 1; padding-right: 12px; }
     .question .qbody p { margin: 0 0 4px; }
-    .question .qmarks { white-space: nowrap; margin-left: 8px; font-size: 10.5pt; }
-    .options { list-style: none; padding-left: 26px; margin: 4px 0 0; }
+    .question .qmarks { white-space: nowrap; font-weight: bold; font-size: 11pt; }
+    .options { list-style: none; padding-left: 28px; margin: 4px 0 0; }
     .options li { margin: 3px 0; }
+    .options .letter { display: inline-block; min-width: 22px; }
     .tickbox { display: inline-block; width: 11px; height: 11px; border: 1.2px solid #000; margin-right: 7px; vertical-align: -1px; }
-    .answer-lines { margin: 6px 0 0 26px; }
+    .answer-lines { margin: 6px 0 0 28px; }
     .answer-lines .line { border-bottom: 1px dotted #444; height: 22px; }
-    .end-mark { text-align: center; font-weight: bold; margin-top: 18px; letter-spacing: 2px; }
+    .end-mark { text-align: center; font-weight: bold; margin-top: 20px; letter-spacing: 2px; }
   </style>
 </head>
 <body>
@@ -81,18 +88,34 @@ section_letters = ("A".."Z").to_a
         <% if student %>
           <div class="qr" aria-hidden="true"><%= raw @qr_codes[student.id] %></div>
         <% end %>
-        <div class="school"><%= @context.root_account.name %></div>
-        <div class="motto"><%= t("Nature, Knowledge and Excellence") %></div>
-        <div class="exam-title">
-          <%= @quiz.title %>
-          <% if @grading_period %> — <%= @grading_period.title %><% end %>
+        <div class="crest">
+          <% if logo_url %>
+            <img src="<%= logo_url %>" alt="">
+          <% else %>
+            <span class="placeholder" aria-hidden="true"></span>
+          <% end %>
         </div>
-        <div class="meta">
-          <%= t("Subject/Class: %{course}", course: @context.name) %>
-          &nbsp;·&nbsp; <%= t("Total: %{points} marks", points: @document.total_points) %>
-          <% if @quiz.time_limit %> &nbsp;·&nbsp; <%= t("Duration: %{minutes} minutes", minutes: @quiz.time_limit) %><% end %>
-        </div>
+        <div class="line"><%= root_account.name %></div>
+        <% if @grading_period %>
+          <div class="line"><%= t("%{term} Examination", term: @grading_period.title) %></div>
+        <% end %>
+        <div class="line"><%= t("Course: %{course}", course: @context.name) %></div>
+        <div class="line"><%= @quiz.title %></div>
       </header>
+
+      <div class="rubric-block">
+        <div>
+          <span class="label"><%= t("Instruction:") %></span>
+          <% if @quiz.description.present? %>
+            <%= strip_tags(@quiz.description) %>
+          <% else %>
+            <%= t("Answer ALL questions.") %>
+          <% end %>
+        </div>
+        <% if @quiz.time_limit %>
+          <div><span class="label"><%= t("Time Allowed:") %></span> <%= t("%{minutes} minutes", minutes: @quiz.time_limit) %></div>
+        <% end %>
+      </div>
 
       <div class="candidate">
         <span class="field"><%= t("Name:") %> <%= student&.name %></span>
@@ -100,34 +123,32 @@ section_letters = ("A".."Z").to_a
         <span class="field"><%= t("Date:") %> ____________</span>
       </div>
 
-      <% if @quiz.description.present? %>
-        <div class="instructions"><%= raw @quiz.description %></div>
-      <% end %>
-
       <% @document.sections.each_with_index do |section, s_index| %>
-        <div class="section-head">
-          <%= t("Section %{letter}", letter: section_letters[s_index]) %><%= ": #{section.title}" if section.title.present? %>
-          <span class="marks"><%= t("%{points} marks", points: section.total_points) %></span>
-        </div>
+        <% if multi_section || section.title.present? %>
+          <div class="section-head">
+            <%= t("Section %{letter}", letter: section_letters[s_index]) %><%= ": #{section.title}" if section.title.present? %>
+            (<%= t("%{points} Marks", points: section.total_points == section.total_points.to_i ? section.total_points.to_i : section.total_points) %>)
+          </div>
+        <% end %>
         <% if section.instructions.present? %>
-          <div class="instructions"><%= section.instructions %></div>
+          <div class="rubric-block"><%= section.instructions %></div>
         <% end %>
 
         <% section.questions.each do |question| %>
           <div class="question">
-            <div class="qhead">
+            <div class="qrow">
               <span class="qnum"><%= question.number %>.</span>
               <span class="qbody"><%= raw question.html %></span>
-              <span class="qmarks">(<%= question.points == question.points.to_i ? question.points.to_i : question.points %>)</span>
+              <span class="qmarks">(<%= question.points == question.points.to_i ? question.points.to_i : question.points %> <%= t("Marks") %>)</span>
             </div>
             <% if question.options.any? %>
-              <ol class="options" type="a">
-                <% question.options.each do |option| %>
-                  <li><span class="tickbox"></span><%= raw option %></li>
+              <ol class="options">
+                <% question.options.each_with_index do |option, o_index| %>
+                  <li><span class="tickbox"></span><span class="letter"><%= ("a".."z").to_a[o_index] %>)</span><%= raw option %></li>
                 <% end %>
               </ol>
             <% end %>
-            <% if question.answer_lines.positive? %>
+            <% if answer_space && question.answer_lines.positive? %>
               <div class="answer-lines">
                 <% question.answer_lines.times do %><div class="line"></div><% end %>
               </div>
