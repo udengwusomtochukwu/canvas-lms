@@ -28,6 +28,8 @@ root_account = @context.root_account
 logo_url = root_account.try(:brand_config)&.variables&.dig("ic-brand-header-image").presence
 answer_space = Canvas::Plugin.value_to_boolean(params[:answer_space])
 multi_section = @document.sections.length > 1
+custom_letterhead = PaperExams::Letterhead.template_for(root_account)
+letterhead_values = PaperExams::Letterhead.values_for(quiz: @quiz, grading_period: @grading_period, total_marks: @document.total_points)
 %>
 <!DOCTYPE html>
 <html lang="<%= I18n.locale %>">
@@ -88,19 +90,24 @@ multi_section = @document.sections.length > 1
         <% if student %>
           <div class="qr" aria-hidden="true"><%= raw @qr_codes[student.id] %></div>
         <% end %>
-        <div class="crest">
-          <% if logo_url %>
-            <img src="<%= logo_url %>" alt="">
-          <% else %>
-            <span class="placeholder" aria-hidden="true"></span>
+        <% if custom_letterhead %>
+          <%# admin-designed letterhead (sanitized HTML + substituted variables) %>
+          <%= PaperExams::Letterhead.render(custom_letterhead, letterhead_values) %>
+        <% else %>
+          <div class="crest">
+            <% if logo_url %>
+              <img src="<%= logo_url %>" alt="">
+            <% else %>
+              <span class="placeholder" aria-hidden="true"></span>
+            <% end %>
+          </div>
+          <div class="line"><%= root_account.name %></div>
+          <% if @grading_period %>
+            <div class="line"><%= t("%{term} Examination", term: @grading_period.title) %></div>
           <% end %>
-        </div>
-        <div class="line"><%= root_account.name %></div>
-        <% if @grading_period %>
-          <div class="line"><%= t("%{term} Examination", term: @grading_period.title) %></div>
+          <div class="line"><%= t("Course: %{course}", course: @context.name) %></div>
+          <div class="line"><%= @quiz.title %></div>
         <% end %>
-        <div class="line"><%= t("Course: %{course}", course: @context.name) %></div>
-        <div class="line"><%= @quiz.title %></div>
       </header>
 
       <div class="rubric-block">

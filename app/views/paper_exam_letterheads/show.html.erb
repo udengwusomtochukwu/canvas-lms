@@ -1,0 +1,93 @@
+<%
+# Copyright (C) 2026 - present Instructure, Inc.
+#
+# This file is part of Canvas.
+#
+# Canvas is free software: you can redistribute it and/or modify it under
+# the terms of the GNU Affero General Public License as published by the Free
+# Software Foundation, version 3 of the License.
+#
+# Canvas is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+# details.
+#
+# You should have received a copy of the GNU Affero General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
+# Page Schools fork (Manual Exam Workflow): letterhead editor + live preview.
+%>
+
+<% provide :page_title do %><%= t("Exam Letterhead") %><% end %>
+
+<h1 class="Heading"><%= t("Exam paper letterhead") %></h1>
+
+<p>
+  <%= t(<<~TEXT)
+    This HTML renders at the top of every printed exam paper. Use the
+    variables below; they are replaced per exam at print time. Leave empty
+    to use the built-in header. Scripts and unsafe markup are stripped.
+    TEXT
+  %>
+</p>
+
+<table class="ic-Table" style="max-width: 640px;">
+  <thead><tr><th scope="col"><%= t("Variable") %></th><th scope="col"><%= t("Example") %></th></tr></thead>
+  <tbody>
+    <% PaperExams::Letterhead::VARIABLES.each do |name| %>
+      <tr><td><code>{{<%= name %>}}</code></td><td><%= PaperExams::Letterhead::SAMPLE_VALUES[name] %></td></tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= form_tag account_paper_exam_letterhead_path(@account), method: :put, id: "letterhead-form" do %>
+  <textarea id="letterhead-template" name="template" rows="14" spellcheck="false"
+            style="width: 100%; max-width: 900px; font-family: monospace; font-size: 13px;"><%= @template %></textarea>
+  <div style="margin: 8px 0; display: flex; gap: 8px;">
+    <button type="submit" class="btn btn-primary"><%= t("Save letterhead") %></button>
+    <button type="button" class="btn" id="letterhead-clear"><%= t("Clear (use built-in header)") %></button>
+  </div>
+<% end %>
+
+<h2 class="Heading"><%= t("Preview (sample exam data)") %></h2>
+<iframe id="letterhead-preview" sandbox="" title="<%= t("Letterhead preview") %>"
+        style="width: 100%; max-width: 900px; height: 260px; border: 1px solid #ccc; background: #fff;"></iframe>
+
+<script>
+(function () {
+  "use strict";
+  var textarea = document.getElementById("letterhead-template");
+  var frame = document.getElementById("letterhead-preview");
+  var clear = document.getElementById("letterhead-clear");
+  var timer = null;
+
+  function csrfToken() {
+    var match = document.cookie.match(/(^|;\s*)_csrf_token=([^;]+)/);
+    return match ? decodeURIComponent(match[2]) : "";
+  }
+
+  function refresh() {
+    fetch("<%= account_paper_exam_letterhead_preview_path(@account) %>", {
+      method: "POST",
+      headers: { "X-CSRF-Token": csrfToken(), "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ template: textarea.value }).toString(),
+      credentials: "same-origin"
+    })
+      .then(function (response) { return response.text(); })
+      .then(function (html) {
+        frame.srcdoc = '<body style="font-family: \'Times New Roman\', serif; margin: 12px;">' + html + "</body>";
+      })
+      .catch(function () {});
+  }
+
+  textarea.addEventListener("input", function () {
+    clearTimeout(timer);
+    timer = setTimeout(refresh, 400);
+  });
+  clear.addEventListener("click", function () {
+    textarea.value = "";
+    refresh();
+  });
+  refresh();
+}());
+</script>

@@ -78,3 +78,9 @@
     <a class="btn" target="_blank" href="<%= course_quiz_paper_exam_print_path(@context, @quiz, personalized: 1, answer_space: 1) %>"><%= t("Print per-student with answer spaces") %></a>
   <% end %>
 </div>
+
+<% if @context.root_account.grants_right?(@current_user, :manage_account_settings) %>
+  <p style="margin-top: 12px;">
+    <a href="<%= account_paper_exam_letterhead_path(@context.root_account) %>"><%= t("Design the exam letterhead (admin)") %></a>
+  </p>
+<% end %>

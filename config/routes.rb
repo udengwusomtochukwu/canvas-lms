@@ -1156,6 +1156,12 @@ CanvasRails::Application.routes.draw do
 
   resources :plugins, only: %i[index show update]
 
+  # Page Schools fork: Manual Exam Workflow — account-level exam letterhead
+  # editor (gated on the manual_exam_workflow flag; 404s when off)
+  get "accounts/:account_id/paper_exam_letterhead" => "paper_exam_letterheads#show", :as => :account_paper_exam_letterhead
+  put "accounts/:account_id/paper_exam_letterhead" => "paper_exam_letterheads#update"
+  post "accounts/:account_id/paper_exam_letterhead/preview" => "paper_exam_letterheads#preview", :as => :account_paper_exam_letterhead_preview
+
   # Page Schools fork: Moments — global-nav timeline page (role-aware) and
   # HMAC-authenticated callbacks from the configurable media backend.
   # Gated on the moments_native account feature flag; 404s when off.

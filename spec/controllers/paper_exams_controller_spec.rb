@@ -158,6 +158,20 @@ describe PaperExamsController do
         expect(response.body).to include 'class="answer-lines"'
       end
 
+      it "renders the admin's custom letterhead with real exam values" do
+        PaperExams::Letterhead.save_template(
+          @course.root_account,
+          "<div class='custom-head'><b>{{school_name}}</b> — {{exam_title}} ({{total_marks}} marks)</div>"
+        )
+        get :printable, params: base_params
+        expect(response.body).to include "custom-head"
+        expect(response.body).to include @course.root_account.name
+        expect(response.body).to include @quiz.title
+        expect(response.body).to include "(20.0 marks)"
+      ensure
+        PaperExams::Letterhead.save_template(@course.root_account, "")
+      end
+
       it "renders one QR-headed copy per student when personalized" do
         get :printable, params: base_params.merge(personalized: 1)
         expect(response.body.scan("exam-copy").length).to be >= 1
