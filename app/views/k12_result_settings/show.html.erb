@@ -1,0 +1,73 @@
+<%
+# Page Schools fork (Automatic K-12 Result): account-level report-card policy.
+provide :page_title, t("K-12 Result Settings")
+config = @config.to_h
+%>
+
+<style>
+  .k12s { max-width: 640px; font-size: 14px; }
+  .k12s fieldset { border: 1px solid #c7cdd1; border-radius: 6px; margin-bottom: 16px; padding: 12px 16px; }
+  .k12s legend { font-weight: 700; color: #2d3193; padding: 0 6px; }
+  .k12s label { display: block; margin-bottom: 8px; }
+  .k12s .hint { font-size: 12px; color: #66717d; margin: -4px 0 8px; }
+  .k12s input[type=number] { width: 5em; }
+  .k12s textarea, .k12s input[type=text] { width: 100%; }
+</style>
+
+<div class="k12s">
+  <h1 style="font-size:20px"><%= t("K-12 Result Settings") %></h1>
+  <p class="hint">
+    <%= t("Controls the automatic termly/sessional report card for the whole account. Terms are your grading periods; the session is the enrollment term.") %>
+  </p>
+
+  <%= form_tag account_k12_result_settings_path(@context), method: :put do %>
+    <fieldset>
+      <legend><%= t("Term naming") %></legend>
+      <label for="k12s_labels"><%= t("Term labels, one per line, in period order") %></label>
+      <textarea id="k12s_labels" name="k12_result[term_labels]" rows="4"><%= @config.term_labels.join("\n") %></textarea>
+      <p class="hint"><%= t("Mapped onto the session's grading periods sorted by start date (e.g. First Term / Second Term / Third Term, or Harmattan / Rain). Leave empty to use the grading periods' own names.") %></p>
+    </fieldset>
+
+    <fieldset>
+      <legend><%= t("Positions") %></legend>
+      <label><input type="radio" name="k12_result[position_mode]" value="off" <%= "checked" if @config.position_mode == "off" %>>
+        <%= t("Off — never show class positions") %></label>
+      <label><input type="radio" name="k12_result[position_mode]" value="position_among_enrolled" <%= "checked" if @config.position_mode == "position_among_enrolled" %>>
+        <%= t("Among enrolled — denominator counts every active student") %></label>
+      <label><input type="radio" name="k12_result[position_mode]" value="position_among_attempted" <%= "checked" if @config.position_mode == "position_among_attempted" %>>
+        <%= t("Among attempted — denominator counts only students with a graded score") %></label>
+      <label><input type="checkbox" name="k12_result[show_term_position]" value="1" <%= "checked" if Canvas::Plugin.value_to_boolean(config["show_term_position"]) %>>
+        <%= t("Show per-subject position on the termly card") %></label>
+      <label><input type="checkbox" name="k12_result[show_overall_position]" value="1" <%= "checked" if Canvas::Plugin.value_to_boolean(config["show_overall_position"]) %>>
+        <%= t("Show overall (sessional) position") %></label>
+    </fieldset>
+
+    <fieldset>
+      <legend><%= t("Display") %></legend>
+      <label><input type="checkbox" name="k12_result[show_median]" value="1" <%= "checked" if @config.show_median? %>>
+        <%= t("Show class median (per subject and overall)") %></label>
+      <label><input type="checkbox" name="k12_result[show_mastery]" value="1" <%= "checked" if @config.show_mastery? %>>
+        <%= t("Show strand mastery (from outcome results)") %></label>
+      <label><%= t("Default report card view") %>
+        <select name="k12_result[default_view]">
+          <option value="senior" <%= "selected" if @config.default_view == "senior" %>><%= t("Senior (CA + exam + positions)") %></option>
+          <option value="developmental" <%= "selected" if @config.default_view == "developmental" %>><%= t("Developmental (KG–Y4 skills view)") %></option>
+        </select>
+      </label>
+      <p class="hint"><%= t("Individual courses can override the view on their K-12 Results page.") %></p>
+    </fieldset>
+
+    <fieldset>
+      <legend><%= t("CA / Exam split") %></legend>
+      <label><%= t("Continuous assessment weight") %>
+        <input type="number" step="1" min="1" name="k12_result[ca_weight]" value="<%= @config.ca_weight.round %>"></label>
+      <label><%= t("Examination weight") %>
+        <input type="number" step="1" min="1" name="k12_result[exam_weight]" value="<%= @config.exam_weight.round %>"></label>
+      <label><%= t("Exam assignment-group pattern") %>
+        <input type="text" name="k12_result[exam_group_pattern]" value="<%= config["exam_group_pattern"] %>"></label>
+      <p class="hint"><%= t("Assignment groups whose name matches this pattern (case-insensitive) count as the exam; every other graded group counts as continuous assessment. The subject total always comes from the gradebook score, not from this split.") %></p>
+    </fieldset>
+
+    <button type="submit"><%= t("Save settings") %></button>
+  <% end %>
+</div>

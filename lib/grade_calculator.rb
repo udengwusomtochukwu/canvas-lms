@@ -152,6 +152,8 @@ class GradeCalculator
     create_course_grade_alerts_and_live_events(scores_prior_to_compute)
 
     calculate_course_score if @update_course_score
+
+    enqueue_k12_result_recalculation
   end
 
   private
@@ -472,6 +474,19 @@ class GradeCalculator
     return unless @ignore_muted # only update when calculating final scores
 
     ScoreStatisticsGenerator.update_score_statistics_in_singleton(@course)
+  end
+
+  # Page Schools fork (Automatic K-12 Result): after this branch's Score rows
+  # are persisted, queue the coalesced report-card result recompute for this
+  # (course, grading period) — posted branches only, like
+  # update_score_statistics. No-op unless the account flag is on; never
+  # allowed to break grading.
+  def enqueue_k12_result_recalculation
+    return unless @ignore_muted
+
+    K12Results.recalculate_later(course: @course, grading_period: @grading_period)
+  rescue => e
+    Canvas::Errors.capture_exception(:k12_results, e)
   end
 
   def save_scores

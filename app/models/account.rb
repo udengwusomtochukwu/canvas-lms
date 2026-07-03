@@ -409,6 +409,10 @@ class Account < ActiveRecord::Base
   add_setting :enable_as_k5_account, boolean: true, default: false, inheritable: true
   add_setting :use_classic_font_in_k5, boolean: true, default: false, inheritable: true
 
+  # Page Schools fork (Automatic K-12 Result): report-card configuration hash
+  # (term labels, position mode, display toggles). See K12Results::Config.
+  add_setting :k12_result, root_only: true
+
   # Allow accounts with strict data residency requirements to turn off mobile
   # push notifications which may be routed through US datacenters by Google/Apple
   add_setting :enable_push_notifications, boolean: true, root_only: true, default: true

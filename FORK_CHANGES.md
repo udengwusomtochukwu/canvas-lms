@@ -1,5 +1,62 @@
 # FORK_CHANGES
 
+## Automatic K-12 Result (flag `automatic_k12_result`)
+
+The native termly + sessional report card (plan: `DISCOVERY.md`, docs:
+`doc/automatic_k12_result.md`, test guide: `TESTING.md`). Design rule:
+**no parallel grade store** — scores are read from the same `scores` rows
+GradeCalculator maintains (period + course-level); the new tables hold only
+what Canvas doesn't compute: class rank, per-(course, period) median, the
+sessional rollup, and render-ready snapshots (mastery, CA/exam split,
+staff-entered traits/remarks).
+
+**New files (zero upstream merge risk):** migrations `20260703120000/1`
+(3 additive tables: `k12_result_sets`, `k12_course_results`,
+`k12_session_results`; CREATE only), models `app/models/k12_*.rb`, engine
+`app/services/k12_results.rb` + `app/services/k12_results/*`
+(Config / CourseRecalculator / SessionRecalculator — coalesced singleton jobs
+copied from the ScoreStatisticsGenerator idiom, `on_conflict: :loose`, one
+set-level pass per (course, period) so ranking is race-free), controllers
+`app/controllers/k12_report_cards_controller.rb` (student/observer card,
+HTML + prawn PDF), `k12_results_controller.rb` (teacher course page),
+`k12_result_settings_controller.rb` (account policy), views
+`app/views/k12_report_cards/**` (incl. `show.pdf.prawn` — prawn-rails is the
+codebase's existing PDF engine), `k12_results/`, `k12_result_settings/`,
+specs (`spec/services/k12_results*`, `spec/controllers/k12_*`) + shared
+helper `spec/support/k12_results_spec_helper.rb`.
+
+**Modified upstream files:**
+
+| File | Change | Merge risk |
+|---|---|---|
+| `lib/grade_calculator.rb` | 3-line hook at the end of `compute_and_save_scores` + one private method: queue the coalesced result recompute after Score rows persist (guarded `@ignore_muted`, like `update_score_statistics`; wrapped in `Canvas::Errors.capture_exception` so it can never break grading). Chosen over a `Module#prepend` from an initializer so upstream reshaping the method surfaces as a loud conflict instead of a silent no-op. | **Low-Medium** — hot upstream file, but the hook is an append at a stable seam. |
+| `app/models/score.rb` | Flag-guarded `after_save` for `override_score` changes — final-grade override edits write Scores via plain AR without running GradeCalculator, so this is the one grading path the hook above misses. GradeCalculator's bulk SQL upserts bypass callbacks, so this fires only for overrides. | **Low** — small, stable file. |
+| `app/models/account.rb` | One `add_setting :k12_result, root_only: true` line. | Trivial. |
+| `config/routes.rb` | Marked K-12 Result blocks (course-scoped + top-level user/account). | **Low** — additive. |
+| `config/feature_flags/page_schools_feature_flags.yml`, `ui/shared/feature-flags/react/psFlagNotes.json` | New flag entry + plain-English note. | Fork-only files. |
+
+**Deliberate choices:** positions use standard competition ranking
+("1,2,2,4") computed only over graded students — ungraded students are never
+silently ranked bottom or scored 0 (the two position modes change the
+displayed denominator: enrolled vs attempted); the sessional ranking cohort
+is the union of a student's coursemates in the term (= the class arm in this
+deployment, where subject courses share rosters); mastery is snapshotted
+through `Outcomes::ResultAnalytics` with student-visible semantics (muted/
+unposted excluded) and period-scoped on `COALESCE(submitted_at, assessed_at)`
+— the same timestamp the rollup engine orders by (Canvas has no native
+period filter for outcome results); the CA/exam split is the one value
+derived from submissions (posted, graded, non-excused, period-scoped via
+`submissions.grading_period_id`) because Canvas has no per-period
+per-assignment-group score — the subject total itself always comes from the
+Score row; ERB + inline styles, no webpack bundles (hot-patchable, no image
+rebuild for iteration).
+
+**Deploy note:** run `bin/rake db:migrate` (three additive tables), rebuild
+the image for the `psFlagNotes.json` entry (cosmetic only), enable the
+account flag, then configure `/accounts/1/k12_result_settings`.
+
+---
+
 ## Moments (Phase 1 — flag `moments_native`, plugin `moments_backend`)
 
 Per-child, consent-gated classroom highlight reels, native to the fork (plan:
@@ -20,7 +77,9 @@ callbacks with `skip_before_action :load_user` — lti_api precedent), views
 
 | File | Change | Merge risk |
 |---|---|---|
-| `app/views/shared/_new_nav_header.html.erb` | One comment-marked, flag-gated `<li>` (Moments rail item, inline SVG icon) before the external-tools partial. | **Medium** — upstream touches this file occasionally; conflict resolves by re-inserting the block. |
+| `app/views/shared/_new_nav_header.html.erb` | One comment-marked, flag-gated `<li>` (Moments rail item, inline SVG icon) before the external-tools partial — used when `instui_nav` is off. | **Medium** — upstream touches this file occasionally; conflict resolves by re-inserting the block. |
+| `ui/features/navigation_header/react/SideNav.tsx` | Marked, flag-gated `SideNavBar.Item` after History — used when `instui_nav` is on (the React nav hardcodes its items, so both navs need the entry). | **Medium** — upstream iterates on this component; conflict resolves by re-inserting the block. |
+| `app/controllers/application_controller.rb` | One symbol (`moments_native`) added to `JS_ENV_ROOT_ACCOUNT_FEATURES` so the React nav can see the flag via `ENV.FEATURES`. | **Low** — one line in a long frozen list. |
 | `lib/canvas/plugins/default_plugins.rb` | One marked `Canvas::Plugin.register("moments_backend", ...)` block at the end (base_url + encrypted shared_secret). | **Low** — appended registration. |
 | `config/routes.rb` | Marked Moments blocks (course-scoped + top-level + callback). | **Low** — additive. |
 | `config/feature_flags/page_schools_feature_flags.yml`, `ui/shared/feature-flags/react/psFlagNotes.json` | New flag entries. | Fork-only files. |

@@ -41,6 +41,12 @@ class Score < ActiveRecord::Base
 
   before_validation :set_course_score, unless: :course_score_changed?
   before_save :set_root_account_id
+  # Page Schools fork (Automatic K-12 Result): final-grade override edits are
+  # written straight through ActiveRecord without running GradeCalculator, so
+  # the report-card recompute must be queued from here. GradeCalculator's own
+  # bulk SQL upserts bypass callbacks, so this fires ONLY for the override
+  # path — no cost on the grading hot path.
+  after_save :queue_k12_result_recalculation, if: :saved_change_to_override_score?
 
   set_policy do
     given do |user, _session|
@@ -118,6 +124,16 @@ class Score < ActiveRecord::Base
 
   def set_root_account_id
     self.root_account_id ||= enrollment&.root_account_id
+  end
+
+  # Page Schools fork (Automatic K-12 Result); see the after_save above.
+  def queue_k12_result_recalculation
+    scored_course = enrollment&.course
+    return unless scored_course && K12Results.enabled?(scored_course)
+
+    K12Results.recalculate_later(course: scored_course, grading_period:)
+  rescue => e
+    Canvas::Errors.capture_exception(:k12_results, e)
   end
 
   def set_course_score
