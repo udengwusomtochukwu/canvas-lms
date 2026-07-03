@@ -40,6 +40,7 @@ import {
   IconLifePreserverLine,
   IconQuestionLine,
   IconSettingsLine,
+  IconVideoLine,
 } from '@instructure/ui-icons'
 import {AccessibleContent, ScreenReaderContent} from '@instructure/ui-a11y-content'
 import {useScope as createI18nScope} from '@canvas/i18n'
@@ -426,6 +427,22 @@ const SideNav: React.FC<ISideNav> = ({externalTools = []}) => {
             }}
             minimized={collapseSideNav}
           />
+
+          {/* Page Schools fork (Moments): flag-gated rail item */}
+          {window.ENV.FEATURES?.moments_native && (
+            <SideNavBar.Item
+              id="moments"
+              icon={<IconVideoLine />}
+              label={I18n.t('Moments')}
+              href="/moments"
+              selected={window.location.pathname.startsWith('/moments')}
+              data-selected={window.location.pathname.startsWith('/moments')}
+              themeOverride={{
+                fontWeight: 400,
+              }}
+              minimized={collapseSideNav}
+            />
+          )}
 
           {processedTools.map(tool => {
             let toolHref = tool.href?.toString() || '#'
