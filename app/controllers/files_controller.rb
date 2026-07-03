@@ -857,7 +857,7 @@ class FilesController < ApplicationController
     # download param because the download param is used all over the place to mean stuff
     # other than actually download the file. Long term we probably ought to audit the files
     # controller, make download mean download, and remove download_frd.
-    if params[:inline] && !params[:download_frd] && attachment.content_type && (attachment.content_type&.start_with?("text") || attachment.mime_class == "text" || attachment.mime_class == "html" || attachment.mime_class == "code" || attachment.mime_class == "image")
+    if params[:inline] && !params[:download_frd] && attachment.content_type && (attachment.content_type&.start_with?("text") || attachment.mime_class == "text" || attachment.mime_class == "html" || attachment.mime_class == "code" || attachment.mime_class == "image" || manual_exam_inline_pdf?(attachment))
       send_stored_file(attachment)
     elsif attachment.inline_content? && !params[:download_frd] && !@context.is_a?(AssessmentQuestion)
       if params[:file_path] || !params[:wrap]
@@ -872,6 +872,16 @@ class FilesController < ApplicationController
     end
   end
   protected :send_attachment
+
+  # Page Schools fork (Manual Exam Workflow): serve PDFs inline on request so
+  # the browser's built-in viewer can preview graded exam scripts. Stock
+  # Canvas never inlines PDFs (it relies on the commercial DocViewer service);
+  # gated on the account flag so flag-off behaviour is exactly upstream.
+  def manual_exam_inline_pdf?(attachment)
+    attachment.mime_class == "pdf" &&
+      attachment.root_account&.feature_enabled?(:manual_exam_workflow)
+  end
+  protected :manual_exam_inline_pdf?
 
   def send_stored_file(attachment, inline = true)
     user = file_access_user

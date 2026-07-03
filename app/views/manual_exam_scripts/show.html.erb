@@ -87,9 +87,10 @@
         </th>
         <td>
           <% if script %>
-            <a href="<%= context_url(@context, :context_assignment_submission_url, @assignment.id, student.id) %>">
+            <a href="<%= file_download_path(script.attachment_id, inline: 1) %>" target="_blank">
               <%= script.attachment.display_name %>
             </a>
+            (<a href="<%= context_url(@context, :context_assignment_submission_url, @assignment.id, student.id) %>"><%= t("submission") %></a>)
           <% else %>
             <%= t("None") %>
           <% end %>

@@ -53,6 +53,12 @@ Related flags/settings (all optional):
 - The graded script appears as a comment attachment on the student's
   submission page; linked observers (parents) see and can download it through
   Canvas's standard observer visibility. Non-linked observers cannot.
+- **Inline preview**: with the flag on, PDF scripts render in the submission
+  page's preview pane (and open in-browser from links) using the browser's
+  built-in PDF viewer — no Instructure DocViewer needed. The preview obeys
+  posting policies: hidden grades ⇒ no preview. Rich annotation-style preview
+  (DocViewer) remains an Instructure-hosted commercial service and is not
+  included.
 
 ## Endpoints (for automation)
 

@@ -25,12 +25,16 @@ no new permission code (observer/student visibility is upstream's).
 | `spec/models/manual_exam_script_spec.rb`, `spec/services/manual_exams/script_upload_service_spec.rb`, `spec/controllers/manual_exam_scripts_controller_spec.rb`, `spec/apis/v1/manual_exam_workflow_spec.rb` | Full coverage: flag on/off, upload→attach→grade→rubric→outcome rollup, gradebook, posting policy, student view, observer positive + negative, idempotent re-upload. |
 | `DISCOVERY.md`, `FORK_CHANGES.md`, `doc/manual_exam_workflow.md` | Docs. |
 
-## Modified upstream files (the only two — keep an eye on these at merge time)
+## Modified upstream files (keep an eye on these at merge time)
 
 | File | Change | Merge risk |
 |---|---|---|
 | `config/routes.rb` | One contiguous, comment-marked block of 4 routes inside `resources :courses` (before `resource :gradebook`). | **Low.** Additive block; a conflict resolves by re-inserting the block. |
 | `ui/shared/feature-flags/react/psFlagNotes.json` | One JSON entry for the new flag. | **None vs upstream** (file is fork-only), trivial vs our own edits. |
+| `app/controllers/files_controller.rb` | `send_attachment`: one appended `\|\| manual_exam_inline_pdf?(attachment)` in the inline-disposition condition + a marked protected helper. Lets the browser's built-in viewer show PDFs inline when the flag is on (stock Canvas never inlines PDFs; DocViewer is a commercial service). Flag off = byte-identical behaviour, proven by spec. | **Medium-low.** Upstream edits this condition rarely; conflict resolves by re-appending the call. |
+| `app/views/submissions/show_preview.html.erb` | One comment-marked `elsif` branch before "No Preview Available": embeds the graded script in an iframe when `manual_exam_previewable_script` (new fork helper) returns one — so students/parents see the scanned script in the submission preview pane. Visibility keys off the comment's own read policy (posting policies + observer linking apply). | **Low.** Legacy, stable view; additive branch. |
+
+Additional fork-only files for the preview: `app/helpers/manual_exams_helper.rb`, `spec/controllers/manual_exam_inline_preview_spec.rb`.
 
 ## Deliberate choices / limitations
 
