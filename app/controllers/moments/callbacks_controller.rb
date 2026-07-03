@@ -36,6 +36,7 @@ module Moments
       when "segmented" then handle_segmented
       when "captions" then handle_captions
       when "compiled" then handle_compiled
+      when "raw_purged" then handle_raw_purged
       when "progress" then head :ok
       when "error" then handle_error
       else
@@ -114,6 +115,12 @@ module Moments
         reel.delay(n_strand: ["moments_reel_fetch", reel.root_account_id])
             .fetch_media_from_backend!(entry["media_ref"].to_s)
       end
+      render json: { ok: true }
+    end
+
+    # G5 evidence: the backend purged this session's raw video.
+    def handle_raw_purged
+      @session.update!(raw_purged_at: Time.zone.now)
       render json: { ok: true }
     end
 

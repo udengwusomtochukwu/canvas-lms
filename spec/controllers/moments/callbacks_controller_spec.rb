@@ -72,6 +72,12 @@ describe Moments::CallbacksController do
     expect(@session.reload.clips.count).to eq 2
   end
 
+  it "records raw purge evidence (G5)" do
+    post_callback("raw_purged", { session_ref: @session.sidecar_ref })
+    expect(response).to be_successful
+    expect(@session.reload.raw_purged_at).not_to be_nil
+  end
+
   it "marks the session failed on an error callback" do
     post_callback("error", { session_ref: @session.sidecar_ref, message: "ffmpeg exploded" })
     expect(@session.reload.workflow_state).to eq "failed"
