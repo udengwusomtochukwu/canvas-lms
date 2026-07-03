@@ -1,0 +1,72 @@
+<%
+# Copyright (C) 2026 - present Instructure, Inc.
+#
+# This file is part of Canvas.
+#
+# Canvas is free software: you can redistribute it and/or modify it under
+# the terms of the GNU Affero General Public License as published by the Free
+# Software Foundation, version 3 of the License.
+#
+# Canvas is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+# details.
+#
+# You should have received a copy of the GNU Affero General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
+# Page Schools fork (Moments): per-student consent management (G3).
+%>
+
+<% provide :page_title do %><%= t("Moments consent: %{course}", course: @context.name) %><% end %>
+
+<div class="TopLinks">
+  <a href="<%= course_moments_sessions_path(@context) %>" class="btn">
+    <i class="icon-arrow-left"></i> <%= t("Moments sessions") %>
+  </a>
+</div>
+
+<h1 class="Heading"><%= t("Moments consent — %{course}", course: @context.name) %></h1>
+<p>
+  <%= t(<<~TEXT)
+    A student can only be tagged in Moments clips — and only appears in
+    reels — while they have an active opt-in recorded here. Revoking takes
+    effect immediately for new tags and future reels.
+    TEXT
+  %>
+</p>
+
+<table class="ic-Table">
+  <thead>
+    <tr>
+      <th scope="col"><%= t("Student") %></th>
+      <th scope="col"><%= t("Opted in") %></th>
+      <th scope="col"><%= t("Recorded by") %></th>
+      <th scope="col"><%= t("Change") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @students.each do |student| %>
+      <% consent = @consents[student.id] %>
+      <tr>
+        <th scope="row"><%= student.sortable_name %></th>
+        <td><%= consent&.opt_in ? t("Yes") : t("No") %></td>
+        <td>
+          <% if consent&.consented_by %>
+            <%= t("%{name} on %{date}", name: consent.consented_by.short_name, date: datetime_string(consent.consented_at, :no_time)) %>
+            <% if consent.note.present? %>— <%= consent.note %><% end %>
+          <% end %>
+        </td>
+        <td>
+          <%= form_tag course_moments_consent_path(@context, student.id), method: :put do %>
+            <input type="hidden" name="opt_in" value="<%= consent&.opt_in ? "0" : "1" %>">
+            <input type="text" name="note" placeholder="<%= t("note (optional)") %>">
+            <button type="submit" class="btn">
+              <%= consent&.opt_in ? t("Revoke") : t("Opt in") %>
+            </button>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

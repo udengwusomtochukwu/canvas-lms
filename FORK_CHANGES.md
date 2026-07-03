@@ -1,3 +1,39 @@
+# FORK_CHANGES
+
+## Moments (Phase 1 — flag `moments_native`, plugin `moments_backend`)
+
+Per-child, consent-gated classroom highlight reels, native to the fork (plan:
+`MOMENTS_DISCOVERY.md`). All grading-adjacent rules live in models, all
+guardrails (G1–G6) carry over from the original system.
+
+**New files (zero upstream merge risk):** migrations
+`20260705100000/1` (5 additive tables: sessions, clips, clip_tags, consents,
+reels — no core tables touched), models `app/models/moments/*` (consent +
+course-membership validation on ClipTag = G2/G3; Reel policy mirrors the
+submission observer block = G6), `lib/moments_backend.rb` (HMAC-signed client
+for the configurable backend), controllers `app/controllers/moments*`
+(role-aware `/moments`, course sessions/tagging/consents, HMAC-authenticated
+callbacks with `skip_before_action :load_user` — lti_api precedent), views
+`app/views/moments/**`, plugin partial, specs + shared context.
+
+**Modified upstream files:**
+
+| File | Change | Merge risk |
+|---|---|---|
+| `app/views/shared/_new_nav_header.html.erb` | One comment-marked, flag-gated `<li>` (Moments rail item, inline SVG icon) before the external-tools partial. | **Medium** — upstream touches this file occasionally; conflict resolves by re-inserting the block. |
+| `lib/canvas/plugins/default_plugins.rb` | One marked `Canvas::Plugin.register("moments_backend", ...)` block at the end (base_url + encrypted shared_secret). | **Low** — appended registration. |
+| `config/routes.rb` | Marked Moments blocks (course-scoped + top-level + callback). | **Low** — additive. |
+| `config/feature_flags/page_schools_feature_flags.yml`, `ui/shared/feature-flags/react/psFlagNotes.json` | New flag entries. | Fork-only files. |
+
+**Deliberate choices:** raw/intermediate media never enters Canvas storage
+(sidecar-owned, purged per G5) — only approved reels/thumbnails become
+Attachments; backend contract passes opaque refs only (identity-blind by
+wire-format, not by promise); ERB + vanilla JS (no webpack bundles).
+**Phase 1 scope ends at tagging** — captions/compile/deliver callbacks and
+the worker v2 endpoints (LM repo, `services/moments-worker`) are Phase 2.
+
+---
+
 # FORK_CHANGES — Manual Exam Workflow
 
 Every core change this feature makes to the fork, with the reason, why the

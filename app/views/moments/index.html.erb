@@ -1,0 +1,79 @@
+<%
+# Copyright (C) 2026 - present Instructure, Inc.
+#
+# This file is part of Canvas.
+#
+# Canvas is free software: you can redistribute it and/or modify it under
+# the terms of the GNU Affero General Public License as published by the Free
+# Software Foundation, version 3 of the License.
+#
+# Canvas is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+# details.
+#
+# You should have received a copy of the GNU Affero General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
+# Page Schools fork (Moments): global-nav landing page, role-aware.
+%>
+
+<% provide :page_title do %><%= t("Moments") %><% end %>
+
+<h1 class="Heading"><%= t("Moments") %></h1>
+
+<% if @teacher_courses.any? %>
+  <h2 class="Heading"><%= t("Your classes") %></h2>
+  <ul>
+    <% @teacher_courses.each do |course| %>
+      <li>
+        <a href="<%= course_moments_sessions_path(course) %>"><%= course.name %></a>
+        &middot;
+        <a href="<%= course_moments_consents_path(course) %>"><%= t("consent") %></a>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if @observed_students.length > 1 %>
+  <form method="get" action="<%= moments_path %>">
+    <label for="moments-student-picker"><%= t("Show moments for") %></label>
+    <select id="moments-student-picker" name="student_id" onchange="this.form.submit()">
+      <% @observed_students.each do |student| %>
+        <option value="<%= student.id %>" <%= "selected" if @timeline_student == student %>><%= student.short_name %></option>
+      <% end %>
+    </select>
+  </form>
+<% end %>
+
+<% if @timeline_student %>
+  <h2 class="Heading">
+    <% if @timeline_student == @current_user %>
+      <%= t("Your moments") %>
+    <% else %>
+      <%= t("%{name}'s moments", name: @timeline_student.short_name) %>
+    <% end %>
+  </h2>
+
+  <% if @reels_by_day.empty? %>
+    <p><%= t("No moments yet — they will appear here when a teacher delivers them.") %></p>
+  <% else %>
+    <% @reels_by_day.each do |day, reels| %>
+      <h3 class="Heading"><%= datetime_string(day, :no_time) %></h3>
+      <% reels.each do |reel| %>
+        <div class="moments-reel" style="margin: 12px 0;">
+          <p>
+            <strong><%= reel.session.title %></strong>
+            &middot; <%= reel.session.course.name %>
+          </p>
+          <% if reel.attachment %>
+            <video controls preload="metadata" style="max-width: 640px; width: 100%;"
+                   src="<%= file_download_path(reel.attachment_id, inline: 1) %>"></video>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+<% elsif @teacher_courses.empty? && @observed_students.empty? %>
+  <p><%= t("Moments will appear here once your school starts sharing them.") %></p>
+<% end %>

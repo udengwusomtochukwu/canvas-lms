@@ -1,0 +1,118 @@
+<%
+# Copyright (C) 2026 - present Instructure, Inc.
+#
+# This file is part of Canvas.
+#
+# Canvas is free software: you can redistribute it and/or modify it under
+# the terms of the GNU Affero General Public License as published by the Free
+# Software Foundation, version 3 of the License.
+#
+# Canvas is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+# details.
+#
+# You should have received a copy of the GNU Affero General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
+# Page Schools fork (Moments): the session board — clips + human tagging.
+# Identity enters the system HERE and only here (guardrail G2); only
+# consented students can be tagged (G3, enforced by the model).
+%>
+
+<% provide :page_title do %><%= t("Moments: %{title}", title: @session.title) %><% end %>
+
+<div class="TopLinks">
+  <a href="<%= course_moments_sessions_path(@context) %>" class="btn">
+    <i class="icon-arrow-left"></i> <%= t("All sessions") %>
+  </a>
+</div>
+
+<h1 class="Heading"><%= @session.title %></h1>
+<p>
+  <%= t("Status: %{status}", status: @session.workflow_state) %> &middot;
+  <%= datetime_string(@session.captured_at, :no_time) %>
+</p>
+
+<% if %w[uploaded processing].include?(@session.workflow_state) %>
+  <div class="Alert ic-flash-info" id="moments-progress" data-url="<%= course_moments_session_progress_path(@context, @session) %>">
+    <p><%= t("Processing... this page refreshes automatically.") %></p>
+  </div>
+  <script>
+    (function () {
+      "use strict";
+      var el = document.getElementById("moments-progress");
+      setInterval(function () {
+        fetch(el.getAttribute("data-url"), { credentials: "same-origin", headers: { "Accept": "application/json" } })
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            if (data.stage && data.stage !== "processing") window.location.reload();
+          })
+          .catch(function () {});
+      }, 6000);
+    }());
+  </script>
+<% end %>
+
+<% if @clips.any? %>
+  <p>
+    <%= t(<<~TEXT)
+      Tag each student who appears in a clip. Only students with recorded
+      consent can be tagged; the roster below shows who is available.
+      TEXT
+    %>
+  </p>
+
+  <% @clips.each do |clip| %>
+    <div class="moments-clip" style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;" data-clip-id="<%= clip.id %>">
+      <strong><%= t("Clip %{range}", range: "#{clip.start_ms / 1000}s–#{clip.end_ms / 1000}s") %></strong>
+      <% if clip.highlight_score %>
+        <span title="<%= t("highlight score") %>">(<%= clip.highlight_score.round(2) %>)</span>
+      <% end %>
+      <% if clip.thumbnail %>
+        <div><img src="<%= file_download_path(clip.thumbnail_id, inline: 1) %>" alt="" style="max-width: 320px;"></div>
+      <% end %>
+      <p class="moments-clip-tags">
+        <%= t("Tagged:") %>
+        <span class="moments-tag-list">
+          <%= clip.clip_tags.map { |tag| tag.user.short_name }.join(", ").presence || t("nobody yet") %>
+        </span>
+      </p>
+      <form class="moments-tag-form" method="post" action="<%= course_moments_clip_tags_path(@context, clip.id) %>">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <select name="user_id" aria-label="<%= t("Student to tag") %>">
+          <% @students.each do |student| %>
+            <option value="<%= student.id %>" <%= "disabled" unless @consented_ids.include?(student.id) %>>
+              <%= student.sortable_name %><%= @consented_ids.include?(student.id) ? "" : " (#{t("no consent")})" %>
+            </option>
+          <% end %>
+        </select>
+        <button type="submit" class="btn"><%= t("Tag") %></button>
+      </form>
+    </div>
+  <% end %>
+<% elsif @session.workflow_state == "segmented" || @session.workflow_state == "tagging" %>
+  <p><%= t("No clips were found in this recording.") %></p>
+<% end %>
+
+<script>
+(function () {
+  "use strict";
+  document.querySelectorAll(".moments-tag-form").forEach(function (form) {
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      fetch(form.action, {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(new FormData(form)).toString(),
+        credentials: "same-origin"
+      })
+        .then(function (r) { return r.json().then(function (data) { return { ok: r.ok, data: data }; }); })
+        .then(function (result) {
+          if (!result.ok) { alert(result.data.error || "error"); return; }
+          window.location.reload();
+        });
+    });
+  });
+}());
+</script>

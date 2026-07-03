@@ -241,6 +241,25 @@ CanvasRails::Application.routes.draw do
     put "assignments/:assignment_id/manual_exam/scripts/:user_id" => "manual_exam_scripts#upsert", :as => :assignment_manual_exam_script
     post "assignments/:assignment_id/manual_exam/scripts" => "manual_exam_scripts#bulk_upsert", :as => :assignment_manual_exam_scripts
 
+    # Page Schools fork: Automatic K-12 Result — teacher/admin course results
+    # page (gated on the automatic_k12_result account feature flag; 404s when off)
+    get "k12_results" => "k12_results#show", :as => :k12_results
+    post "k12_results/recalculate" => "k12_results#recalculate", :as => :k12_results_recalculate
+    put "k12_results/view_mode" => "k12_results#update_view_mode", :as => :k12_results_view_mode
+    put "k12_results/remarks/:user_id" => "k12_results#update_remark", :as => :k12_results_remark
+
+    # Page Schools fork: Moments (gated on the moments_native account
+    # feature flag; 404s when off)
+    get "moments/sessions" => "moments/sessions#index", :as => :moments_sessions
+    post "moments/sessions" => "moments/sessions#create"
+    get "moments/sessions/:id" => "moments/sessions#show", :as => :moments_session
+    post "moments/sessions/:session_id/ingest" => "moments/sessions#ingest", :as => :moments_session_ingest
+    get "moments/sessions/:session_id/progress" => "moments/sessions#progress", :as => :moments_session_progress
+    post "moments/clips/:clip_id/tags" => "moments/clip_tags#create", :as => :moments_clip_tags
+    delete "moments/clips/:clip_id/tags/:user_id" => "moments/clip_tags#destroy", :as => :moments_clip_tag
+    get "moments/consents" => "moments/consents#index", :as => :moments_consents
+    put "moments/consents/:user_id" => "moments/consents#update", :as => :moments_consent
+
     resource :gradebook do
       get "submissions_upload/:assignment_id" => "gradebooks#show_submissions_upload", :as => :show_submissions_upload
       post "submissions_upload/:assignment_id" => "gradebooks#submissions_zip_upload", :as => :submissions_upload
@@ -942,6 +961,14 @@ CanvasRails::Application.routes.draw do
   get "grades" => "users#grades"
   get "grades_for_student" => "users#grades_for_student"
 
+  # Page Schools fork: Automatic K-12 Result — the student/observer report
+  # card and the account-level result configuration (gated on the
+  # automatic_k12_result account feature flag; 404s when off)
+  get "users/:user_id/k12_report_card" => "k12_report_cards#show", :as => :user_k12_report_card
+  put "users/:user_id/k12_report_card" => "k12_report_cards#update"
+  get "accounts/:account_id/k12_result_settings" => "k12_result_settings#show", :as => :account_k12_result_settings
+  put "accounts/:account_id/k12_result_settings" => "k12_result_settings#update"
+
   get "login" => "login#new"
   get "login/session_token" => "login#session_token", :as => :login_session_token
   delete "logout" => "login#destroy"
@@ -1121,6 +1148,12 @@ CanvasRails::Application.routes.draw do
   end
 
   resources :plugins, only: %i[index show update]
+
+  # Page Schools fork: Moments — global-nav timeline page (role-aware) and
+  # HMAC-authenticated callbacks from the configurable media backend.
+  # Gated on the moments_native account feature flag; 404s when off.
+  get "moments" => "moments#index", :as => :moments
+  post "moments/callbacks/:event" => "moments/callbacks#receive", :as => :moments_callback
 
   get "calendar" => "calendars#show"
   get "calendar2" => "calendars#show"
