@@ -448,7 +448,8 @@ module Canvas::Plugins::DefaultPlugins
                               encrypted_settings: [:shared_secret],
                               settings: {
                                 base_url: "http://moments-worker:8000",
-                                shared_secret: nil
+                                shared_secret: nil,
+                                callback_base_url: nil
                               }
                             })
   end

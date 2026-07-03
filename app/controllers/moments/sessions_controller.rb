@@ -65,10 +65,7 @@ module Moments
 
     # Browser finished the presigned upload: verify + enqueue segmentation.
     def ingest
-      MomentsBackend.segment!(
-        session: @session,
-        callback_url: moments_callback_url(event: "segmented", host: request.host_with_port, protocol: request.scheme)
-      )
+      MomentsBackend.segment!(session: @session, callback_url: callback_url_for("segmented"))
       @session.update!(workflow_state: "processing")
       render json: { ok: true, status: @session.workflow_state }
     rescue MomentsBackend::Error => e
@@ -93,6 +90,14 @@ module Moments
 
     def load_session
       @session = course_sessions.find(params[:session_id] || params[:id])
+    end
+
+    def callback_url_for(event)
+      if (base = MomentsBackend.callback_base_url)
+        "#{base}/moments/callbacks/#{event}"
+      else
+        moments_callback_url(event:, host: request.host_with_port, protocol: request.scheme)
+      end
     end
   end
 end

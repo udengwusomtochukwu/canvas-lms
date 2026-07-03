@@ -49,6 +49,14 @@ module MomentsBackend
       (secret == PluginSetting::DUMMY_STRING) ? nil : secret
     end
 
+    # Base URL the BACKEND uses to reach Canvas for callbacks. Needed when
+    # the backend runs in another docker network or another cloud, where the
+    # request host ("localhost:3102") would point at the wrong machine.
+    # Blank = fall back to the requesting host.
+    def callback_base_url
+      plugin_settings[:callback_base_url].presence&.chomp("/")
+    end
+
     def sign(body)
       raise NotConfigured, "Moments backend shared secret is not configured" unless shared_secret
 
@@ -80,20 +88,40 @@ module MomentsBackend
       get("/v2/progress/#{session.sidecar_ref}")
     end
 
+    # The backend URL is admin-configured (Admin > Plugins), not user input,
+    # so we use Net::HTTP directly rather than CanvasHttp — whose SSRF
+    # protections (rightly) refuse private addresses, which is exactly where
+    # a compose-network sidecar lives. Canvadocs-style integrations do the same.
     def post(path, payload)
       body = payload.to_json
-      response = CanvasHttp.post("#{base_url}#{path}",
-                                 { "Content-Type" => "application/json", SIGNATURE_HEADER => sign(body) },
-                                 body:)
-      parse(response)
+      request(Net::HTTP::Post, path, body:) do |req|
+        req["Content-Type"] = "application/json"
+        req[SIGNATURE_HEADER] = sign(body)
+        req.body = body
+      end
     end
 
     def get(path)
-      response = CanvasHttp.get("#{base_url}#{path}", { SIGNATURE_HEADER => sign("") })
-      parse(response)
+      request(Net::HTTP::Get, path) do |req|
+        req[SIGNATURE_HEADER] = sign("")
+      end
     end
 
     private
+
+    def request(verb, path, body: nil)
+      uri = URI.parse("#{base_url}#{path}")
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = uri.scheme == "https"
+      http.open_timeout = 10
+      http.read_timeout = 30
+
+      req = verb.new(uri.request_uri)
+      yield req if block_given?
+      parse(http.request(req))
+    rescue Timeout::Error, SystemCallError, SocketError => e
+      raise Error, "moments backend unreachable: #{e.message}"
+    end
 
     def parse(response)
       raise Error, "moments backend returned #{response.code}" unless response.code.to_i == 200

@@ -40,5 +40,12 @@
       <td><%= f.blabel :shared_secret, en: "Shared Secret" %></td>
       <td><%= f.password_field :shared_secret, value: settings[:shared_secret], autocomplete: "new-password" %></td>
     </tr>
+    <tr>
+      <td><%= f.blabel :callback_base_url, en: "Canvas URL (for callbacks)" %></td>
+      <td>
+        <%= f.text_field :callback_base_url, value: settings[:callback_base_url] %>
+        <p><%= t("How the backend reaches this Canvas — set when the backend runs on another network or cloud. Leave blank to use the requesting host.") %></p>
+      </td>
+    </tr>
   </table>
 <% end %>
