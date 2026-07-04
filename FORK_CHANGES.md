@@ -33,6 +33,8 @@ helper `spec/support/k12_results_spec_helper.rb`.
 | `app/models/score.rb` | Flag-guarded `after_save` for `override_score` changes — final-grade override edits write Scores via plain AR without running GradeCalculator, so this is the one grading path the hook above misses. GradeCalculator's bulk SQL upserts bypass callbacks, so this fires only for overrides. | **Low** — small, stable file. |
 | `app/models/account.rb` | One `add_setting :k12_result, root_only: true` line. | Trivial. |
 | `config/routes.rb` | Marked K-12 Result blocks (course-scoped + top-level user/account). | **Low** — additive. |
+| `app/models/course.rb` | `TAB_K12_RESULTS` constant + one flag-gated conditional tab insert in `tabs_available` (teacher/admin "K-12 Results" course tab; mirrors the Course Pacing pattern). | **Low-Medium** — upstream reshuffles tabs occasionally; conflict resolves by re-inserting the block. |
+| `app/views/gradebooks/grade_summary.html.erb` | One comment-marked, flag-gated "Report Card" button beside Print Grades (student/observer/staff entry to the card). | **Low** — small ERB block at a stable anchor. |
 | `config/feature_flags/page_schools_feature_flags.yml`, `ui/shared/feature-flags/react/psFlagNotes.json` | New flag entry + plain-English note. | Fork-only files. |
 
 **Deliberate choices:** positions use standard competition ranking

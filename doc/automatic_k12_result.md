@@ -50,6 +50,16 @@ median/mean/counts/finalized), `k12_course_results` (per student × course ×
 period|session: score/grade/ca/exam/rank/mastery-jsonb/remark),
 `k12_session_results` (per student × term: average/rank/cohort/traits/remarks).
 
+## Entry points
+
+* Teachers/admins: a flag-gated **"K-12 Results" course navigation tab**
+  (`Course::TAB_K12_RESULTS`, inserted after Grades for `manage_grades`
+  holders).
+* Students/observers/staff: a **"Report Card" button** beside "Print Grades"
+  on the course grades page (`gradebooks/grade_summary`), linking to the
+  student's card. The teacher results page links every student's card too.
+* The account settings page stays deliberately unlinked (root admins only).
+
 ## Pages
 
 | Route | Who | What |
