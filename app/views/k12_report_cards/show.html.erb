@@ -187,7 +187,9 @@ period_label = @grading_period ? @config.term_label(@grading_period) : t("Sessio
           <% if @sessional && @session_result && @config.show_overall_position? %>
             <span>
               <b><%= t("Overall Position:") %></b>
-              <% total = @config.rank_among_attempted? ? @session_result.cohort_attempted_count : @session_result.cohort_enrolled_count %>
+              <%# traditional sessional semantics: always out of the class size
+                  (all active students), regardless of the position mode %>
+              <% total = @session_result.cohort_enrolled_count %>
               <%= @session_result.rank ? t("%{rank} of %{total}", rank: @session_result.rank.ordinalize, total:) : "—" %>
             </span>
             <% if @config.show_median? %>
@@ -201,6 +203,9 @@ period_label = @grading_period ? @config.term_label(@grading_period) : t("Sessio
         <% if @config.positions_enabled? %>
           <div class="k12rc-note">
             <%= @config.rank_among_attempted? ? t("Positions are ranked among students with a graded score.") : t("Positions are ranked among all enrolled students; the count includes students not yet graded.") %>
+            <% if @sessional && @config.show_overall_position? %>
+              <%= t("The overall position is out of all active students in the session.") %>
+            <% end %>
           </div>
         <% end %>
       <% end %>

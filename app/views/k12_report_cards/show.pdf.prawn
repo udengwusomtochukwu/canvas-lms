@@ -111,7 +111,9 @@ prawn_document(page_layout: :portrait, page_size: "A4") do |pdf|
     summary << "#{grading_period ? "Term" : "Session"} Average: #{term_average || dash}"
     summary << "Grade: #{term_average ? "#{average_band[1]} (#{average_band[2]})" : dash}"
     if grading_period.nil? && session_result && config.show_overall_position?
-      total = config.rank_among_attempted? ? session_result.cohort_attempted_count : session_result.cohort_enrolled_count
+      # traditional sessional semantics: always out of the class size (all
+      # active students), regardless of the position mode
+      total = session_result.cohort_enrolled_count
       summary << "Overall Position: #{session_result.rank ? "#{session_result.rank.ordinalize} of #{total}" : dash}"
       summary << "Class Median Average: #{fmt.call(session_result.median)}" if config.show_median?
     end
@@ -121,6 +123,7 @@ prawn_document(page_layout: :portrait, page_size: "A4") do |pdf|
     if config.positions_enabled?
       pdf.fill_color grey
       note = config.rank_among_attempted? ? "Positions are ranked among students with a graded score." : "Positions are ranked among all enrolled students; the count includes students not yet graded."
+      note += " The overall position is out of all active students in the session." if grading_period.nil? && config.show_overall_position?
       pdf.text note, size: 7.5
       pdf.fill_color ink
     end

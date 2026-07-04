@@ -138,6 +138,25 @@ describe K12ReportCardsController do
         expect(response.body).to include "Session (Cumulative)"
       end
 
+      it "shows the overall (sessional) position out of the enrolled cohort even in attempted mode" do
+        Account.default.settings[:k12_result] = { "position_mode" => "position_among_attempted" }
+        Account.default.save!
+        # grading in before(:once) already ran the inline recompute and wrote
+        # this student's session row — repoint its counts instead of create!
+        session_result = K12SessionResult.find_or_initialize_by(user_id: @student.id,
+                                                                enrollment_term_id: @course.enrollment_term_id)
+        session_result.root_account ||= Account.default
+        session_result.update!(workflow_state: "active",
+                               average: 78.0,
+                               rank: 5,
+                               cohort_enrolled_count: 30,
+                               cohort_attempted_count: 22)
+        user_session(@student)
+        get :show, params: show_params(grading_period_id: "session")
+        expect(response.body).to include "5th of 30"
+        expect(response.body).not_to include "5th of 22"
+      end
+
       it "renders a PDF through prawn" do
         user_session(@student)
         get :show, params: show_params(format: :pdf)

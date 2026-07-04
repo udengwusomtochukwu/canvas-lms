@@ -67,7 +67,7 @@ period|session: score/grade/ca/exam/rank/mastery-jsonb/remark),
 |---|---|---|
 | `/users/:user_id/k12_report_card(.pdf)` | student (self), linked observer, staff | The two-faced card: termly sheet (CA/exam/total, WAEC or course-standard grade, class median, position, traits, remarks) + strand-mastery sheet; term pills + Session view; PROVISIONAL while the period is open, FINAL when closed; print CSS + prawn PDF. Developmental (KG–Y4) mode renders a skills/progress sheet without scores/positions. |
 | `/courses/:course_id/k12_results` | `manage_grades` | The course's computed set per period; per-student subject remarks; view-mode override; "Recalculate now". |
-| `/accounts/:account_id/k12_result_settings` | root-account `manage_account_settings` | Term labels, position mode (off/enrolled/attempted), median/mastery/position toggles, CA-exam weights + exam pattern, default view. Stored in the `k12_result` account setting. |
+| `/accounts/:account_id/k12_result_settings` | root-account `manage_account_settings` | Term labels, position mode (off/enrolled/attempted; the two position Show toggles are hidden while the mode is off — progressive disclosure, plain inline JS), median/mastery/position toggles, CA-exam weights + exam pattern, default view. Stored in the `k12_result` account setting. |
 
 ## Visibility
 
@@ -81,7 +81,11 @@ columns, posted submissions, `exclude_muted_associations` for mastery).
 ## Semantics worth knowing
 
 * Ungraded students are **never** scored 0 or ranked bottom — nil score, no
-  rank, rendered "—". Position modes change the denominator only.
+  rank, rendered "—". Position modes change the displayed denominator of the
+  **per-subject term positions** only.
+* The **overall (sessional) position** is always displayed out of the enrolled
+  cohort — all active students in the session ("5th of 42" where 42 is the
+  class size), whatever the position mode. Traditional Nigerian semantics.
 * Median is computed over graded scores (both modes).
 * The sessional per-course score is Canvas's own course Score row, so weighted
   grading-period sets are honoured automatically.

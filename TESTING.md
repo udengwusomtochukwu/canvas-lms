@@ -23,9 +23,13 @@ feature and a migrated DB (`bin/rake db:migrate` — three additive tables).
      `Harmattan / Rain`). Empty = use the periods' own names. Never hardcoded.
    * **Position mode** — `off` | `among enrolled` | `among attempted`.
      Ranks are identical in both modes (competition ranking over graded students);
-     the mode changes the displayed denominator ("5th of 40" vs "5th of 32").
+     the mode changes the displayed denominator of the *per-subject term*
+     positions ("5th of 40" vs "5th of 32"). The *overall (sessional)* position
+     always displays out of the enrolled cohort (class size), whatever the mode.
    * **Toggles** — per-subject term position, overall (sessional) position,
-     median, strand mastery.
+     median, strand mastery. The two position Show toggles are hidden while the
+     mode is `off` and reappear when a mode is picked (progressive disclosure;
+     their saved values are kept, not cleared).
    * **CA/exam split** — weights (default 40/60) and the assignment-group name
      pattern that counts as "exam" (default `exam`, case-insensitive regex).
    * **Default view** — `senior` (CA+exam+positions) or `developmental` (KG–Y4
@@ -145,8 +149,9 @@ Then **watch the report card build live**:
 5. **Positions/median**: grade two students to the same total → they share a
    position ("1st, 1st, 3rd"). Toggle the position mode at
    `/accounts/1/k12_result_settings` between enrolled/attempted and watch the
-   denominator change ("2nd of 12" vs "2nd of 5"); turn median off and the
-   column disappears.
+   per-subject term denominator change ("2nd of 12" vs "2nd of 5"); pick Off
+   and the two Show toggles disappear from the settings page; turn median off
+   and the column disappears.
 6. **Mastery**: align a rubric with an outcome on any assignment, assess it in
    SpeedGrader → strand bars appear on face B of the card (and on the PDF).
 7. **KG–Y4 mode**: on `/courses/<id>/k12_results` switch "Report card view" to
@@ -154,7 +159,9 @@ Then **watch the report card build live**:
    positions). Switch back for the senior sheet.
 8. **Session view**: pick "Session" on the card → cumulative per-subject rows
    (period-weighted where the period set is weighted), session average, overall
-   position + cohort median.
+   position + cohort median. The overall position is always "x of <enrolled
+   cohort>" (class size) in both position modes — only the per-subject
+   denominators follow the mode.
 9. **Observer/negative test**: link a parent to one student
    (`UserObservationLink.create_or_restore(observer:, student:, root_account:)` +
    an ObserverEnrollment, or use an observer pairing code), log in as them —

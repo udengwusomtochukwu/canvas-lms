@@ -40,7 +40,11 @@ helper `spec/support/k12_results_spec_helper.rb`.
 **Deliberate choices:** positions use standard competition ranking
 ("1,2,2,4") computed only over graded students — ungraded students are never
 silently ranked bottom or scored 0 (the two position modes change the
-displayed denominator: enrolled vs attempted); the sessional ranking cohort
+displayed denominator of the *per-subject term* positions: enrolled vs
+attempted; the *overall sessional* position always displays out of the
+enrolled cohort — traditional "5th of 42" class-size semantics — and the
+settings page hides the two position Show toggles while the mode is off,
+progressive disclosure via plain inline JS); the sessional ranking cohort
 is the union of a student's coursemates in the term (= the class arm in this
 deployment, where subject courses share rosters); mastery is snapshotted
 through `Outcomes::ResultAnalytics` with student-visible semantics (muted/
