@@ -2197,6 +2197,8 @@ class Account < ActiveRecord::Base
   TAB_REPORTS = 23
   TAB_RATE_LIMITING = 24
   TAB_ACCESSIBILITY = 25
+  # Page Schools fork (Automatic K-12 Result)
+  TAB_K12_RESULT_SETTINGS = 26
 
   # site admin tabs
   TAB_PLUGINS = 14
@@ -2257,6 +2259,8 @@ class Account < ActiveRecord::Base
       tabs << { id: TAB_SUB_ACCOUNTS, label: t("#account.tab_sub_accounts", "Sub-Accounts"), css_class: "sub_accounts", href: :account_sub_accounts_path } if manage_settings
       tabs << { id: TAB_ACCOUNT_CALENDARS, label: t("Account Calendars"), css_class: "account_calendars", href: :account_calendar_settings_path } if user && grants_right?(user, :manage_account_calendar_visibility)
       tabs << { id: TAB_TERMS, label: t("#account.tab_terms", "Terms"), css_class: "terms", href: :account_terms_path } if root_account? && manage_settings
+      # Page Schools fork (Automatic K-12 Result): the account report-card policy
+      tabs << { id: TAB_K12_RESULT_SETTINGS, label: t("K-12 Result Settings"), css_class: "k12_result_settings", href: :account_k12_result_settings_path } if root_account? && manage_settings && feature_enabled?(:automatic_k12_result)
       tabs << { id: TAB_AUTHENTICATION, label: t("#account.tab_authentication", "Authentication"), css_class: "authentication", href: :account_authentication_providers_path } if root_account? && manage_settings
       tabs << { id: TAB_RATE_LIMITING, label: t("#account.tab_rate_limiting", "Rate Limiting"), css_class: "rate_limiting", href: :account_rate_limiting_path } if user && feature_enabled?(:api_rate_limits) && grants_right?(user, :manage_rate_limiting)
       if root_account? && allow_sis_import && user && grants_any_right?(user, :manage_sis, :import_sis)

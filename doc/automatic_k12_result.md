@@ -58,7 +58,8 @@ period|session: score/grade/ca/exam/rank/mastery-jsonb/remark),
 * Students/observers/staff: a **"Report Card" button** beside "Print Grades"
   on the course grades page (`gradebooks/grade_summary`), linking to the
   student's card. The teacher results page links every student's card too.
-* The account settings page stays deliberately unlinked (root admins only).
+* Root admins: **"K-12 Result Settings"** in the account left navigation
+  (next to Terms; root accounts only, flag-gated).
 
 ## Pages
 
