@@ -36,11 +36,28 @@ config = @config.to_h
         <%= t("Among enrolled — denominator counts every active student") %></label>
       <label><input type="radio" name="k12_result[position_mode]" value="position_among_attempted" <%= "checked" if @config.position_mode == "position_among_attempted" %>>
         <%= t("Among attempted — denominator counts only students with a graded score") %></label>
-      <label><input type="checkbox" name="k12_result[show_term_position]" value="1" <%= "checked" if Canvas::Plugin.value_to_boolean(config["show_term_position"]) %>>
-        <%= t("Show per-subject position on the termly card") %></label>
-      <label><input type="checkbox" name="k12_result[show_overall_position]" value="1" <%= "checked" if Canvas::Plugin.value_to_boolean(config["show_overall_position"]) %>>
-        <%= t("Show overall (sessional) position") %></label>
+      <p class="hint"><%= t("The mode sets the denominator of the per-subject term positions only.") %></p>
+      <div id="k12s_show_toggles" style="<%= "display:none" unless @config.positions_enabled? %>">
+        <label><input type="checkbox" name="k12_result[show_term_position]" value="1" <%= "checked" if Canvas::Plugin.value_to_boolean(config["show_term_position"]) %>>
+          <%= t("Show per-subject position on the termly card") %></label>
+        <label><input type="checkbox" name="k12_result[show_overall_position]" value="1" <%= "checked" if Canvas::Plugin.value_to_boolean(config["show_overall_position"]) %>>
+          <%= t("Show overall (sessional) position — always out of all active students in the session") %></label>
+      </div>
     </fieldset>
+    <script>
+      // Progressive disclosure: the Show toggles only mean something when a
+      // position mode is on, so "Off" hides them (state is kept, not cleared).
+      (function() {
+        var radios = document.querySelectorAll('input[name="k12_result[position_mode]"]');
+        var toggles = document.getElementById("k12s_show_toggles");
+        function sync() {
+          var picked = document.querySelector('input[name="k12_result[position_mode]"]:checked');
+          toggles.style.display = (picked && picked.value !== "off") ? "" : "none";
+        }
+        for (var i = 0; i < radios.length; i++) radios[i].addEventListener("change", sync);
+        sync();
+      })();
+    </script>
 
     <fieldset>
       <legend><%= t("Display") %></legend>
