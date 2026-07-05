@@ -16,12 +16,19 @@
 #
 # You should have received a copy of the GNU Affero General Public License along
 # with this program. If not, see <http://www.gnu.org/licenses/>.
-class SetReplicaIdentityOnK12Results < ActiveRecord::Migration[8.0]
-  tag :predeploy
+
+# Page Schools fork (Phase 10 un-fork): drop the Moments tables. The feature
+# and its media sidecar have been removed. Dropped in FK-safe order: reels,
+# consents, clip_tags and clips all reference moments_sessions, and clip_tags
+# references clips, so sessions goes last and clip_tags before clips.
+class DropMomentsNativeTables < ActiveRecord::Migration[8.0]
+  tag :postdeploy
 
   def up
-    set_replica_identity :k12_result_sets
-    set_replica_identity :k12_course_results
-    set_replica_identity :k12_session_results
+    drop_table :moments_reels, if_exists: true
+    drop_table :moments_consents, if_exists: true
+    drop_table :moments_clip_tags, if_exists: true
+    drop_table :moments_clips, if_exists: true
+    drop_table :moments_sessions, if_exists: true
   end
 end

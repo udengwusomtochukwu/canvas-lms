@@ -104,16 +104,6 @@
         <%= t("Print Grades") %>
       </a>
     </div>
-    <%# Page Schools fork (Automatic K-12 Result): the student's termly report
-        card — same visibility as this page (student, linked observer, staff) %>
-    <% if @context.account&.feature_enabled?(:automatic_k12_result) && @presenter&.student %>
-      <div id="k12-report-card-button-container" class="ic-Action-header__Secondary">
-        <a role="button" id="k12-report-card-button" class="Button icon-document"
-           href="<%= user_k12_report_card_path(@presenter.student, enrollment_term_id: @context.enrollment_term_id) %>">
-          <%= t("Report Card") %>
-        </a>
-      </div>
-    <% end %>
       <div id="ClearBadgeCountsButton" class="ic-Action-header__Secondary"></div>
   </div>
 

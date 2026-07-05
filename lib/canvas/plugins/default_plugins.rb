@@ -436,21 +436,5 @@ module Canvas::Plugins::DefaultPlugins
                               settings: { priority: "low" },
                               validator: "ConditionalReleaseTuningValidator",
                             })
-
-    # Page Schools fork (Moments): configurable media backend. Defaults to
-    # the compose sidecar; an admin can point it at a remote deployment.
-    Canvas::Plugin.register("moments_backend", nil, {
-                              name: -> { t :name, "Moments Backend" },
-                              description: -> { t :description, "Media processing backend for the Moments feature (identity-blind highlight clipping and reel compilation)" },
-                              author: "Page Schools",
-                              version: "1.0.0",
-                              settings_partial: "plugins/moments_backend_settings",
-                              encrypted_settings: [:shared_secret],
-                              settings: {
-                                base_url: "http://moments-worker:8000",
-                                shared_secret: nil,
-                                callback_base_url: nil
-                              }
-                            })
   end
 end

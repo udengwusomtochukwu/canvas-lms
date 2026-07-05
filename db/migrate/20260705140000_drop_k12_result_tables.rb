@@ -17,21 +17,17 @@
 # You should have received a copy of the GNU Affero General Public License along
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
-# Page Schools fork (Automatic K-12 Result): set-level statistics for one
-# (course, grading period) — or the whole session when grading_period is nil.
-# Holds what Canvas doesn't compute at this granularity (median, population
-# counts) and anchors the result rows ranked together in one recompute pass.
-class K12ResultSet < ApplicationRecord
-  belongs_to :course
-  belongs_to :grading_period, optional: true
-  belongs_to :enrollment_term
-  belongs_to :root_account, class_name: "Account"
-  has_many :k12_course_results, dependent: :delete_all
+# Page Schools fork (Phase 10 un-fork): drop the Automatic K-12 Result tables.
+# The feature and its engine have been removed; these derived report-card
+# tables held no data Canvas needs (primary grades always lived in `scores`).
+# Dropped children-first: k12_course_results and k12_session_results reference
+# k12_result_sets, so the parent goes last.
+class DropK12ResultTables < ActiveRecord::Migration[8.0]
+  tag :postdeploy
 
-  scope :termly, -> { where.not(grading_period_id: nil) }
-  scope :sessional, -> { where(grading_period_id: nil) }
-
-  def sessional?
-    grading_period_id.nil?
+  def up
+    drop_table :k12_course_results, if_exists: true
+    drop_table :k12_session_results, if_exists: true
+    drop_table :k12_result_sets, if_exists: true
   end
 end

@@ -549,7 +549,6 @@ class ApplicationController < ActionController::Base
     lti_registrations_usage_tab
     lti_toggle_placements
     mobile_offline_mode
-    moments_native
     modules_requirements_allow_percentage
     non_scoring_rubrics
     open_tools_in_new_tab

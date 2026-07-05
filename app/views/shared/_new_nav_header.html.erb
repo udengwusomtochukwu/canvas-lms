@@ -208,21 +208,6 @@
           </a>
         </li>
       <% end %>
-      <%# Page Schools fork (Moments): flag-gated rail item %>
-      <% if @current_user && @domain_root_account&.feature_enabled?(:moments_native) %>
-        <li class="menu-item ic-app-header__menu-list-item <%= ' ic-app-header__menu-list-item--active' if active_path?('/moments') %>">
-          <a id="global_nav_moments_link" href="/moments" class="ic-app-header__menu-list-link">
-            <div class="menu-item-icon-container" aria-hidden="true">
-              <svg viewBox="0 0 1920 1920" width="26" height="26" fill="currentColor" role="presentation">
-                <path d="M960 240c-397 0-720 323-720 720s323 720 720 720 720-323 720-720-323-720-720-720zm0 120c331 0 600 269 600 600s-269 600-600 600-600-269-600-600 269-600 600-600zm-180 240v720l540-360-540-360z"/>
-              </svg>
-            </div>
-            <div class="menu-item__text">
-              <%= t('Moments') %>
-            </div>
-          </a>
-        </li>
-      <% end %>
       <% unless @current_user.nil? %>
         <%= render(partial: 'external_tools/global_nav_menu_items') %>
       <% end %>

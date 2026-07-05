@@ -3469,8 +3469,6 @@ class Course < ActiveRecord::Base
   TAB_ITEM_BANKS = 23
   TAB_YOUTUBE_MIGRATION = 24
   TAB_AI_EXPERIENCES = 25
-  # Page Schools fork (Automatic K-12 Result)
-  TAB_K12_RESULTS = 26
 
   CANVAS_K6_TAB_IDS = [TAB_HOME, TAB_ANNOUNCEMENTS, TAB_GRADES, TAB_MODULES].freeze
   COURSE_SUBJECT_TAB_IDS = [TAB_HOME, TAB_SCHEDULE, TAB_MODULES, TAB_GRADES, TAB_GROUPS].freeze
@@ -3685,18 +3683,6 @@ class Course < ActiveRecord::Base
                             label: t("#tabs.course_paces", "Course Pacing"),
                             css_class: "course_paces",
                             href: :course_course_pacing_path
-                          })
-    end
-
-    # Page Schools fork (Automatic K-12 Result): teacher/admin entry to the
-    # computed termly results (flag-gated; students reach their report card
-    # from the grades page instead)
-    if account&.feature_enabled?(:automatic_k12_result) && grants_right?(user, :manage_grades)
-      default_tabs.insert(default_tabs.index { |t| t[:id] == TAB_GRADES } + 1, {
-                            id: TAB_K12_RESULTS,
-                            label: t("#tabs.k12_results", "K-12 Results"),
-                            css_class: "k12_results",
-                            href: :course_k12_results_path
                           })
     end
 

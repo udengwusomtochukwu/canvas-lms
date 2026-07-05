@@ -1,32 +1,3 @@
-automatic_k12_result:
-  state: allowed
-  applies_to: Account
-  display_name: Automatic K-12 Result
-  description: |-
-    Builds each student's termly and sessional result automatically as
-    grading happens: per-subject term score, grade, class median and
-    position (configurable), strand mastery from outcome results, and a
-    printable/PDF report card visible to the student and their linked
-    observers. Terms map onto grading periods and the session onto the
-    enrollment term; scores come from the same grade calculator the
-    gradebook uses — no parallel grade store. Configure term names,
-    position mode and display toggles under the account's K-12 Result
-    Settings. When off, nothing new renders, no results are computed and
-    grading behaves exactly as before.
-moments_native:
-  state: allowed
-  applies_to: Account
-  display_name: Moments
-  description: |-
-    Per-child classroom highlight reels, native to Canvas. Teachers upload
-    or record classroom video; an identity-blind worker cuts highlight
-    clips (no face recognition or biometrics — ever); staff tag consented
-    children, review observable-actions-only captions, and deliver a
-    per-child reel that the student and their linked observers see in a
-    day-by-day Moments timeline scoped to the term. Media processing runs
-    on a configurable backend (Admin > Plugins > Moments Backend). When
-    off, the Moments navigation item and all Moments pages disappear and
-    nothing is processed.
 manual_exam_workflow:
   state: allowed
   applies_to: Account

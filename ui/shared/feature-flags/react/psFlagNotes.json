@@ -231,10 +231,6 @@
     "summary": "When a teacher downloads their gradebook as a spreadsheet, Canvas picks the right column separator (comma or semicolon) based on the language's number format, so the file opens cleanly in Excel. Mostly matters for languages that write decimals with a comma; harmless and occasionally helpful.",
     "relevance": "useful"
   },
-  "automatic_k12_result": {
-    "summary": "Page Schools feature: computes each student's termly and sessional result automatically as teachers grade - per-subject score, grade, class median and position (configurable), strand mastery, and a printable/PDF report card for students and parents. Terms map onto grading periods; configure names and toggles in the account's K-12 Result Settings.",
-    "relevance": "useful"
-  },
   "block_content_editor": {
     "summary": "A new drag-and-drop, block-based page builder for creating course pages, as an alternative to the classic rich text editor. Could eventually make page design easier for teachers, but it is hidden and in development — not ready to rely on.",
     "relevance": "useful"
@@ -1157,10 +1153,6 @@
   },
   "mobile_offline_mode": {
     "summary": "Lets students download course content in the Canvas mobile apps and read it without an internet connection. Very relevant where home connectivity is patchy — pupils can sync at school and study offline at home.",
-    "relevance": "useful"
-  },
-  "moments_native": {
-    "summary": "Page Schools feature: per-child classroom highlight reels inside Canvas. Teachers upload or record classroom video; highlight clips are cut without any face recognition (identity only ever enters when a staff member tags a consented child); captions describe observable actions only and are human-reviewed; delivered reels appear in a day-by-day Moments timeline for the student and their linked parents. The media backend is configurable under Admin > Plugins.",
     "relevance": "useful"
   },
   "moderated_grading": {
