@@ -66,6 +66,11 @@ class FilePreviewsController < ApplicationController
       # html files
       elsif @file.content_type == "text/html"
         redirect_to context_url(@context, :context_file_preview_url, @file.id)
+      elsif @file.content_type == "application/pdf"
+        # ps: no DocViewer self-hosted — send the browser to the inline download
+        # URL; FilesController bounces it through the safe files domain and the
+        # browser renders the PDF natively.
+        redirect_to context_url(@context, :context_file_download_url, @file.id, inline: 1, verifier: params[:verifier].presence)
       # no preview available
       else
         @accessed_asset = nil # otherwise it will double-log when they download the file

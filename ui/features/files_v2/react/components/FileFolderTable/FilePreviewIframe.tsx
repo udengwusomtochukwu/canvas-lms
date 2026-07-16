@@ -56,7 +56,9 @@ const FilePreviewIframe = ({item}: {item: File}) => {
       ref={iframeRef}
       id="file-preview-iframe"
       key={item.id}
-      sandbox={sandboxSettings(item)}
+      // ps: Chrome refuses to render PDFs inside sandboxed iframes; the PDF is
+      // served cross-origin from the files domain, so omitting sandbox is safe.
+      sandbox={item.mime_class === 'pdf' ? undefined : sandboxSettings(item)}
       src={item.preview_url}
       style={{
         ...(item.mime_class === 'html' ? {backgroundColor: '#F2F4F4'} : {}),

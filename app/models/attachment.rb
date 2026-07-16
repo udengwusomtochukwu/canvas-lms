@@ -946,7 +946,9 @@ class Attachment < ActiveRecord::Base
   end
 
   def inline_content?
-    content_type.start_with?("text") || extension == ".html" || extension == ".htm" || extension == ".swf"
+    # ps: application/pdf added — self-hosted has no DocViewer, so PDFs are
+    # served inline from the safe files domain and rendered by the browser.
+    content_type.start_with?("text") || extension == ".html" || extension == ".htm" || extension == ".swf" || content_type == "application/pdf"
   end
 
   def self.shared_secret
